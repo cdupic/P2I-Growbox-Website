@@ -1,4 +1,5 @@
 from connexion import SQL_connection
+sql = SQL_connection()
 
 class SQL_lecture:
 
@@ -9,14 +10,17 @@ class SQL_lecture:
 
 	def afficher_mesures_serre(self, name_serre):
 		"""Affiche les mesures de la serre name_serre"""
-
+		liste_mesures = []
 		try:
 			self.cursor.execute("SELECT Measures.sensor_id, Measures.date, Measures.value, Sensors.type, Sensors.unit FROM Measures, Sensors WHERE Measures.sensor_id = Sensors.id and Sensors.greenhouse_name= %s", (name_serre,))
 			for (sensor_id, date, value, type, unit) in self.cursor:
 				print(f"Mesure dans {name_serre} le {date}, faite par le capteur {sensor_id}, {type} de {value} {unit}")
+				liste_mesures.append((sensor_id, date, value, type, unit))
+			return liste_mesures
 
 		except Exception as e:
 			print(f"Erreur lors de l'affichage des mesures de la serre {name_serre}: {e}")
+
 
 
 	def afficher_actions_serre(self, name_serre):
@@ -34,8 +38,8 @@ class SQL_lecture:
 
 
 
+
 if __name__ == '__main__':
-	sql = SQL_connection()
 	sql_lecture = SQL_lecture()
 	sql_lecture.afficher_mesures_serre("serre1")
 	print()
