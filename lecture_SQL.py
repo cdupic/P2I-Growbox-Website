@@ -15,7 +15,7 @@ class SQL_lecture:
 			self.cursor.execute("SELECT Measures.sensor_id, Measures.date, Measures.value, Sensors.type, Sensors.unit FROM Measures, Sensors WHERE Measures.sensor_id = Sensors.id and Sensors.greenhouse_name= %s", (name_serre,))
 			for (sensor_id, date, value, type, unit) in self.cursor:
 				print(f"Mesure dans {name_serre} le {date}, faite par le capteur {sensor_id}, {type} de {value} {unit}")
-				liste_mesures.append((sensor_id, date, value, type, unit))
+				liste_mesures.append(f"Mesure dans {name_serre} le {date}, faite par le capteur {sensor_id}, {type} de {value} {unit}")
 			return liste_mesures
 
 		except Exception as e:
