@@ -3,6 +3,10 @@
 
     <style>
         body {
+            background-image: url('images/Logo_Growbox.png');
+            background-repeat: no-repeat;
+            background-position: top right;
+            background-size: 50%;
             font-family: "Lato", sans-serif;
         }
 
@@ -69,16 +73,17 @@
 
 <div id="mySidebar" class="sidebar" style="width: 0px;">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"> Close</a>
-    <a href="#">About</a>
-    <a href="#">Services</a>
+    <a href="mesures" target="_blank" onclick="closeNav()">Mesures</a>
     <a href="#">Clients</a>
     <a href="#">Contact</a>
 </div>
 
 <div id="main" style="margin-left: 0px;">
-    <button class="openbtn" onclick="openNav()">☰ Open Sidebar</button>
+    <button class="openbtn" onclick="openNav()">☰</button>
     <h2>Collapsed Sidebar</h2>
     <p>Click on the hamburger menu/bar icon to open the sidebar, and push this content to the right.</p>
+
+
 </div>
 
 <script>
@@ -91,6 +96,7 @@
         document.getElementById("mySidebar").style.width = "0";
         document.getElementById("main").style.marginLeft= "0";
     }
+
 </script>
 
 
