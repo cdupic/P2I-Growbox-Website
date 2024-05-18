@@ -1,0 +1,30 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
+    <title>Growbox website page</title>
+    <link href="{{ url_for('static', filename='css/style.css')}}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='js/main.js')}}"></script>
+</head>
+
+<!-- Ceci est un commentaire <body class="background_image"> -->
+<body >
+
+<div id="mySidebar" class="sidebar" style="width: 0px;">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"> Close</a>
+    <a href="mesures" target="_blank" onclick="closeNav()">Mesures</a>
+    <a href="#">Clients</a>
+    <a href="#">Contact</a>
+</div>
+
+<div id="main" style="margin-left: 0px;">
+    <button class="openbtn" onclick="openNav()">☰</button>
+</div>
+
+<div id="container">
+    {% block content %}{% endblock %}
+</div>
+
+
+
+</body></html>

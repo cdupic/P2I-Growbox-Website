@@ -1,5 +1,5 @@
 .background_image {
-    background-image: url('images/Logo_Growbox.png');
+    background-image: url('../img/Logo_Growbox.png');
     background-repeat: no-repeat;
     background-position: top right;
     background-size: 50%;
@@ -61,6 +61,15 @@
     height: auto;
     background-size: contain;
     border: none;
+}
+
+.top-text {
+    width: 100%;
+    height: 100vh; /* Ajout de la hauteur */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Ajoutez d'autres styles ici pour personnaliser l'apparence du texte */
 }
 
 #main {

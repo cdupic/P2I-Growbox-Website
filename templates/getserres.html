@@ -1,16 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Serres</title>
-</head>
-<body>
+{% extends "base.html"%}
+
+{% block content %}
+<div class="top-text">
 <h1> Recherche de serres</h1>
 <form action="{{ url_for('traitement') }}" method="POST">
     <label for="serre">Nom de la serre</label>
     <input type="text" id="serre" name="serre">
     <input type="submit" value="Rechercher">
 </form>
-<p>{{erreur}}</p>
-</body>
-</html>
+</div>
+{% endblock %}
+
