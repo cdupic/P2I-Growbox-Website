@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session
 from lecture_SQL import SQL_lecture
 import requests
 import json
 import time
 
 app = Flask(__name__)
+app.secret_key ="57d029fa9a23e8757753103d9130227dbba262963769cbd1b858d41990b4bbe1"
 
 @app.route('/')
 def index():
@@ -34,7 +35,15 @@ def mesures():
 
 	return render_template('mesures.html', mesures=mesures)
 
+@app.route('/compteur')
 
+def compteur():
+	# si la clé "compteur" n'existe pas dans la session, on la crée
+	if "compteur" not in session:
+		session["compteur"] = 1
+	else:
+		session["compteur"] += 1
+	return f"Nombre de visites : {session['compteur']}"
 
 if __name__ == '__main__':
 	app.run(debug=True)
