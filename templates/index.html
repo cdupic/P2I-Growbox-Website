@@ -1,5 +1,10 @@
 {% extends "base.html"%}
 
 {% block content %}
-    <h1>Index</h1>
+    <h1>Accueil</h1>
+{% if session['nom_utilisateur'] %}
+    <p> Bonjour {{ session['nom_utilisateur']}} </p>
+{% else %}
+    <p> Bonjour invité, authentifie toi </p>
+{% endif %}
 {% endblock %}
