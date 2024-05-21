@@ -1,0 +1,22 @@
+{% extends "base.html"%}
+
+{% block content %}
+<form method="POST" action="{{ url_for('test') }}">
+    <select name="capteur">
+        {% for capteur in liste_capteurs %}
+        <option value="{{ capteur }}">{{ capteur }}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Submit">
+</form>
+
+{% if valeurs %}
+<h2>Valeurs pour le capteur {{ capteur_selectionne }} :</h2>
+<ul>
+    {% for valeur in valeurs %}
+    <li>{{valeur[0]}} {{valeur[2]}} à {{valeur[1]}}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% endblock %}

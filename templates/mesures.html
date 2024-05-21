@@ -1,8 +1,8 @@
 {% extends "base.html"%}
 
 {% block content %}
-<h1>Mesures de la serre {{serre}}</h1>
-<h2>Liste des mesures</h2>
+<h1>Mesures de la serre {{serre_selectionnee}}</h1>
+<h2>Liste des mesures </h2>
 <ul>
   {% for liste_infos in mesures %}
   <p> {{liste_infos}}

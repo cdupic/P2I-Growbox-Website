@@ -20,7 +20,9 @@ CREATE TABLE GreenHouses
     soil_humidity   INT,   # in %
     air_humidity    INT,   # in %
     light           INT,   # in lux
-    O2              FLOAT # in %
+    O2              FLOAT, # in %
+    pseudo          VARCHAR(16),
+    FOREIGN KEY (pseudo) REFERENCES Users (pseudo)
 );
 
 CREATE TABLE Users

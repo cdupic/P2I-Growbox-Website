@@ -2,26 +2,27 @@ from flask import Flask, render_template, request, url_for, session, redirect
 from dotenv import load_dotenv
 import os
 from random import randint
-#from lecture_SQL import SQL_lecture
+from lecture_SQL import SQL_lecture
 import requests
 import json
 import time
 
 load_dotenv() #quand chargé rend accessible les variables d'environnement du fichier .env das tout le script python
 app = Flask(__name__)
-secret_key = os.getenv("SECRET_KEY")
-print(os.getenv("UTILISATEURS"))
+app.secret_key = os.getenv("SECRET_KEY")
 
 @app.route('/')
 def index():
+	if 'nom_utilisateur' in session:
+		return render_template('page_utilisateur.html')
 	return render_template('index.html')
 
 @app.route('/getserres')
-def serres():
+def get_serres():
 	return render_template('getserres.html')
 
-@app.route('/test')
-def test():
+@app.route('/test1')
+def test1():
 	return render_template('page_utilisateur.html')
 
 # @app.route('/traitement', methods=['POST'])
@@ -54,16 +55,55 @@ def compteur():
 		session["compteur"] += 1
 	return f"Nombre de visites : {session['compteur']}"
 
+utilisateurs = [{"nom":"test","mdp":"test"}]
 
 
 def recherche_utilisateur(nom, mdp):
-	for utilisateur in os.getenv("UTILISATEURS"):
+	for utilisateur in utilisateurs:
 
 		if utilisateur['nom']==nom and utilisateur['mdp']==mdp:
 			print('valide')
 			return utilisateur
 	return None
 
+
+@app.route("/serres", methods=["POST", "GET"])
+def serres():
+	"""méthode permettant de voir les serres de l'utilisateur"""
+	if session.get('nom_utilisateur') == "test":
+		return render_template('serres.html', serres=["serre1", "serre2", "serre3"])
+	else:
+		return render_template('serres.html', serres=["aucune"])
+
+
+dic_mesures = {}
+liste_capteurs_mesures = []
+
+@app.route("/infoserre/<serre_selectionnee>", methods=["POST", "GET"])
+def info_serre(serre_selectionnee):
+	global dic_mesures, liste_capteurs_mesures
+	"""méthode permettant de voir les infos de la serre sélectionnée"""
+	sql = SQL_lecture()
+	mesures = sql.afficher_mesures_serre(serre_selectionnee)[0]
+	dic_mesures = sql.afficher_mesures_serre(serre_selectionnee)[1]
+	print(1, dic_mesures)
+	for capteur, elements in dic_mesures.items():
+		if len(elements)>0:
+			liste_capteurs_mesures.append(capteur)
+	if not mesures :
+
+		mesures = ["Aucune mesure pour cette serre"]
+		#return redirect('/serres')
+		return render_template('mesures.html', mesures=mesures, serre_selectionnee=serre_selectionnee)
+	else :
+		return render_template('infoserre.html', liste_capteurs=liste_capteurs_mesures, dic_mesures=dic_mesures)
+
+		#return render_template('mesures.html', mesures=mesures, serre_selectionnee=serre_selectionnee)
+
+def tri_mesures(mesures):
+	"""méthode permettant de trier les mesures par date"""
+	mesures_triees = sorted(mesures, key=lambda x: x['date'], reverse=True)
+	return mesures_triees
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
@@ -76,12 +116,14 @@ def login():
 
 		if utilisateur is not None:
 			session['nom_utilisateur'] = utilisateur['nom']
-			return redirect(url_for('index'))
+			return render_template("page_utilisateur.html")
+			#return redirect(url_for('index'))
 		else:
 			return redirect(url_for('login'))
 	else: #importer car on peut accéder directement à la page depuis l'url donc risque de bypass
 		if 'nom_utilisateur' in session:
-			return redirect(url_for('index'))
+			return render_template("page_utilisateur.html")
+			#return redirect(url_for('index'))
 		else:
 			return render_template("login.html")
 
@@ -127,7 +169,16 @@ def jeu():
 		return render_template("nombre-mystere.html")
 
 
-
+@app.route("/test" , methods=['POST'])
+def test():
+	if request.method == 'POST':
+		select = request.form.get('capteur')
+		print(str(select))
+		valeurs = dic_mesures.get(select)
+		print(dic_mesures, 'dic_mesures')
+		print(valeurs)
+		return render_template("infoserre.html", valeurs=valeurs, liste_capteurs=liste_capteurs_mesures, capteur_selectionne=select)
+	return render_template("infoserre.html", valeurs=[], liste_capteurs=liste_capteurs_mesures)
 
 
 

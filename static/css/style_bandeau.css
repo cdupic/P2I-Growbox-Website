@@ -37,3 +37,13 @@
 #container {
     margin: 20px 50px;
 }
+
+.serre-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #386641;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}

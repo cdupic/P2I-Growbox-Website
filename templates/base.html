@@ -5,17 +5,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon appli</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_barre.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_bandeau.css') }}">
 </head>
 <body>
 <nav id="navbar">
-    <img src="{{ url_for('static', filename='img/Logo_Growbox.png') }}" alt="logo" width="50">
+    <div>
+        <img src="{{ url_for('static', filename='img/Logo_Growbox.png') }}" alt="logo" width="50">
+    </div>
+
     <ul id="navbar-items">
         <li class="navbar-item login-logout">
-            {% if session['nom_utilisateur'] %}
-                <a href="{{ url_for('logout') }}">Se déconnecter</a>
+            {% if 'nom_utilisateur' in session %}
+            <a href="{{ url_for('logout') }}">Se déconnecter</a>
+            <p> Bonjour, {{ session['nom_utilisateur'] }} </p>
             {% else %}
-                <a href="{{ url_for('login') }}">S'identifier</a>
+            <a href="{{ url_for('login') }}">S'identifier</a>
             {% endif %}
         </li>
     </ul>

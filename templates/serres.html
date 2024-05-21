@@ -1,0 +1,12 @@
+{% extends "base.html"%}
+
+{% block content %}
+<p> Bonjour, {{ session['nom_utilisateur'] }}, voici vos serres : </p>
+
+{% for serre in serres %}
+<p>
+    <a href="{{ url_for('info_serre', serre_selectionnee=serre) }}" class="serre-button"> {{ serre }} </a>
+</p>
+{% endfor %}
+
+{% endblock %}

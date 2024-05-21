@@ -1,31 +1,25 @@
-body {
-    background-color:aliceblue;
-    margin: 0;
-}
-
 #navbar {
-    padding: 10px;
     display: flex;
+    justify-content: space-between; /* Ajout de cette ligne */
     align-items: center;
+    padding: 10px;
     background-color: #386641;
     font-size: 1.1em;
     color: #333;
 }
 
-#navbar-items {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    width: 100%;
+#navbar .logo {
+    /* Pas besoin de flex: 1; */
 }
 
-.navbar-item {
-    margin: 0 10px;
+#navbar .text {
+    /* Pas besoin de flex: 1; */
+    text-align: center;
 }
 
-.navbar-item.login-logout {
-    margin-right: 20px;
+#navbar .button {
+    /* Pas besoin de flex: 1; */
+    text-align: right;
 }
 
 .navbar-item a {
@@ -37,8 +31,4 @@ body {
 
 .navbar-item a:hover {
     color: #fcfcfc;
-}
-
-#container {
-    margin: 20px 50px;
 }

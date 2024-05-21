@@ -11,12 +11,14 @@ class SQL_lecture:
 	def afficher_mesures_serre(self, name_serre):
 		"""Affiche les mesures de la serre name_serre"""
 		liste_mesures = []
+		dic_mesures ={"temperature": [], "soil_humidity": [], "light": [], "air_humidity": [], "O2": [], "water_level": []}
 		try:
 			self.cursor.execute("SELECT Measures.sensor_id, Measures.date, Measures.value, Sensors.type, Sensors.unit FROM Measures, Sensors WHERE Measures.sensor_id = Sensors.id and Sensors.greenhouse_name= %s", (name_serre,))
 			for (sensor_id, date, value, type, unit) in self.cursor:
 				print(f"Mesure dans {name_serre} le {date}, faite par le capteur {sensor_id}, {type} de {value} {unit}")
 				liste_mesures.append(f"Mesure dans {name_serre} le {date}, faite par le capteur {sensor_id}, {type} de {value} {unit}")
-			return liste_mesures
+				dic_mesures[type].append([value, date, unit])
+			return (liste_mesures, dic_mesures)
 
 		except Exception as e:
 			print(f"Erreur lors de l'affichage des mesures de la serre {name_serre}: {e}")
