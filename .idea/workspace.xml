@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="32e6fc4f-e790-489a-afca-ee3f2df4e5d9" name="Changes" comment="update du code html">
-      <change afterPath="$PROJECT_DIR$/static/css/style_bandeau.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/login.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/page_utilisateur.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/traitement.html" afterDir="false" />
+    <list default="true" id="32e6fc4f-e790-489a-afca-ee3f2df4e5d9" name="Changes" comment="update flask : moyen de se connecter et d'enregistrer la connexion">
+      <change afterPath="$PROJECT_DIR$/sql/down.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sql/up.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/style_barre.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/getserres.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/getserres.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/website.py" beforeDir="false" afterPath="$PROJECT_DIR$/website.py" afterDir="false" />
     </list>
@@ -120,7 +117,10 @@
       <workItem from="1716068799655" duration="30000" />
       <workItem from="1716146501390" duration="922000" />
       <workItem from="1716199943056" duration="2191000" />
-      <workItem from="1716224709637" duration="5348000" />
+      <workItem from="1716224709637" duration="5452000" />
+      <workItem from="1716230225466" duration="27000" />
+      <workItem from="1716267802410" duration="2028000" />
+      <workItem from="1716269876160" duration="1455000" />
     </task>
     <task id="LOCAL-00001" summary="update html">
       <option name="closed" value="true" />
@@ -146,7 +146,15 @@
       <option name="project" value="LOCAL" />
       <updated>1716068407096</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="update flask : moyen de se connecter et d'enregistrer la connexion">
+      <option name="closed" value="true" />
+      <created>1716230141331</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1716230141331</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -156,10 +164,11 @@
     <MESSAGE value="update html" />
     <MESSAGE value="organisation du code en front-end" />
     <MESSAGE value="update du code html" />
-    <option name="LAST_COMMIT_MESSAGE" value="update du code html" />
+    <MESSAGE value="update flask : moyen de se connecter et d'enregistrer la connexion" />
+    <option name="LAST_COMMIT_MESSAGE" value="update flask : moyen de se connecter et d'enregistrer la connexion" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/P2I_Growbox_Python_backend$lecture_SQL.coverage" NAME="lecture_SQL Coverage Results" MODIFIED="1716058864011" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/P2I_Growbox_Python_backend$website.coverage" NAME="website Coverage Results" MODIFIED="1716230043552" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/P2I_Growbox_Python_backend$website.coverage" NAME="website Coverage Results" MODIFIED="1716270836891" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

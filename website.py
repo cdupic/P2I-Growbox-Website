@@ -1,11 +1,16 @@
 from flask import Flask, render_template, request, url_for, session, redirect
+from dotenv import load_dotenv
+import os
+from random import randint
 #from lecture_SQL import SQL_lecture
 import requests
 import json
 import time
 
+load_dotenv() #quand chargé rend accessible les variables d'environnement du fichier .env das tout le script python
 app = Flask(__name__)
-app.secret_key ="57d029fa9a23e8757753103d9130227dbba262963769cbd1b858d41990b4bbe1"
+secret_key = os.getenv("SECRET_KEY")
+print(os.getenv("UTILISATEURS"))
 
 @app.route('/')
 def index():
@@ -49,13 +54,11 @@ def compteur():
 		session["compteur"] += 1
 	return f"Nombre de visites : {session['compteur']}"
 
-utilisateurs = [
-	{"nom" : "test",
-	 "mdp" : "test"}
-]
+
 
 def recherche_utilisateur(nom, mdp):
-	for utilisateur in utilisateurs:
+	for utilisateur in os.getenv("UTILISATEURS"):
+
 		if utilisateur['nom']==nom and utilisateur['mdp']==mdp:
 			print('valide')
 			return utilisateur
@@ -101,6 +104,33 @@ def traitement():
 			return render_template("traitement.html")
 	else:
 		return redirect('/index')
+
+
+
+@app.route('/jeu', methods=["POST", "GET"])
+
+def jeu():
+	if request.method == "POST":
+		reponse = int(request.form.get('nombre'))
+		if reponse == session['nb']:
+			message = "Bravo, vous avez trouvé le nombre mystère"
+		elif reponse < session['nb']:
+			message = "Le nombre mystère est plus grand"
+		elif reponse > session['nb']:
+			message = "Le nombre mystère est plus petit"
+		return render_template("nombre-mystere.html", message=message)
+
+	else:
+		nb_mystere = randint(0, 100)
+		session['nb'] = nb_mystere
+		print(session)
+		return render_template("nombre-mystere.html")
+
+
+
+
+
+
 if __name__ == '__main__':
 	app.run(debug=True)
 
