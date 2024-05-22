@@ -15,4 +15,4 @@ def greenhouses_page():
         "id3": "GreenHouse 3"
     }
 
-    return render_template('pages/greenhouses.j2', user_greenhouses=user_greenhouses)
+    return render_template('pages/greenhouses.j2', user_greenhouses=user_greenhouses.items())

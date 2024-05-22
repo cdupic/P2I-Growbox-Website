@@ -10,9 +10,9 @@ def login_page():
 
     cant_find_user = False
 
-    if request.method == "POST":
+    if request.method == "POST" and 'user_name' in request.form and 'password' in request.form:
         if authenticate_user(request.form['user_name'], request.form['password']):
-            return redirect(url_for('greenhouse'))
+            return redirect(url_for('greenhouses_page'))
         else:
             cant_find_user = True
 

@@ -1,15 +1,15 @@
-{% extends "../base.j2" %}
+{% extends "base.j2" %}
 
-{% block content %}
+{% block main %}
     <h1>Page de connexion</h1>
     <form action="{{ url_for('login_page') }}" method="POST">
         <p>
             <label for="nom">Nom : </label>
-            <input type="text" name="nom" id="nom" required>
+            <input type="text" name="user_name" id="user_name" required>
         </p>
         <p>
             <label for="mdp">Mot de passe : </label>
-            <input type="password" name="mdp" id="mdp" required>
+            <input type="password" name="password" id="password" required>
         </p>
         <p>
             <input type="submit" value="Envoyer">

@@ -6,10 +6,10 @@
     <ul id="navbar-items">
         <li class="navbar-item login-logout">
             {% if 'nom_utilisateur' in session %}
-                <a href="{{ url_for('logout') }}">Se déconnecter</a>
-                <p> Bonjour, {{ session['nom_utilisateur'] }} </p>
+                <a href="{{ url_for('logout_manager') }}">Se déconnecter</a>
+                <p> Bonjour, {{ session['user_name'] }} </p>
             {% else %}
-                <a href="{{ url_for('login') }}">S'identifier</a>
+                <a href="{{ url_for('login_page') }}">S'identifier</a>
             {% endif %}
         </li>
     </ul>

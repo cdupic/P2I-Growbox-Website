@@ -13,15 +13,15 @@ from src.pages.landing import landing_page
 from src.pages.login import login_page
 
 load_dotenv()
-app = Flask(__name__.split('.')[0])
+app = Flask(__name__.split('.')[0], template_folder='../templates/', static_folder='../static/')
 app.secret_key = os.getenv("SECRET_KEY")
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=365)  # Session data will be stored for 1 year
 
 app.add_url_rule("/", methods=["GET"], view_func=landing_page)
 app.add_url_rule("/login", methods=["POST", "GET"], view_func=login_page)
-app.add_url_rule("/greenhouse", methods=["POST", "GET"], view_func=greenhouses_page)
+app.add_url_rule("/greenhouse", methods=["GET"], view_func=greenhouses_page)
 app.add_url_rule("/greenhouse/<greenhouse_id>/", methods=["POST", "GET"], view_func=greenhouse_overview_page)
-app.add_url_rule("/greenhouse/<greenhouse_id>/sensor/<sensor_id>", methods=["POST", "GET"],
+app.add_url_rule("/greenhouse/<greenhouse_id>/sensor/<sensor_id>", methods=["GET"],
                  view_func=greenhouse_sensor_page)
 app.add_url_rule("/greenhouse/<greenhouse_id>/actuator/<actuator_id>", methods=["POST", "GET"],
                  view_func=greenhouse_sensor_page)
@@ -35,10 +35,10 @@ def before_request():
 
 
 @app.teardown_request
-def teardown_request():
+def teardown_request(exception):
     if hasattr(g, 'db'):
         g.db.close()
 
 
 if __name__ == '__main__':
-    app.run(debug=True, use_reloader=True)
+    app.run(debug=True, use_reloader=True, port=5050)
