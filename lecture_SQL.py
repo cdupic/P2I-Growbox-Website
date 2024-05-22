@@ -43,6 +43,6 @@ class SQL_lecture:
 
 if __name__ == '__main__':
 	sql_lecture = SQL_lecture()
-	sql_lecture.afficher_mesures_serre("test_serial")
+	sql_lecture.afficher_mesures_serre("serre1")
 	print()
-	sql_lecture.afficher_actions_serre("test_serial")
+	sql_lecture.afficher_actions_serre("serre1")

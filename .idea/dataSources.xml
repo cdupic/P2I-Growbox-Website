@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="G221_A_BD3@fimi-bd-srv1.insa-lyon.fr" uuid="fce7efba-a8f5-4ce0-a2d0-a2b6d66e0fd0">
+    <data-source source="LOCAL" name="P2I G221_A_BD3" uuid="fce7efba-a8f5-4ce0-a2d0-a2b6d66e0fd0">
       <driver-ref>mariadb</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
