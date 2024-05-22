@@ -4,23 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="32e6fc4f-e790-489a-afca-ee3f2df4e5d9" name="Changes" comment="séurité flask avec .env et importation des commandes SQL">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/P2I-Growbox-Python-backend.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SQL_Script/script.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/infoserre.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/serres.html" afterDir="false" />
+    <list default="true" id="32e6fc4f-e790-489a-afca-ee3f2df4e5d9" name="Changes" comment="interface html avec choix utilsateurs (authenfication -&gt; serre -&gt; capteur -&gt; mesures)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SQL_Script/up.sql" beforeDir="false" afterPath="$PROJECT_DIR$/SQL_Script/up.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lecture_SQL.py" beforeDir="false" afterPath="$PROJECT_DIR$/lecture_SQL.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/style_bandeau.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/style_bandeau.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/style_barre.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/style_barre.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/mesures.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/mesures.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/page_utilisateur.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/page_utilisateur.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/serres.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/lectureserres.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/website.py" beforeDir="false" afterPath="$PROJECT_DIR$/website.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -77,39 +64,39 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Database Script.script.sql.executor": "Run",
-    "DefaultHtmlFileTemplate": "HTML File",
-    "JavaScript Debug.getserrres.html.executor": "Run",
-    "JavaScript Debug.index.html.executor": "Run",
-    "JavaScript Debug.mesures.html.executor": "Run",
-    "JavaScript Debug.test.html.executor": "Run",
-    "Python.lecture_SQL.executor": "Run",
-    "Python.website.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/dupic/Desktop/informatique/p2i/P2I-Growbox-Python-backend/static/img",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Database Script.script.sql.executor&quot;: &quot;Run&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;JavaScript Debug.getserrres.html.executor&quot;: &quot;Run&quot;,
+    &quot;JavaScript Debug.index.html.executor&quot;: &quot;Run&quot;,
+    &quot;JavaScript Debug.mesures.html.executor&quot;: &quot;Run&quot;,
+    &quot;JavaScript Debug.test.html.executor&quot;: &quot;Run&quot;,
+    &quot;Python.lecture_SQL.executor&quot;: &quot;Run&quot;,
+    &quot;Python.website.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/dupic/Desktop/informatique/p2i/P2I-Growbox-Python-backend/static/img&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "RunConfigurationTargetLRU": [
-      "fce7efba-a8f5-4ce0-a2d0-a2b6d66e0fd0"
+  &quot;keyToStringList&quot;: {
+    &quot;RunConfigurationTargetLRU&quot;: [
+      &quot;fce7efba-a8f5-4ce0-a2d0-a2b6d66e0fd0&quot;
     ],
-    "com.intellij.ide.scratch.LRUPopupBuilder$1/SQL Dialect": [
-      "MariaDB"
+    &quot;com.intellij.ide.scratch.LRUPopupBuilder$1/SQL Dialect&quot;: [
+      &quot;MariaDB&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\dupic\Desktop\informatique\p2i\P2I-Growbox-Python-backend\static\img" />
@@ -157,7 +144,9 @@
       <workItem from="1716308330523" duration="3060000" />
       <workItem from="1716313107631" duration="1186000" />
       <workItem from="1716319428871" duration="342000" />
-      <workItem from="1716319799079" duration="3578000" />
+      <workItem from="1716319799079" duration="3711000" />
+      <workItem from="1716354675876" duration="686000" />
+      <workItem from="1716357909138" duration="300000" />
     </task>
     <task id="LOCAL-00001" summary="update html">
       <option name="closed" value="true" />
@@ -199,7 +188,15 @@
       <option name="project" value="LOCAL" />
       <updated>1716271632633</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="interface html avec choix utilsateurs (authenfication -&gt; serre -&gt; capteur -&gt; mesures)">
+      <option name="closed" value="true" />
+      <created>1716323471312</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1716323471312</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -211,10 +208,11 @@
     <MESSAGE value="update du code html" />
     <MESSAGE value="update flask : moyen de se connecter et d'enregistrer la connexion" />
     <MESSAGE value="séurité flask avec .env et importation des commandes SQL" />
-    <option name="LAST_COMMIT_MESSAGE" value="séurité flask avec .env et importation des commandes SQL" />
+    <MESSAGE value="interface html avec choix utilsateurs (authenfication -&gt; serre -&gt; capteur -&gt; mesures)" />
+    <option name="LAST_COMMIT_MESSAGE" value="interface html avec choix utilsateurs (authenfication -&gt; serre -&gt; capteur -&gt; mesures)" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/P2I_Growbox_Python_backend$lecture_SQL.coverage" NAME="lecture_SQL Coverage Results" MODIFIED="1716058864011" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/P2I_Growbox_Python_backend$website.coverage" NAME="website Coverage Results" MODIFIED="1716323333130" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/P2I_Growbox_Python_backend$website.coverage" NAME="website Coverage Results" MODIFIED="1716355203340" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

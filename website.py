@@ -10,6 +10,7 @@ import time
 load_dotenv() #quand chargé rend accessible les variables d'environnement du fichier .env das tout le script python
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
+user_connected = False
 
 @app.route('/')
 def index():
@@ -67,38 +68,47 @@ def recherche_utilisateur(nom, mdp):
 	return None
 
 
-@app.route("/serres", methods=["POST", "GET"])
-def serres():
+@app.route("/lectureserre", methods=["POST", "GET"])
+def lecture_serres():
 	"""méthode permettant de voir les serres de l'utilisateur"""
-	if session.get('nom_utilisateur') == "test":
-		return render_template('serres.html', serres=["serre1", "serre2", "serre3"])
-	else:
-		return render_template('serres.html', serres=["aucune"])
+	if user_connected:
+		if session.get('nom_utilisateur') == "test":
+			return render_template('lectureserres.html', serres=["serre1", "serre2", "serre3"])
+		else:
+			return render_template('lectureserres.html', serres=["aucune"])
+
+	else :
+		return redirect(url_for('login'))
 
 
 dic_mesures = {}
 liste_capteurs_mesures = []
 
 @app.route("/infoserre/<serre_selectionnee>", methods=["POST", "GET"])
+
 def info_serre(serre_selectionnee):
-	global dic_mesures, liste_capteurs_mesures
 	"""méthode permettant de voir les infos de la serre sélectionnée"""
-	sql = SQL_lecture()
-	mesures = sql.afficher_mesures_serre(serre_selectionnee)[0]
-	dic_mesures = sql.afficher_mesures_serre(serre_selectionnee)[1]
-	print(1, dic_mesures)
-	for capteur, elements in dic_mesures.items():
-		if len(elements)>0:
-			liste_capteurs_mesures.append(capteur)
-	if not mesures :
+	global dic_mesures, liste_capteurs_mesures
 
-		mesures = ["Aucune mesure pour cette serre"]
-		#return redirect('/serres')
-		return render_template('mesures.html', mesures=mesures, serre_selectionnee=serre_selectionnee)
-	else :
-		return render_template('infoserre.html', liste_capteurs=liste_capteurs_mesures, dic_mesures=dic_mesures)
+	if user_connected:
+		sql = SQL_lecture()
+		mesures = sql.afficher_mesures_serre(serre_selectionnee)[0]
+		dic_mesures = sql.afficher_mesures_serre(serre_selectionnee)[1]
+		print(1, dic_mesures)
+		for capteur, elements in dic_mesures.items():
+			if len(elements)>0:
+				liste_capteurs_mesures.append(capteur)
+		if not mesures :
 
-		#return render_template('mesures.html', mesures=mesures, serre_selectionnee=serre_selectionnee)
+			mesures = ["Aucune mesure pour cette serre"]
+			#return redirect('/serres')
+			return render_template('mesures.html', mesures=mesures, serre_selectionnee=serre_selectionnee)
+		else :
+			return render_template('infoserre.html', liste_capteurs=liste_capteurs_mesures, dic_mesures=dic_mesures)
+
+	else:
+		return redirect(url_for('login'))
+
 
 def tri_mesures(mesures):
 	"""méthode permettant de trier les mesures par date"""
@@ -107,6 +117,7 @@ def tri_mesures(mesures):
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
+	global user_connected
 	print(session)
 	if request.method == "POST":
 		donnees = request.form
@@ -116,12 +127,14 @@ def login():
 
 		if utilisateur is not None:
 			session['nom_utilisateur'] = utilisateur['nom']
+			user_connected = True
 			return render_template("page_utilisateur.html")
 			#return redirect(url_for('index'))
 		else:
 			return redirect(url_for('login'))
 	else: #importer car on peut accéder directement à la page depuis l'url donc risque de bypass
 		if 'nom_utilisateur' in session:
+			user_connected = True
 			return render_template("page_utilisateur.html")
 			#return redirect(url_for('index'))
 		else:
@@ -129,7 +142,9 @@ def login():
 
 @app.route("/logout", methods=["POST", "GET"])
 def logout():
+	global user_connected
 	session.pop('nom_utilisateur', None)
+	user_connected = False
 	return redirect(url_for('index'))
 
 
@@ -171,14 +186,18 @@ def jeu():
 
 @app.route("/test" , methods=['POST'])
 def test():
-	if request.method == 'POST':
-		select = request.form.get('capteur')
-		print(str(select))
-		valeurs = dic_mesures.get(select)
-		print(dic_mesures, 'dic_mesures')
-		print(valeurs)
-		return render_template("infoserre.html", valeurs=valeurs, liste_capteurs=liste_capteurs_mesures, capteur_selectionne=select)
-	return render_template("infoserre.html", valeurs=[], liste_capteurs=liste_capteurs_mesures)
+	if user_connected:
+		if request.method == 'POST':
+			select = request.form.get('capteur')
+			print(str(select))
+			valeurs = dic_mesures.get(select)
+			print(dic_mesures, 'dic_mesures')
+			print(valeurs)
+			return render_template("infoserre.html", valeurs=valeurs, liste_capteurs=liste_capteurs_mesures, capteur_selectionne=select)
+		return render_template("infoserre.html", valeurs=[], liste_capteurs=liste_capteurs_mesures)
+
+	else:
+		return redirect(url_for('login'))
 
 
 
