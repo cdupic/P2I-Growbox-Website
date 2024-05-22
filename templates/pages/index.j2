@@ -1,0 +1,10 @@
+{% extends "../base.j2" %}
+
+{% block content %}
+    <h1>GrowBox Landing Page</h1>
+    {% if session['user_id'] %}
+        <p>Bonjour {{ session['user_id'] }}.</p>
+    {% else %}
+        <p>Bonjour invité, authentifie-toi.</p>
+    {% endif %}
+{% endblock %}

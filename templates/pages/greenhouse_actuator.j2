@@ -1,0 +1,12 @@
+{% extends "../greenhouse_template.j2" %}
+
+{% block content %}
+    <h1>Actions de la serre {{ greenhouse_id }}</h1>
+    <h2>Liste des actions </h2>
+    <ul>
+        {% for liste_infos in mesures %}
+            <p> {{ liste_infos }}
+            </p>
+        {% endfor %}
+    </ul>
+{% endblock %}
