@@ -1,7 +1,7 @@
 {% extends "base.html"%}
 
 {% block content %}
-<form method="POST" action="{{ url_for('test') }}">
+<form method="POST" action="{{ url_for('sensor_values', serre_selectionnee=serre_selectionnee) }}">
     <select name="capteur">
         {% for capteur in liste_capteurs %}
         <option value="{{ capteur }}">{{ capteur }}</option>
