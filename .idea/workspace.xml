@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="32e6fc4f-e790-489a-afca-ee3f2df4e5d9" name="Changes" comment="ajout fonction">
+    <list default="true" id="32e6fc4f-e790-489a-afca-ee3f2df4e5d9" name="Changes" comment="modification des scripts sql">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SQL_Script/down.sql" beforeDir="false" afterPath="$PROJECT_DIR$/SQL_Script/down.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SQL_Script/up.sql" beforeDir="false" afterPath="$PROJECT_DIR$/SQL_Script/up.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SQL_Script/script.sql" beforeDir="false" afterPath="$PROJECT_DIR$/SQL_Script/script.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lecture_SQL.py" beforeDir="false" afterPath="$PROJECT_DIR$/lecture_SQL.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,7 +77,6 @@
     "Python.website.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/dupic/Desktop/informatique/p2i/P2I-Growbox-Python-backend/static/img",
@@ -162,7 +161,7 @@
       <workItem from="1716357909138" duration="622000" />
       <workItem from="1716360831061" duration="906000" />
       <workItem from="1716364310714" duration="6418000" />
-      <workItem from="1716402665145" duration="2697000" />
+      <workItem from="1716402665145" duration="4298000" />
     </task>
     <task id="LOCAL-00001" summary="update html">
       <option name="closed" value="true" />
@@ -236,7 +235,15 @@
       <option name="project" value="LOCAL" />
       <updated>1716370169075</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="modification des scripts sql">
+      <option name="closed" value="true" />
+      <created>1716406150725</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1716406150725</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -252,7 +259,8 @@
     <MESSAGE value="modification du code pour empecher quelqu'un d'accéder aux données juste avec l'url" />
     <MESSAGE value="tri des fonctions" />
     <MESSAGE value="ajout fonction" />
-    <option name="LAST_COMMIT_MESSAGE" value="ajout fonction" />
+    <MESSAGE value="modification des scripts sql" />
+    <option name="LAST_COMMIT_MESSAGE" value="modification des scripts sql" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/P2I_Growbox_Python_backend$lecture_SQL.coverage" NAME="lecture_SQL Coverage Results" MODIFIED="1716058864011" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

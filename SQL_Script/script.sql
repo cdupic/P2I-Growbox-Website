@@ -1,1 +1,0 @@
-INSERT INTO Measures (sensor_id, value) VALUES(1,35);
