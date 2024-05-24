@@ -1,8 +1,9 @@
+import bcrypt
 from flask import session, g
+
 
 def get_users():
     cursor = g.db.cursor
-
     users = []
 
     try:
@@ -10,14 +11,14 @@ def get_users():
             "SELECT * "
             "FROM Users")
 
-        for (user_name, password, _, token) in cursor:
-            print(f"user_name: {user_name}, password: {password}, token: {token}")
-            users.append({"user_name": user_name, "password": password, "auth_token": token})
+        for user in cursor:
+            users.append(user)
 
         return users
 
     except Exception as e:
         print(f"Error when getting users: {e}")
+
 
 def is_user_authenticated():
     users = get_users()
@@ -41,6 +42,10 @@ def authenticate_user(user_name, password):
     return False
 
 
-if __name__ == "__main__":
-    # Example of use
-    print(authenticate_user("test", "test"))
+def hash_password(user_name, password):
+    salt = bcrypt.gensalt()
+    return bcrypt.hashpw(password, salt)
+
+
+def test_password(password, hash):
+    bcrypt.checkpw(password, hash)
