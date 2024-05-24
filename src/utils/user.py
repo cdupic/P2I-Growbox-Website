@@ -1,12 +1,8 @@
-from flask import session
-from src.database.test.sql_connexion_test import SQL_connection
-
-# TODO: Modify to access database with g object
-
+from flask import session, g
 
 def get_users():
-    sql_connection = SQL_connection()
-    cursor = sql_connection.cursor
+    cursor = g.db.cursor
+
     users = []
 
     try:
@@ -22,7 +18,6 @@ def get_users():
 
     except Exception as e:
         print(f"Error when getting users: {e}")
-
 
 def is_user_authenticated():
     users = get_users()

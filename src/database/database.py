@@ -7,7 +7,7 @@ from flask import g
 # One database connection is established per request.
 # This can slow down the website, but is still good for small projects.
 
-def get_db():
+def init_db():
     if 'db' not in g:
         try:
             g.db = mysql.connect(
@@ -19,7 +19,6 @@ def get_db():
             )
         except Exception as e:
             print("[ERROR] MySQL: " + str(e))
-    return g.db
 
 
 def close_db():

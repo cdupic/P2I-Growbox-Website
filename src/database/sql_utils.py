@@ -1,15 +1,13 @@
-# from flask import g
-from src.database.test.sql_connexion_test import SQL_connection
+from flask import g
+from datetime import datetime
 
 
-def get_greenhouse_measures(greenhouse_id, sensor_id, date_begin, date_end):
-	# cursor = g.db.connect().cursor()
-	# TODO : Modify to access database with g object
-	sql_connection = SQL_connection()
-	cursor = sql_connection.cursor
+def get_greenhouse_measures(greenhouse_id, sensor_id, date_debut, date_fin):
+    cursor = g.db.cursor
 
-	measures = {"temperature": [], "soil_humidity": [], "light": [], "air_humidity": [], "O2": [], "water_level": []}
-	try:
+    measures = {"temperature": [], "soil_humidity": [], "light": [], "air_humidity": [], "O2": [],
+                   "water_level": []}
+    try:
 
 		cursor.execute(
 			"SELECT Measures.sensor_id, Measures.date, Measures.value, Sensors.type, Sensors.unit "
@@ -22,19 +20,13 @@ def get_greenhouse_measures(greenhouse_id, sensor_id, date_begin, date_end):
 			print(f" Measure in {greenhouse_id} le {date}, done by sensor {sensor_id}, {sensor_type} : {value} {unit}")
 			measures[sensor_type].append([value, date, unit])
 
-		sql_connection.fermer_connexion_bd()
+        return measures
 
-		return measures
-
-	except Exception as e:
-		print(f"Error when getting values of greenhouse : {greenhouse_id}: {e}")
-
+    except Exception as e:
+        print(f"Erreur lors de l'affichage des mesures de la serre {greenhouse_id}: {e}")
 
 def print_greenhouse_actions(greenhouse_id, actuator_id, date_debut, date_fin):
-	# cursor = g.db.connect().cursor()
-	# TODO : Modify to access database with g object
-	sql_connection = SQL_connection()
-	cursor = sql_connection.cursor
+    cursor = g.db.connect().cursor()
 
 	try:
 		cursor.execute(
@@ -52,4 +44,15 @@ def print_greenhouse_actions(greenhouse_id, actuator_id, date_debut, date_fin):
 	except Exception as e:
 		print(f"Error when getting actions of greenhouse : {greenhouse_id}: {e}")
 
+
+if __name__ == "__main__":
+    # Example of use
+    greenhouse_id = "test_serial"
+    sensor_id = "1"
+    actuator_id = "1"
+    date_debut = datetime(2024, 1, 1)
+    date_fin = datetime(2025, 1, 1)
+    measures = get_greenhouse_measures(greenhouse_id, sensor_id, date_debut, date_fin)
+    print(measures)
+    print_greenhouse_actions(greenhouse_id, actuator_id, date_debut, date_fin)
 
