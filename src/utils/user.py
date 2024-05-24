@@ -3,19 +3,18 @@ from src.database.test.sql_connexion_test import SQL_connection
 
 # TODO: Modify to access database with g object
 
+
 def get_users():
     sql_connection = SQL_connection()
     cursor = sql_connection.cursor
-
     users = []
 
     try:
-
         cursor.execute(
             "SELECT * "
             "FROM Users")
 
-        for (user_name, password,_, token) in cursor:
+        for (user_name, password, _, token) in cursor:
             print(f"user_name: {user_name}, password: {password}, token: {token}")
             users.append({"user_name": user_name, "password": password, "auth_token": token})
 
@@ -23,7 +22,6 @@ def get_users():
 
     except Exception as e:
         print(f"Erreur lors de la récupération des users: {e}")
-
 
 
 def is_user_authenticated():

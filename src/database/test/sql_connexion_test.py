@@ -1,7 +1,4 @@
 import mysql.connector as mysql
-from datetime import datetime
-
-#remarque globale : avec l'autoincrement, quand une mesure est supprimée, l'idMesure n'est pas réutilisé, il est incrémenté
 
 class SQL_connection:
 
