@@ -12,11 +12,11 @@ def get_db():
 
     try:
         db = mysql.connect(
-        host = os.getenv("SQL_HOST"),
-        port = 3306,
-        user = os.getenv("SQL_USER"),
-        password = os.getenv("SQL_PASSWORD"),
-        database = os.getenv("SQL_DATABASE")
+        host=os.getenv("SQL_HOST"),
+        port=3306,
+        user=os.getenv("SQL_USER"),
+        password=os.getenv("SQL_PASSWORD"),
+        database=os.getenv("SQL_DATABASE")
         )
         return db
 

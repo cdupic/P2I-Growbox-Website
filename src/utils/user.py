@@ -44,7 +44,7 @@ def authenticate_user(user_name, password):
 
 def verify_password(user_name, password):
     db = get_db()
-    try :
+    try:
         cursor = db.cursor()
         cursor.execute(
             "SELECT * "
