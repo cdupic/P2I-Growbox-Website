@@ -1,4 +1,5 @@
-from flask import session, g
+from flask import session
+from secrets import token_bytes
 from src.database.database import get_db
 
 
@@ -20,6 +21,7 @@ def get_users():
         print(f"Error when getting users: {e}")
 
 
+# TODO: do not fetch all users to check if a user is authenticated
 def is_user_authenticated():
     users = get_users()
     if 'user_name' in session and 'auth_token' in session:
@@ -35,6 +37,7 @@ def is_user_authenticated():
     return False
 
 
+# TODO: do not fetch all users to authenticate a user and use a single query instead of two
 def authenticate_user(user_name, password):
     users = get_users()
     for user in users:
@@ -64,5 +67,19 @@ def verify_password(user_name, password):
         print(f"Error when checking passwords: {e}")
 
 
+def create_user(user_name, password):
+    db = get_db()
+    cursor = db.cursor()
+    try:
+        auth_token = token_bytes(16).hex()
+        cursor.execute(
+            "INSERT INTO Users (user_name, password, auth_token) "
+            "VALUES (%s, PASSWORD(%s), %s)",
+            (user_name, password, auth_token)
+        )
+        db.commit()
+        return auth_token
 
-
+    except Exception as e:
+        print(f"Error when creating user: {e}")
+        return None

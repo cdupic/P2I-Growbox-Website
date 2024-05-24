@@ -31,3 +31,53 @@ body {
 main {
     flex: 1 0;
 }
+
+p {
+    margin: 0;
+}
+
+
+/* ALERTS */
+
+main > div.message {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-300%);
+    max-width: 90vw;
+    width: 500px;
+    padding: 10px;
+
+    border-radius: 10px;
+    backdrop-filter: blur(6px);
+
+    animation: 5s error;
+}
+
+main > div.message.error {
+    background-color: hsla(0, 100%, 95%, 0.8);
+    border: 2px solid hsla(0, 100%, 20%, 0.2);
+}
+main > div.message.success {
+    background-color: hsla(120, 100%, 95%, 0.8);
+    border: 2px solid hsla(120, 100%, 20%, 0.2);
+}
+
+main > div.message p {
+    font-size: 1.2em;
+    line-height: 1.5em;
+    text-align: center;
+    font-weight: 600;
+}
+main > div.message > p + p {
+    font-weight: 300;
+}
+
+@keyframes error {
+    5% {
+        transform: translateX(-50%) translateY(0);
+    }
+    95% {
+        transform: translateX(-50%) translateY(0);
+    }
+}

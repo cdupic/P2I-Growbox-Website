@@ -18,6 +18,20 @@
     {% endblock header %}
 </header>
 <main>
+    {% if 'error' in session %}
+        <div class="message error">
+            <p>Une erreur est survenue&nbsp;:</p>
+            <p>{{ session['error'] }}</p>
+        </div>
+        {% set _ = session.pop('error') %}
+    {% endif %}
+    {% if 'success' in session %}
+        <div class="message success">
+            <p>{{ session['success'] }}</p>
+        </div>
+        {% set _ = session.pop('success') %}
+    {% endif %}
+
     {% block main %}
 
     {% endblock main %}

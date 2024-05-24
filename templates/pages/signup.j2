@@ -1,19 +1,19 @@
 {% extends "base.j2" %}
 
 {% block main %}
-    <h1>Page de connexion</h1>
+    <h1>Page de création de compte</h1>
 
-    <form action="{{ url_for('login_manager') }}" method="POST">
+    <form action="{{ url_for('signup_manager') }}" method="POST">
         <p>
-            <label for="user_name">Nom : </label>
+            <label for="user_name">Nom :</label>
             <input type="text" name="user_name" id="user_name" value="{{ session.get('form_user_name', '') }}" required>
         </p>
         <p>
-            <label for="password">Mot de passe : </label>
+            <label for="password">Mot de passe :</label>
             <input type="password" name="password" id="password" required>
         </p>
         <p>
-            <input type="submit" value="Se Connecter">
+            <input type="submit" value="Créer un compte">
         </p>
     </form>
 {% endblock %}
