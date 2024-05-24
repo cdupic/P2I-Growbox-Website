@@ -1,29 +1,31 @@
 import os
-from dotenv import load_dotenv
 
-import mysql.connector as mysql
+import mysql.connector
+from dbutils.pooled_db import PooledDB
+from dotenv import load_dotenv
 from flask import g
 
-# One database connection is established per request.
-# This can slow down the website, but is still good for small projects.
 load_dotenv()
 
+pool = PooledDB(
+    creator=mysql.connector,
+    maxconnections=10,
+    mincached=2,
+    maxcached=5,
+    blocking=True,
+    host=os.getenv("SQL_HOST"),
+    user=os.getenv("SQL_USER"),
+    password=os.getenv("SQL_PASSWORD"),
+    database=os.getenv("SQL_DATABASE"),
+    port=3306
+)
+
+
 def get_db():
-
     try:
-        db = mysql.connect(
-        host=os.getenv("SQL_HOST"),
-        port=3306,
-        user=os.getenv("SQL_USER"),
-        password=os.getenv("SQL_PASSWORD"),
-        database=os.getenv("SQL_DATABASE")
-        )
-        return db
-
+        return pool.connection()
     except Exception as e:
         print("[ERROR] MySQL: " + str(e))
-
-
 
 
 def init_db():

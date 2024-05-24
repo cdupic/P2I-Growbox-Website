@@ -3,8 +3,8 @@
 {% block main %}
     <h1>Page de connexion</h1>
 
-    {% if error %}
-        <p>{{ error }}</p>
+    {% if cant_find_user %}
+        <p>Username of password is invalid!</p>
     {% endif %}
 
     <form action="{{ url_for('login_page') }}" method="POST">
