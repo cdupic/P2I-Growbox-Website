@@ -3,7 +3,7 @@ from secrets import token_bytes
 from src.database.database import get_db
 
 
-def get_users():
+def get_user_info(user_name):
     db = get_db()
     cursor = db.cursor(dictionary=True)
     users = []
@@ -11,7 +11,10 @@ def get_users():
     try:
         cursor.execute(
             "SELECT * "
-            "FROM Users")
+            "FROM Users "
+            "WHERE user_name = %s ",
+            (user_name,)
+        )
 
         for user in cursor:
             users.append(user)
@@ -23,9 +26,9 @@ def get_users():
 
 # TODO: do not fetch all users to check if a user is authenticated
 def is_user_authenticated():
-    users = get_users()
+    user_info = get_user_info(session['username'])
     if 'user_name' in session and 'auth_token' in session:
-        for user in users:
+        for user in user_info:
             if user['user_name'] == session['user_name'] and user['auth_token'] == session['auth_token']:
                 return True
 
@@ -39,8 +42,8 @@ def is_user_authenticated():
 
 # TODO: do not fetch all users to authenticate a user and use a single query instead of two
 def authenticate_user(user_name, password):
-    users = get_users()
-    for user in users:
+    user_info = get_user_info(user_name)
+    for user in user_info:
         if user['user_name'] == user_name and verify_password(user_name, password):
             session['user_name'] = user['user_name']
             session['auth_token'] = user['auth_token']
