@@ -12,14 +12,14 @@ CREATE TABLE Plants
 CREATE TABLE Users
 (
     user_name VARCHAR(16) PRIMARY KEY,
-    password BINARY(32),
+    password BINARY(41),
     date_registration DATETIME DEFAULT NOW(),
     auth_token varchar(32)
 );
 
 CREATE TABLE GreenHouses
 (
-    serial_number   VARCHAR(32) PRIMARY KEY,
+    serial   VARCHAR(32) PRIMARY KEY,
     name            VARCHAR(16),
     update_interval INT UNSIGNED,   # in seconds
     plant_init_date DATETIME DEFAULT NOW(),
@@ -36,22 +36,22 @@ CREATE TABLE GreenHousePlants
 (
     id              INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     plant_id        INT UNSIGNED,
-    serial_number   VARCHAR(32),
+    greenhouse_serial   VARCHAR(32),
     date_debut DATETIME DEFAULT NOW(),
     date_fin DATETIME DEFAULT NULL,
     FOREIGN KEY (plant_id) REFERENCES Plants (id),
-    FOREIGN KEY (serial_number) REFERENCES GreenHouses (serial_number)
+    FOREIGN KEY (greenhouse_serial) REFERENCES GreenHouses (serial)
 );
 
 
 CREATE TABLE Sensors
 (
     id              TINYINT UNSIGNED,
-    serial_number   VARCHAR(32),
+    greenhouse_serial   VARCHAR(32),
     type            ENUM ('temperature', 'soil_humidity', 'air_humidity', 'light', 'O2', 'water_level'),
     unit            VARCHAR(16),
-    PRIMARY KEY (id, serial_number),
-    FOREIGN KEY (serial_number) REFERENCES GreenHouses (serial_number)
+    PRIMARY KEY (id, greenhouse_serial),
+    FOREIGN KEY (greenhouse_serial) REFERENCES GreenHouses (serial)
 );
 
 
@@ -68,10 +68,10 @@ CREATE TABLE Measures
 CREATE TABLE Actuators
 (
     id              TINYINT UNSIGNED,
-    serial_number   VARCHAR(32),
+    greenhouse_serial   VARCHAR(32),
     type            ENUM ('temperature', 'soil_humidity', 'air_humidity', 'light', 'O2', 'water_level'),
-    FOREIGN KEY (serial_number) REFERENCES GreenHouses (serial_number),
-    PRIMARY KEY (id, serial_number)
+    FOREIGN KEY (greenhouse_serial) REFERENCES GreenHouses (serial),
+    PRIMARY KEY (id, greenhouse_serial)
 );
 
 

@@ -9,7 +9,7 @@ def get_greenhouse_measures(greenhouse_id, sensor_id, date_begin, date_end):
         cursor.execute(
             "SELECT Measures.sensor_id, Measures.date, Measures.value, Sensors.type, Sensors.unit "
             "FROM Measures, Sensors "
-            "WHERE Measures.sensor_id = Sensors.id  and Sensors.id = %s and Sensors.serial_number= %s and "
+            "WHERE Measures.sensor_id = Sensors.id  and Sensors.id = %s and Sensors.greenhouse_serial= %s and "
             "Measures.date BETWEEN %s and %s ",
             (sensor_id, greenhouse_id, date_begin, date_end))
 
@@ -30,7 +30,7 @@ def get_greenhouse_actions(greenhouse_id, actuator_id, date_debut, date_fin):
         cursor.execute(
             "SELECT Actions.actuator_id, Actions.date, Actions.value, Actuators.type "
             "FROM Actions, Actuators "
-            "WHERE Actions.actuator_id = Actuators.id and Actuators.id= %s and Actuators.serial_number= %s and "
+            "WHERE Actions.actuator_id = Actuators.id and Actuators.id= %s and Actuators.greenhouse_serial= %s and "
             "Actions.date BETWEEN %s and %s",
             (actuator_id, greenhouse_id, date_debut, date_fin))
 
