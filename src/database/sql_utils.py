@@ -1,5 +1,5 @@
 #from flask import g
-from sql_connexion_test import SQL_connection
+from src.database.test.sql_connexion_test import SQL_connection
 from datetime import datetime
 
 

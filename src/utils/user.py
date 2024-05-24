@@ -1,5 +1,5 @@
 from flask import session
-from src.database.sql_connexion_test import SQL_connection
+from src.database.test.sql_connexion_test import SQL_connection
 
 # TODO: Modify to access database with g object
 
