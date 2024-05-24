@@ -22,7 +22,7 @@ def greenhouse_overview_page(greenhouse_serial):
     actuators_list = get_actuators_greenhouse(greenhouse_serial)
 
     # TODO: Fetch data for each sensors in the last n days where n = session['graphs_days']
-    data_sensors = get_data_sensors_since(greenhouse_serial, sensors_list, session['graphs_days'])
+    data_sensors = get_data_sensors_since(greenhouse_serial, session['graphs_days'])
     # TODO: Pass all the data to the template.
 
     return render_template('pages/greenhouse_overview.j2', greenhouse_serial=greenhouse_serial)
