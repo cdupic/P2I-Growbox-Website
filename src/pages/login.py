@@ -6,7 +6,7 @@ from src.utils.user import is_user_authenticated, authenticate_user
 def login_page():
     if is_user_authenticated():
         # User already authenticated
-        return redirect(url_for('greenhouse'))
+        return redirect(url_for('greenhouse_page'))
 
     cant_find_user = False
 

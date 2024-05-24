@@ -6,7 +6,7 @@ from src.database.database import get_db
 
 def greenhouses_page():
     if not is_user_authenticated():
-        return redirect(url_for('login'))
+        return redirect(url_for('login_page'))
 
     user_name = session['user_name']
     user_greenhouses = get_greenhouses(user_name)

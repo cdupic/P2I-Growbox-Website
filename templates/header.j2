@@ -5,7 +5,7 @@
 
     <ul id="navbar-items">
         <li class="navbar-item login-logout">
-            {% if 'nom_utilisateur' in session %}
+            {% if authenticated %}
                 <a href="{{ url_for('logout_manager') }}">Se déconnecter</a>
                 <p> Bonjour, {{ session['user_name'] }} </p>
             {% else %}
