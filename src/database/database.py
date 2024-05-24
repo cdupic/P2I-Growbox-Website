@@ -86,21 +86,18 @@ def get_greenhouses(user_name):
 def get_sensors_greenhouse(greenhouse_serial):
     db = get_db()
     cursor = db.cursor()
-    sensors = []
+    sensors = {}
 
     try:
         cursor.execute(
-            "SELECT Sensors.id, Sensors.type, GreenHouses.name "
+            "SELECT Sensors.id, Sensors.type "
             "FROM Sensors, GreenHouses "
             "WHERE greenhouse_serial = %s and GreenHouses.serial = Sensors.greenhouse_serial ",
             (greenhouse_serial,)
         )
 
-        for (ID, sensor_type, name) in cursor:
-            if name not in sensors:
-                sensors.append(name)
-            sensors.append([{ID : sensor_type}])
-
+        for (sensor_id, sensor_type) in cursor:
+            sensors[sensor_id] = sensor_type
 
         return sensors
 
@@ -111,21 +108,18 @@ def get_sensors_greenhouse(greenhouse_serial):
 def get_actuators_greenhouse(greenhouse_serial):
     db = get_db()
     cursor = db.cursor()
-    actuators = []
+    actuators = {}
 
     try:
         cursor.execute(
-            "SELECT Actuators.id, Actuators.type, GreenHouses.name "
+            "SELECT Actuators.id, Actuators.type "
             "FROM Actuators, GreenHouses "
             "WHERE greenhouse_serial = %s and GreenHouses.serial = Actuators.greenhouse_serial ",
             (greenhouse_serial,)
         )
 
-        for (ID, actuator_type, name) in cursor:
-            if name not in actuators:
-                actuators.append(name)
-            actuators.append([{ID : actuator_type}])
-
+        for (actuator_id, actuator_type) in cursor:
+            actuators[actuator_id] = actuator_type
 
         return actuators
 
@@ -140,22 +134,18 @@ def get_data_sensors_since(serial_number, days):
 
     try:
         cursor.execute(
-            "SELECT Sensors.id, Sensors.type, GreenHouses.name, Measures.value, Measures.date "
+            "SELECT Sensors.id,  Measures.date, Measures.value "
             "FROM Sensors, GreenHouses, Measures "
             "WHERE greenhouse_serial = %s and GreenHouses.serial = Sensors.greenhouse_serial "
-            "and Sensors.id = Measures.sensor_id and (Measures.date) > %s" ,
+            "and Sensors.id = Measures.sensor_id and (Measures.date) > %s",
             (serial_number, datetime.now() - timedelta(days=days))
         )
-        for (ID, sensor_type, name, value, date) in cursor:
-            if name not in data:
-                data[name] = {}
-            if ID not in data[name]:
-                data[name][ID] = []
-
-            data[name][ID].append([value, date])
+        for (sensor_id, date, value) in cursor:
+            if sensor_id not in data:
+                data[sensor_id] = {}
+            data[sensor_id][date] = value
 
         return data
 
     except Exception as e:
         print(f"Error when getting data: {e}")
-
