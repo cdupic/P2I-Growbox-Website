@@ -69,13 +69,13 @@ def get_greenhouses(user_name):
 
     try:
         cursor.execute(
-            "SELECT name "
+            "SELECT serial, name "
             "FROM GreenHouses "
             "WHERE user_name = %s",
             (user_name,)
         )
-        for (greenhouse_name,) in cursor:
-            greenhouses['name'] = greenhouse_name
+        for (serial, greenhouse_name) in cursor:
+            greenhouses[serial] = greenhouse_name
 
         return greenhouses
 
@@ -149,3 +149,5 @@ def get_data_sensors_since(serial_number, days):
 
     except Exception as e:
         print(f"Error when getting data: {e}")
+
+
