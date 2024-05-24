@@ -1,20 +1,24 @@
-<nav id="navbar">
-    <div>
-        <img src="{{ url_for('static', filename='img/icon.png') }}" alt="logo" width="50">
-    </div>
+<div>
+    <img src="{{ url_for('static', filename='img/icon.svg') }}" alt="GrowBox's icon" />
+</div>
 
-    <ul id="navbar-items">
-        <li class="navbar-item login-logout">
-            {% if authenticated %}
+<div></div>
+<div></div>
+
+<nav>
+    <ul>
+        {% if 'user_name' in session %}
+            <li>
+                <a href="{{ url_for('greenhouses_page') }}">Mes serres</a>
+            </li>
+            <li>
                 <a href="{{ url_for('logout_manager') }}">Se déconnecter</a>
-                <p> Bonjour, {{ session['user_name'] }} </p>
-            {% else %}
+            </li>
+        {% else %}
+            <li>
                 <a href="{{ url_for('login_page') }}">S'identifier</a>
-            {% endif %}
-        </li>
+            </li>
+        {% endif %}
+
     </ul>
 </nav>
-
-<div id="container">
-    {% block content %}{% endblock %}
-</div>

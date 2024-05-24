@@ -22,11 +22,16 @@ def get_users():
 
 def is_user_authenticated():
     users = get_users()
-    if 'user_name' not in session or 'auth_token' not in session:
-        return False
-    for user in users:
-        if user['user_name'] == session['user_name'] and user['auth_token'] == session['auth_token']:
-            return True
+    if 'user_name' in session and 'auth_token' in session:
+        for user in users:
+            if user['user_name'] == session['user_name'] and user['auth_token'] == session['auth_token']:
+                return True
+
+    if 'user_name' in session:
+        session.pop('user_name')
+    if 'auth_token' in session:
+        session.pop('auth_token')
+
     return False
 
 

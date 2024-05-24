@@ -1,0 +1,5 @@
+footer {
+    flex: 0 0 100px;
+
+    background-color: var(--dirt-color);
+}
