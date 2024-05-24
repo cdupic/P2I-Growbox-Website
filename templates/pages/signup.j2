@@ -1,19 +1,16 @@
-{% extends "base.j2" %}
+{% extends "single_template.j2" %}
 
-{% block main %}
-    <h1>Page de création de compte</h1>
+{% block page_title %}Créer un compte{% endblock %}
+{% block title %}Création de votre compte GrowBox{% endblock %}
 
+{% block content %}
     <form action="{{ url_for('signup_manager') }}" method="POST">
-        <p>
-            <label for="user_name">Nom :</label>
-            <input type="text" name="user_name" id="user_name" value="{{ session.get('form_user_name', '') }}" required>
-        </p>
-        <p>
-            <label for="password">Mot de passe :</label>
-            <input type="password" name="password" id="password" required>
-        </p>
-        <p>
-            <input type="submit" value="Créer un compte">
-        </p>
+        <label for="user_name">Nom d'utilisateur</label>
+        <input type="text" name="user_name" id="user_name" value="{{ session.get('form_user_name', '') }}" required>
+        <br>
+        <label for="password">Mot de passe</label>
+        <input type="password" name="password" id="password" required>
+        <br>
+        <input type="submit" value="Créer un compte">
     </form>
 {% endblock %}

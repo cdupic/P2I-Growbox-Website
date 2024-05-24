@@ -1,5 +1,6 @@
 from flask import session
 from secrets import token_bytes
+
 from src.database.database import get_db
 
 
@@ -24,11 +25,9 @@ def get_user_info(user_name):
         print(f"Error when getting users: {e}")
 
 
-# TODO: do not fetch all users to check if a user is authenticated
 def is_user_authenticated():
-    user_info = get_user_info(session['username'])
     if 'user_name' in session and 'auth_token' in session:
-        for user in user_info:
+        for user in get_user_info(session['user_name']):
             if user['user_name'] == session['user_name'] and user['auth_token'] == session['auth_token']:
                 return True
 

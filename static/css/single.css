@@ -1,0 +1,27 @@
+
+
+main > section.single {
+    margin: 20px auto;
+    width: fit-content;
+
+
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
+}
+main > section.single form {
+    margin: auto;
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+}
+main > section.single form > * {
+    width: 250px;
+    font-size: 1.1em;
+}
+
+main > section.single form > label {
+    font-weight: 500;
+}

@@ -1,3 +1,4 @@
+/* CSS SETUP */
 :root {
     --primary-color: #007bff;
     --secondary-color: #6c757d;
@@ -11,11 +12,15 @@
     --text-color: #1e1e23;
 
     --dirt-color: #C6B090;
-    --leaf_color: #B2DA1E;
+    --leaf-color: #B2DA1E;
 
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     font-size: 14px;
     color: var(--text-color)
+}
+
+html, body {
+    background-color: var(--light-color);
 }
 
 body {
@@ -27,15 +32,29 @@ body {
     align-items: stretch;
     align-content: stretch;
 }
+p, h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+body * {
+    box-sizing: border-box;
+}
 
+/* MAIN */
 main {
     flex: 1 0;
 }
 
-p {
-    margin: 0;
-}
+/* TITLE SECTION */
 
+main > section.title {
+    display: block;
+    margin: 30px auto;
+}
+main > section.title h1{
+    text-align: center;
+    font-size: 1.8em;
+    font-weight: 600;
+}
 
 /* ALERTS */
 

@@ -1,5 +1,7 @@
 <div>
-    <img src="{{ url_for('static', filename='img/icon.svg') }}" alt="GrowBox's icon" />
+    <a href="{{ url_for('landing_page') }}">
+        <img src="{{ url_for('static', filename='img/icon.svg') }}" alt="GrowBox's icon" />
+    </a>
 </div>
 
 <div></div>
@@ -19,9 +21,8 @@
                 <a href="{{ url_for('login_page') }}">Connexion</a>
             </li>
             <li>
-                <a href="{{ url_for('login_page') }}">Nouveau compte</a>
+                <a href="{{ url_for('signup_page') }}">Créer un compte</a>
             </li>
         {% endif %}
-
     </ul>
 </nav>

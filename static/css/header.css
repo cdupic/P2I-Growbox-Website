@@ -2,9 +2,10 @@ header {
     flex: 0 0 60px;
     height: 60px;
     display: flex;
+    padding: 0 10px;
     justify-content: space-around;
 
-    background-color: var(--leaf_color);
+    background-color: var(--leaf-color);
 }
 
 header > * {
