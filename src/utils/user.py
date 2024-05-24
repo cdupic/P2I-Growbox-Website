@@ -21,7 +21,7 @@ def get_users():
         return users
 
     except Exception as e:
-        print(f"Erreur lors de la récupération des users: {e}")
+        print(f"Error when getting users: {e}")
 
 
 def is_user_authenticated():

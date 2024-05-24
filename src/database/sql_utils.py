@@ -1,6 +1,5 @@
 # from flask import g
 from src.database.test.sql_connexion_test import SQL_connection
-from datetime import datetime
 
 
 def get_greenhouse_measures(greenhouse_id, sensor_id, date_begin, date_end):
