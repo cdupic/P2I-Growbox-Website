@@ -1,9 +1,10 @@
-import bcrypt
 from flask import session, g
+from src.database.database import get_db
 
 
 def get_users():
-    cursor = g.db.cursor
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
     users = []
 
     try:
@@ -13,7 +14,6 @@ def get_users():
 
         for user in cursor:
             users.append(user)
-
         return users
 
     except Exception as e:
@@ -34,7 +34,7 @@ def is_user_authenticated():
 def authenticate_user(user_name, password):
     users = get_users()
     for user in users:
-        if user['user_name'] == user_name and user['password'] == password:
+        if user['user_name'] == user_name and verify_password(user_name, password):
             print(True)
             session['user_name'] = user['user_name']
             session['auth_token'] = user['auth_token']
@@ -42,10 +42,24 @@ def authenticate_user(user_name, password):
     return False
 
 
-def hash_password(user_name, password):
-    salt = bcrypt.gensalt()
-    return bcrypt.hashpw(password, salt)
+def verify_password(user_name, password):
+    db = get_db()
+    try :
+        cursor = db.cursor()
+        cursor.execute(
+            "SELECT * "
+            "FROM Users "
+            "WHERE user_name = %s AND password = PASSWORD(%s)",
+            (user_name, password)
+        )
+        user = cursor.fetchone()
+        if user is None:
+            return False
+        return True
+
+    except Exception as e:
+        print(f"Error when checking passwords: {e}")
 
 
-def test_password(password, hash):
-    bcrypt.checkpw(password, hash)
+
+

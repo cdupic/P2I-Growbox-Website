@@ -12,9 +12,9 @@ CREATE TABLE Plants
 CREATE TABLE Users
 (
     user_name VARCHAR(16) PRIMARY KEY,
-    password VARCHAR(32),
+    password BINARY(32),
     date_registration DATETIME DEFAULT NOW(),
-    token varchar(32)
+    auth_token varchar(32)
 );
 
 CREATE TABLE GreenHouses
