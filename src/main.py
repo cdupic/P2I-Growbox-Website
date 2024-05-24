@@ -24,11 +24,11 @@ class GrowBoxApp(Flask):
         super().add_url_rule("/", methods=["GET"], view_func=landing_page)
         super().add_url_rule("/login", methods=["POST", "GET"], view_func=login_page)
         super().add_url_rule("/greenhouse", methods=["GET"], view_func=greenhouses_page)
-        super().add_url_rule("/greenhouse/<greenhouse_id>/", methods=["POST", "GET"],
+        super().add_url_rule("/greenhouse/<greenhouse_serial>/", methods=["POST", "GET"],
                              view_func=greenhouse_overview_page)
-        super().add_url_rule("/greenhouse/<greenhouse_id>/sensor/<sensor_id>", methods=["GET"],
+        super().add_url_rule("/greenhouse/<greenhouse_serial>/sensor/<sensor_id>", methods=["GET"],
                              view_func=greenhouse_sensor_page)
-        super().add_url_rule("/greenhouse/<greenhouse_id>/actuator/<actuator_id>", methods=["POST", "GET"],
+        super().add_url_rule("/greenhouse/<greenhouse_serial>/actuator/<actuator_id>", methods=["POST", "GET"],
                              view_func=greenhouse_sensor_page)
 
         super().add_url_rule("/manager/logout", methods=["POST", "GET"], view_func=logout_manager)

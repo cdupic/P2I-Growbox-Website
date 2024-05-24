@@ -2,6 +2,11 @@
 
 {% block main %}
     <h1>Page de connexion</h1>
+
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
+
     <form action="{{ url_for('login_page') }}" method="POST">
         <p>
             <label for="nom">Nom : </label>

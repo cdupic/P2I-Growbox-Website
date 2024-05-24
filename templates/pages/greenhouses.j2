@@ -3,9 +3,9 @@
 {% block main %}
 <p> Bonjour, {{ session['user_name'] }}, voici vos serres : </p>
 
-{% for (greenhouse_id, greenhouse_name) in user_greenhouses %}
+{% for (greenhouse_serial, greenhouse_name) in user_greenhouses %}
 <p>
-    <a href="{{ url_for('greenhouse_overview_page', greenhouse_id=greenhouse_id) }}" class="serre-button"> {{ greenhouse_name }} </a>
+    <a href="{{ url_for('greenhouse_overview_page', greenhouse_serial=greenhouse_serial) }}" class="serre-button"> {{ greenhouse_name }} </a>
 </p>
 {% endfor %}
 
