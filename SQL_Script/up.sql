@@ -11,9 +11,10 @@ CREATE TABLE Plants
 
 CREATE TABLE Users
 (
-    pseudo VARCHAR(16) PRIMARY KEY,
+    user_name VARCHAR(16) PRIMARY KEY,
     password VARCHAR(32),
-    date_registration DATETIME DEFAULT NOW()
+    date_registration DATETIME DEFAULT NOW(),
+    token varchar(32)
 );
 
 CREATE TABLE GreenHouses
@@ -27,8 +28,8 @@ CREATE TABLE GreenHouses
     air_humidity    INT,   # in %
     light           INT,   # in lux
     O2              FLOAT, # in %
-    pseudo          VARCHAR(16),
-    FOREIGN KEY (pseudo) REFERENCES Users (pseudo)
+    user_name       VARCHAR(16),
+    FOREIGN KEY (user_name) REFERENCES Users (user_name)
 );
 
 CREATE TABLE GreenHousePlants

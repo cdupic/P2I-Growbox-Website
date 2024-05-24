@@ -5,7 +5,7 @@ from datetime import datetime
 
 def get_greenhouse_measures(greenhouse_id, sensor_id, date_debut, date_fin):
     # cursor = g.db.connect().cursor()
-
+    # TODO : Modify to access database with g object
     # j'utilise ici sql_connection pour me connecter à la base de données parce que g marche pas tant que le site est pas actif
     sql_connection = SQL_connection()
     cursor = sql_connection.cursor
@@ -33,7 +33,7 @@ def get_greenhouse_measures(greenhouse_id, sensor_id, date_debut, date_fin):
 
 def print_greenhouse_actions(greenhouse_id, actuator_id, date_debut, date_fin):
     #cursor = g.db.connect().cursor()
-
+    # TODO : Modify to access database with g object
     # j'utilise ici sql_connection pour me connecter à la base de données parce que g marche pas tant que le site est pas actif
     sql_connection = SQL_connection()
     cursor = sql_connection.cursor
