@@ -49,7 +49,6 @@ CREATE TABLE Sensors
     id              TINYINT UNSIGNED,
     greenhouse_serial   VARCHAR(32),
     type            ENUM ('temperature', 'soil_humidity', 'air_humidity', 'light', 'O2', 'water_level'),
-    unit            VARCHAR(16),
     PRIMARY KEY (id, greenhouse_serial),
     FOREIGN KEY (greenhouse_serial) REFERENCES GreenHouses (serial)
 );
