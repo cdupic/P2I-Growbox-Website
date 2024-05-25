@@ -17,12 +17,11 @@ def get_greenhouse_measures(greenhouse_id, sensor_id, date_begin, date_end):
             measures.append(sensor)
 
     except Exception as e:
-        print(f"Erreur lors de l'affichage des mesures de la serre {greenhouse_id}: {e}")
+        print(f"Error when getting measures of greenhouse {greenhouse_id}: {e}")
 
     return measures
 
 
-# TODO
 def get_greenhouse_actions(greenhouse_id, actuator_id, date_debut, date_fin):
     cursor = g.db.connect().cursor()
 

@@ -39,31 +39,29 @@ def is_user_authenticated():
     return False
 
 
-# TODO: do not fetch all users to authenticate a user and use a single query instead of two
 def authenticate_user(user_name, password):
-    user_info = get_user_info(user_name)
-    for user in user_info:
-        if user['user_name'] == user_name and verify_password(user_name, password):
-            session['user_name'] = user['user_name']
-            session['auth_token'] = user['auth_token']
-            return True
+    user_verified, (user, auth_token) = verify_user(user_name, password)
+    if user_verified and user == user_name:
+        session['user_name'] = user
+        session['auth_token'] = auth_token
+        return True
     return False
 
 
-def verify_password(user_name, password):
+def verify_user(user_name, password):
     db = get_db()
     try:
         cursor = db.cursor()
         cursor.execute(
-            "SELECT * "
+            "SELECT user_name, auth_token "
             "FROM Users "
             "WHERE user_name = %s AND password = PASSWORD(%s)",
             (user_name, password)
         )
-        user = cursor.fetchone()
-        if user is None:
+        result = cursor.fetchone()
+        if result is None:
             return False
-        return True
+        return True, result
 
     except Exception as e:
         print(f"Error when checking passwords: {e}")
@@ -85,3 +83,5 @@ def create_user(user_name, password):
     except Exception as e:
         print(f"Error when creating user: {e}")
         return None
+
+
