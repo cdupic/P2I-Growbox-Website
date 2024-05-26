@@ -37,8 +37,8 @@ CREATE TABLE GreenHousePlants
     id              INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     plant_id        INT UNSIGNED,
     greenhouse_serial   VARCHAR(32),
-    date_debut DATETIME DEFAULT NOW(),
-    date_fin DATETIME DEFAULT NULL,
+    date_start DATETIME DEFAULT NOW(),
+    date_end DATETIME DEFAULT NULL,
     FOREIGN KEY (plant_id) REFERENCES Plants (id),
     FOREIGN KEY (greenhouse_serial) REFERENCES GreenHouses (serial)
 );
