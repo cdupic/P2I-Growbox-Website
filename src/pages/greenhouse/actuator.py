@@ -1,8 +1,7 @@
-from flask import redirect, url_for, session
+from flask import redirect, url_for, session, render_template
 
+from src.database.sql_utils import get_data_actuators_since, get_actuator_type
 from src.utils.user import is_user_authenticated
-from src.database.database import get_actuator_type
-from src.database.database import get_data_actuators_since
 
 
 def greenhouse_actuator_page(greenhouse_name, actuator_id):
@@ -18,7 +17,8 @@ def greenhouse_actuator_page(greenhouse_name, actuator_id):
         for date, value in measure.items():
             measures_actuator[date] = value
 
-    return "Unimplemented"
+    return render_template('pages/greenhouse_actuator.j2',
+                           force_sidebar=True)
 
 
 def convert_actuator_type_to_french(actuator_type):

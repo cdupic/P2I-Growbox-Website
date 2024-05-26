@@ -1,11 +1,7 @@
 from flask import render_template, redirect, url_for, session
 
-from src.database.sql_utils import get_greenhouse_measures
-from src.database.database import get_sensor_type
-from src.database.database import get_data_sensors_since
-
+from src.database.sql_utils import get_data_sensors_since, get_sensor_type
 from src.utils.user import is_user_authenticated
-
 
 
 def greenhouse_sensor_page(greenhouse_serial, sensor_id):
@@ -23,7 +19,9 @@ def greenhouse_sensor_page(greenhouse_serial, sensor_id):
         for date, value in measure.items():
             measures_sensor[date] = value
 
-    return render_template("pages/greenhouse_sensor.j2", measures=measures_sensor)
+    return render_template("pages/greenhouse_sensor.j2",
+                           force_sidebar=True,
+                           measures=measures_sensor)
 
 
 def convert_sensor_type_to_french(sensor_type):
@@ -37,6 +35,3 @@ def convert_sensor_type_to_french(sensor_type):
         return "humidité de l'air"
     elif sensor_type == "water_level":
         return "niveau d'eau"
-
-
-

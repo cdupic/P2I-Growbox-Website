@@ -1,5 +1,6 @@
-from flask import session
 from secrets import token_bytes
+
+from flask import session
 
 from src.database.database import get_db
 
@@ -40,31 +41,25 @@ def is_user_authenticated():
 
 
 def authenticate_user(user_name, password):
-    user_verified, (user, auth_token) = verify_user(user_name, password)
-    if user_verified and user == user_name:
-        session['user_name'] = user
-        session['auth_token'] = auth_token
-        return True
-    return False
-
-
-def verify_user(user_name, password):
     db = get_db()
     try:
         cursor = db.cursor()
         cursor.execute(
-            "SELECT user_name, auth_token "
+            "SELECT auth_token "
             "FROM Users "
             "WHERE user_name = %s AND password = PASSWORD(%s)",
             (user_name, password)
         )
         result = cursor.fetchone()
-        if result is None:
-            return False
-        return True, result
+        if result:
+            session['user_name'] = user_name
+            session['auth_token'] = result[0]
+            return True
 
     except Exception as e:
         print(f"Error when checking passwords: {e}")
+
+    return False
 
 
 def create_user(user_name, password):

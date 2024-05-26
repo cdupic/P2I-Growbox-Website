@@ -1,7 +1,7 @@
 from flask import render_template, session, redirect, url_for
 
+from src.database.sql_utils import get_greenhouses
 from src.utils.user import is_user_authenticated
-from src.database.database import get_greenhouses
 
 
 def greenhouses_page():

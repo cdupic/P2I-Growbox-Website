@@ -7,7 +7,7 @@
 <div></div>
 <div></div>
 
-<nav>
+<nav class="{{ 'sidebar' if force_sidebar else '' }}">
     <ul>
         {% if 'user_name' in session %}
             <li>
