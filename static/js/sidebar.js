@@ -1,8 +1,8 @@
 const onResize = () => {
 
-    const nav = document.querySelector('header nav');
+    const nav = document.querySelector('nav.sidebar');
     const forceSidebar = nav.classList.contains('force-sidebar');
-    const navButton = document.querySelector('.nav-button');
+    const navButton = document.querySelector('header nav .sidebar-button');
 
     if(forceSidebar || document.body.clientWidth < 800){ // Sidebar view
         if(!nav.hasClass('hamburger')){ // Back to the Hamburger view

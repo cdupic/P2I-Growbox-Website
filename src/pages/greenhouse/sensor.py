@@ -25,6 +25,7 @@ def greenhouse_sensor_page(greenhouse_serial, sensor_id):
             measures_sensor[date] = value
 
     return render_template("pages/greenhouse_sensor.j2",
+                           greenhouse_serial=greenhouse_serial,
                            sensors=sensors.items(),
                            actuators=actuators.items(),
                            measures=measures_sensor)

@@ -1,6 +1,13 @@
 {% extends "base.j2" %}
 
 {% block main %}
+    <style>
+        main {
+            display: flex;
+            align-items: stretch;
+            align-content: stretch;
+        }
+    </style>
     <section id="sidebar">
         {% block sidebar %}
             {% include "greenhouse_sidebar.j2" %}

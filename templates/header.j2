@@ -9,24 +9,30 @@
 
 {% set sidebar_visible = current_sidebar_item != None %}
 
-<nav>
-    <ul>
-        {% if 'user_name' in session %}
-            <li>
-                <a href="{{ url_for('greenhouses_page') }}">Mes serres</a>
-            </li>
-            {% if sidebar_visible %}
+<div>
+    <nav>
+        <ul>
+            {% if 'user_name' in session %}
                 <li>
-                    <a href="{{ url_for('logout_manager') }}">Se déconnecter</a>
+                    <a href="{{ url_for('greenhouses_page') }}">Mes serres</a>
+                </li>
+                {% if sidebar_visible %}
+                    <li>
+                        <a href="{{ url_for('logout_manager') }}">Se déconnecter</a>
+                    </li>
+                {% endif %}
+            {% else %}
+                <li>
+                    <a href="{{ url_for('login_page') }}">Connexion</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('signup_page') }}">Créer un compte</a>
                 </li>
             {% endif %}
-        {% else %}
-            <li>
-                <a href="{{ url_for('login_page') }}">Connexion</a>
-            </li>
-            <li>
-                <a href="{{ url_for('signup_page') }}">Créer un compte</a>
-            </li>
-        {% endif %}
-    </ul>
-</nav>
+        </ul>
+    </nav>
+
+    <button class="sidebar-button">
+        <img src="{{ url_for('static', filename='img/bars.svg') }}" alt="Menu latéral">
+    </button>
+</div>

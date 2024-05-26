@@ -17,9 +17,9 @@
         <li class="title">
             <p>Actionneurs</p>
         </li>
-        {% for (sensor_id, sensor_name) in sensors %}
+        {% for (actuator_id, actuator_name) in actuators %}
             <li class="indented">
-                <a href="{{ url_for('greenhouse_actuator_page', greenhouse_serial=greenhouse_serial, actuator_id=actuator_id) }}">{{ sensor_name }}</a>
+                <a href="{{ url_for('greenhouse_actuator_page', greenhouse_serial=greenhouse_serial, actuator_id=actuator_id) }}">{{ actuator_name }}</a>
             </li>
         {% endfor %}
     </ul>

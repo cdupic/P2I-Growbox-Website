@@ -1,9 +1,48 @@
+
 nav#sidebar {
+    background-color: rgba(0, 0, 40, 0.15);
+    backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(0, 0, 40, 0.7);;
+    width: 250px;
+    height: 100%;
+}
+
+nav#sidebar.overlay {
     /*display: none;*/
     position: fixed;
     left: 0;
     top: 0;
     height: 100vh;
-    background-color: var(--dirt-color);
-    border-right: 1px solid var(--dark-color);
+    z-index: 1000;
+}
+
+
+
+nav#sidebar ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+nav#sidebar ul li {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+nav#sidebar ul li > * {
+    display: block;
+    padding: 10px;
+
+}
+nav#sidebar ul li.title > * {
+    font-weight: 600;
+}
+nav#sidebar ul li.indented > * {
+    padding-left: 30px;
+}
+nav#sidebar ul li a {
+    text-decoration: none;
+    color: inherit;
+}
+nav#sidebar ul li a:hover {
+    background-color: rgba(0, 0, 40, 0.25);
 }

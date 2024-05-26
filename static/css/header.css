@@ -4,6 +4,7 @@ header {
     display: flex;
     padding: 0 10px;
     justify-content: space-around;
+    align-items: center;
 
     background-color: var(--leaf-color);
 }
@@ -42,4 +43,28 @@ header nav ul li a {
 }
 header nav ul li a:hover{
     background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* SIDEBAR TOGGLE */
+
+header button.sidebar-button {
+    border: none;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+
+    height: 35px;
+    padding: 3px 5px;
+    margin-left: 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    background-color: rgba(255, 255, 255, 0.3);
+    transition: all 0.1s;
+}
+header button.sidebar-button:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+header button.sidebar-button img {
+    height: 29px;
 }
