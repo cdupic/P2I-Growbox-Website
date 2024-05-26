@@ -1,6 +1,8 @@
 from flask import render_template, redirect, url_for, session
 
-from src.database.sql_utils import get_data_sensors_since, get_sensor_type
+from src.database.measure import get_sensors_greenhouse, get_actuators_greenhouse, get_data_sensors_since, \
+    get_sensor_type
+from src.utils.measure import convert_sensor_type_to_french
 from src.utils.user import is_user_authenticated
 
 
@@ -12,6 +14,9 @@ def greenhouse_sensor_page(greenhouse_serial, sensor_id):
     sensor_type = get_sensor_type(sensor_id)
     sensor_type_french = convert_sensor_type_to_french(sensor_type)
 
+    sensors = get_sensors_greenhouse(greenhouse_serial)
+    actuators = get_actuators_greenhouse(greenhouse_serial)
+
     # TODO: get the measures for the last n days (session['graphs_days']):
     #   a dictionary with date as key and value as value.
     measures_sensor = {}
@@ -20,18 +25,7 @@ def greenhouse_sensor_page(greenhouse_serial, sensor_id):
             measures_sensor[date] = value
 
     return render_template("pages/greenhouse_sensor.j2",
-                           force_sidebar=True,
+                           sensors=sensors.items(),
+                           actuators=actuators.items(),
                            measures=measures_sensor)
 
-
-def convert_sensor_type_to_french(sensor_type):
-    if sensor_type == "temperature":
-        return "température"
-    elif sensor_type == "soil_humidity":
-        return "humidité du sol"
-    elif sensor_type == "luminosity":
-        return "luminosité"
-    elif sensor_type == "air_humidity":
-        return "humidité de l'air"
-    elif sensor_type == "water_level":
-        return "niveau d'eau"

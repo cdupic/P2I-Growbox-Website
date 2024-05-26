@@ -7,15 +7,19 @@
 <div></div>
 <div></div>
 
-<nav class="{{ 'sidebar' if force_sidebar else '' }}">
+{% set sidebar_visible = current_sidebar_item != None %}
+
+<nav>
     <ul>
         {% if 'user_name' in session %}
             <li>
                 <a href="{{ url_for('greenhouses_page') }}">Mes serres</a>
             </li>
-            <li>
-                <a href="{{ url_for('logout_manager') }}">Se déconnecter</a>
-            </li>
+            {% if sidebar_visible %}
+                <li>
+                    <a href="{{ url_for('logout_manager') }}">Se déconnecter</a>
+                </li>
+            {% endif %}
         {% else %}
             <li>
                 <a href="{{ url_for('login_page') }}">Connexion</a>

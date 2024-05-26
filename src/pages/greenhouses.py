@@ -1,6 +1,6 @@
 from flask import render_template, session, redirect, url_for
 
-from src.database.sql_utils import get_greenhouses
+from src.database.greenhouse import get_greenhouses
 from src.utils.user import is_user_authenticated
 
 

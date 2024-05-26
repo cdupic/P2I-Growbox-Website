@@ -1,0 +1,14 @@
+{% extends "base.j2" %}
+
+{% block main %}
+    <section id="sidebar">
+        {% block sidebar %}
+            {% include "greenhouse_sidebar.j2" %}
+        {% endblock %}
+    </section>
+    <section id="content">
+        {% block content %}
+
+        {% endblock %}
+    </section>
+{% endblock %}

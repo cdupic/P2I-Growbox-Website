@@ -1,0 +1,26 @@
+<nav id="sidebar">
+    <ul>
+        <li>
+            <a href="{{ url_for('greenhouse_overview_page', greenhouse_serial=greenhouse_serial) }}">Tableau de bord</a>
+        </li>
+        <li>
+            <a href="{{ url_for('greenhouse_plants_page', greenhouse_serial=greenhouse_serial) }}">Plantes</a>
+        </li>
+        <li class="title">
+            <p>Capteurs</p>
+        </li>
+        {% for (sensor_id, sensor_name) in sensors %}
+            <li class="indented">
+                <a href="{{ url_for('greenhouse_sensor_page', greenhouse_serial=greenhouse_serial, sensor_id=sensor_id) }}">{{ sensor_name }}</a>
+            </li>
+        {% endfor %}
+        <li class="title">
+            <p>Actionneurs</p>
+        </li>
+        {% for (sensor_id, sensor_name) in sensors %}
+            <li class="indented">
+                <a href="{{ url_for('greenhouse_actuator_page', greenhouse_serial=greenhouse_serial, actuator_id=actuator_id) }}">{{ sensor_name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</nav>

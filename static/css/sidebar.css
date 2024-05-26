@@ -1,0 +1,9 @@
+nav#sidebar {
+    /*display: none;*/
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    background-color: var(--dirt-color);
+    border-right: 1px solid var(--dark-color);
+}
