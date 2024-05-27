@@ -1,27 +1,47 @@
 {% extends "base.j2"%}
 
 {% block main %}
-    <p> Bonjour, {{ session['user_name'] }}, voici vos serres : </p>
 
-    {% for (greenhouse_serial, greenhouse_name) in user_greenhouses %}
-    <p>
-        <a href="{{ url_for('greenhouse_overview_page', greenhouse_serial=greenhouse_serial) }}" class="serre-button"> {{ greenhouse_name }} </a>
-    </p>
-    {% endfor %}
 
-    <section class="title">
-        <h1>
-            Liste
-        </h1>
-    </section>
+    {% if user_greenhouses|length != 0 %}
 
-    <section class="title">
-        <h1>
-            {% block title %}
-                Ajouter une serre
-            {% endblock %}
-        </h1>
-    </section>
+        <section class="title">
+            <h1>
+                Bonjour, {{ session['user_name'] }}, voici vos serres&nbsp;:
+            </h1>
+        </section>
+
+        <section class="greenhouses-tiles">
+            {% for (greenhouse_serial, greenhouse_name) in user_greenhouses %}
+                <a href="{{ url_for('greenhouse_overview_page', greenhouse_serial=greenhouse_serial) }}" class="serre-button">
+                    <h2>
+                        {{ greenhouse_name }}
+                    </h2>
+                    <p>
+                        {{ greenhouse_serial }}
+                    </p>
+                </a>
+            {% endfor %}
+        </section>
+
+        <section class="title">
+            <h1>
+                {% block title %}
+                    Ajouter une serre
+                {% endblock %}
+            </h1>
+        </section>
+
+    {% else %}
+
+        <section class="title">
+            <h1>
+                Bonjour, {{ session['user_name'] }}, ajoutez votre première serre&nbsp;:
+            </h1>
+        </section>
+
+    {% endif %}
+
 
     <section class="single">
         <form action="{{ url_for('associate_manager') }}" method="GET">

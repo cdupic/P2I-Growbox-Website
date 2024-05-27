@@ -2,11 +2,11 @@
 
 {% block main %}
     <section class="title">
-        <h1>GrowBox Landing Page</h1>
+        <h1>Bienvenu sur GrowBox, LA plateforme qu'il vous faut pour une culture d'appartement sereine !</h1>
     </section>
     {% if session['user_name'] %}
         <p>Bonjour {{ session['user_name'] }}.</p>
     {% else %}
-        <p>Bonjour invité, authentifie-toi.</p>
+        <p>Bonjour invité, authentifie-toi saligot!</p>
     {% endif %}
 {% endblock %}
