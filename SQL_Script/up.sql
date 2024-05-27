@@ -12,7 +12,7 @@ CREATE TABLE Plants
 CREATE TABLE Users
 (
     user_name VARCHAR(16) PRIMARY KEY,
-    password BINARY(41),
+    password VARBINARY(64),
     date_registration DATETIME DEFAULT NOW(),
     auth_token varchar(32)
 );

@@ -47,7 +47,7 @@ def authenticate_user(user_name, password):
         cursor.execute(
             "SELECT auth_token "
             "FROM Users "
-            "WHERE user_name = %s AND password = PASSWORD(%s)",
+            "WHERE user_name = %s AND password = SHA2(%s, 256)",
             (user_name, password)
         )
         result = cursor.fetchone()
@@ -70,7 +70,7 @@ def create_user(user_name, password):
         auth_token = token_bytes(16).hex()
         cursor.execute(
             "INSERT INTO Users (user_name, password, auth_token) "
-            "VALUES (%s, PASSWORD(%s), %s)",
+            "VALUES (%s, SHA2(%s, 256), %s)",
             (user_name, password, auth_token)
         )
         db.commit()
