@@ -63,45 +63,6 @@ def get_greenhouse_name(serial_number):
         return None
 
 
-def verify_greenhouse_exists(serial_number):
-    db = get_db()
-    cursor = db.cursor()
-
-    try:
-        cursor.execute(
-            "SELECT name "
-            "FROM GreenHouses "
-            "WHERE serial = %s",
-            (serial_number,)
-        )
-        name = cursor.fetchone()
-        if name is None:
-            return False
-        return True
-
-    except Exception as e:
-        print(f"Error when verifying greenhouse exists: {e}")
-        return False
-
-
-def link_greenhouse_to_user(greenhouse_serial, user_name):
-    db = get_db()
-    cursor = db.cursor()
-
-    try:
-        cursor.execute(
-            "INSERT INTO GreenHouses (serial, user_name) "
-            "VALUES (%s, %s)",
-            (greenhouse_serial, user_name)
-        )
-        db.commit()
-
-    except Exception as e:
-        print(f"Error when linking greenhouse to user: {e}")
-        return False
-
-    return True
 
 
 
-print(verify_greenhouse_exists("GrowBox-1"))
