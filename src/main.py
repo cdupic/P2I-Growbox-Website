@@ -1,7 +1,6 @@
 import os
 from datetime import timedelta
 
-from dotenv import load_dotenv
 from flask import Flask
 
 from src.database.database import init_db, close_db
@@ -15,8 +14,6 @@ from src.pages.greenhouses import greenhouses_page
 from src.pages.landing import landing_page
 from src.pages.login import login_page
 from src.pages.signup import signup_page
-
-load_dotenv()
 
 
 class GrowBoxApp(Flask):
@@ -52,8 +49,3 @@ class GrowBoxApp(Flask):
 
     def run(self, *args, **kwargs):
         super().run(debug=True, use_reloader=True, port=5050)
-
-
-if __name__ == '__main__':
-    app = GrowBoxApp()
-    app.run()
