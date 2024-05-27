@@ -1,26 +1,72 @@
 from src.database.database import get_db
 
 
+def get_plants_greenhouse(greenhouse_serial):
+    db = get_db()
+    cursor = db.cursor()
+    plants = []
+
+    try:
+        cursor.execute(
+            "SELECT Plants.id, GreenHousePlants.date_start "
+            "FROM Plants, GreenHouses, GreenHousePlants "
+            "WHERE GreenHouses.serial = GreenHousePlants.greenhouse_serial and Plants.id = GreenHousePlants.plant_id "
+            "and greenhouse_serial = %s and date_end is NULL",
+            (greenhouse_serial,)
+        )
+
+        for (plant_id, date_start) in cursor:
+            plants.append({plant_id: (date_start, None)})
+        return plants
+
+    except Exception as e:
+        print(f"Error when getting plants: {e}")
+        return None
+
+
 def get_history_greenhouse(greenhouse_serial):
     db = get_db()
-    cursor = db.cursor(dictionary=True)
+    cursor = db.cursor()
     history = []
 
     try:
         cursor.execute(
-            "SELECT Plants.name, GreenHousePlants.date_start, GreenHousePlants.date_end "
+            "SELECT Plants.id, GreenHousePlants.date_start, GreenHousePlants.date_end "
             "FROM Plants, GreenHousePlants "
             "WHERE GreenHousePlants.greenhouse_serial = %s and Plants.id = GreenHousePlants.plant_id "
             "and date_end is NOT NULL",
             (greenhouse_serial,)
         )
 
-        for (dic) in cursor:
-            history.append(dic)
+        for (plant_id, date_start, date_end) in cursor:
+            history.append({plant_id: (date_start, date_end)})
         return history
 
     except Exception as e:
         print(f"Error when getting history: {e}")
+        return None
+
+
+def get_data_plant():
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+    plants = {}
+
+    try:
+        cursor.execute(
+            "SELECT id, name, temperature, soil_humidity, air_humidity, light, O2 "
+            "FROM Plants ")
+
+        for (data) in cursor:
+            plant_name = data['id']
+            data.pop('id')
+            dic_data = dict(data)
+            plants[plant_name] = dic_data
+
+        return plants
+
+    except Exception as e:
+        print(f"Error when getting plants: {e}")
         return None
 
 
@@ -101,47 +147,5 @@ def add_mix_plant(greenhouse_serial, list_plants):
         return False
 
 
-def get_plants_greenhouse(greenhouse_serial):
-    db = get_db()
-    cursor = db.cursor()
-    plants = {}
-
-    try:
-        cursor.execute(
-            "SELECT Plants.name, GreenHousePlants.date_start "
-            "FROM Plants, GreenHouses, GreenHousePlants "
-            "WHERE GreenHouses.serial = GreenHousePlants.greenhouse_serial and Plants.id = GreenHousePlants.plant_id "
-            "and greenhouse_serial = %s and date_end is NULL",
-            (greenhouse_serial,)
-        )
-
-        for (plant_name, date_star) in cursor:
-            plants[plant_name] = date_star
-        return plants
-
-    except Exception as e:
-        print(f"Error when getting plants: {e}")
-        return None
 
 
-def get_data_plant():
-    db = get_db()
-    cursor = db.cursor(dictionary=True)
-    plants = {}
-
-    try:
-        cursor.execute(
-            "SELECT DISTINCT(name), temperature, soil_humidity, air_humidity, light, O2 "
-            "FROM Plants ")
-
-        for (data) in cursor:
-            plant_name = data['name']
-            data.pop('name')
-            dic_data = dict(data)
-            plants[plant_name] = dic_data
-
-        return plants
-
-    except Exception as e:
-        print(f"Error when getting plants: {e}")
-        return None

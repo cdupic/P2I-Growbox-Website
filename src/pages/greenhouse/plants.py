@@ -1,6 +1,7 @@
 from flask import render_template, redirect, url_for, session
 
 from src.database.greenhouse import check_greenhouse_owner
+from src.database.plant import get_history_greenhouse, get_plants_greenhouse, get_data_plant
 from src.utils.user import is_user_authenticated
 
 
@@ -12,10 +13,8 @@ def greenhouse_plants_page(greenhouse_serial):
         session['error'] = f"La serre {greenhouse_serial} n'existe pas ou n'est pas accessible avec votre compte."
         return redirect(url_for('greenhouses_page'))
 
-    # TODO: Get the list of ALL the plants ids and dates of this greenhouse (including ones that have an end date)
-    #   Format {plant_id: (date_start, date_end)}}
-    # TODO: Get the list of all the plants in the table Plants
-    #   Format {plant_id: {'name': ..., 'temperature': ..., ...}})}
+    list_plants_greenhouse = get_plants_greenhouse(greenhouse_serial) + get_history_greenhouse(greenhouse_serial)
+    dic_all_plants = get_data_plant()
 
     return render_template('pages/greenhouse_plants.j2',
                            sidebar_sensors={'test': 'TG'}.items(),
