@@ -45,6 +45,11 @@ class GrowBoxApp(Flask):
         super().add_url_rule("/manager/signup", methods=["POST"], view_func=signup_manager)
         super().add_url_rule("/manager/associate", methods=["GET"], view_func=associate_manager)
 
+        # TODO: Add the plant manager that takes a comma separated list of plant ids
+        #  (if a plant is present multiple times, it will appear multiple times in the list)
+
+        # TODO: Add a manager to configure the session['graphs_days'] variable
+
     def before_request(self, *args, **kwargs):
         init_db()
 

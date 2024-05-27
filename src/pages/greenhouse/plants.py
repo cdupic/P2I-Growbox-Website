@@ -12,6 +12,11 @@ def greenhouse_plants_page(greenhouse_serial):
         session['error'] = f"La serre {greenhouse_serial} n'existe pas ou n'est pas accessible avec votre compte."
         return redirect(url_for('greenhouses_page'))
 
+    # TODO: Get the list of ALL the plants ids and dates of this greenhouse (including ones that have an end date)
+    #   Format {plant_id: (date_start, date_end)}}
+    # TODO: Get the list of all the plants in the table Plants
+    #   Format {plant_id: {'name': ..., 'temperature': ..., ...}})}
+
     return render_template('pages/greenhouse_plants.j2',
                            sidebar_sensors={'test': 'TG'}.items(),
                            sidebar_actuators={'test': 'Salut mec!'}.items(),

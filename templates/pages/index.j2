@@ -3,10 +3,18 @@
 {% block main %}
     <section class="title">
         <h1>Bienvenu sur GrowBox, LA plateforme qu'il vous faut pour une culture d'appartement sereine !</h1>
+        <p>GrowBox est une plateforme qui vous permet de gérer votre culture d'appartement de A à Z. Vous pouvez y
+            retrouver des informations sur les plantes, les pots, les lampes, les engrais, les insecticides, les
+            maladies, etc. Vous pouvez également y retrouver des conseils pour bien cultiver vos plantes.</p>
     </section>
+
+    {#    TODO: Setup 3D model viewing. It can be coded in this page and on landing.js #}
+
+
     {% if session['user_name'] %}
         <p>Bonjour {{ session['user_name'] }}.</p>
     {% else %}
         <p>Bonjour invité, authentifie-toi saligot!</p>
     {% endif %}
+    <script src="{{ url_for('static', filename='js/landing.js') }}"></script>
 {% endblock %}
