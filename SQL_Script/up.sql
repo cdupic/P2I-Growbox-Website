@@ -2,11 +2,11 @@ CREATE TABLE Plants
 (
     id            INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     name          VARCHAR(16),
-    temperature   FLOAT, # in °C
-    soil_humidity INT,   # in %
-    air_humidity  INT,   # in %
-    light         INT,   # in lux
-    O2            FLOAT  # in %
+    temperature   SMALLINT, # in °C
+    soil_humidity SMALLINT,   # in %
+    air_humidity  SMALLINT,   # in %
+    light         SMALLINT,   # in lux
+    O2            SMALLINT  # in %
 );
 
 CREATE TABLE Users
@@ -23,11 +23,12 @@ CREATE TABLE GreenHouses
     name            VARCHAR(16),
     update_interval INT UNSIGNED,   # in seconds
     plant_init_date DATETIME DEFAULT NOW(),
-    temperature     FLOAT, # in °C
-    soil_humidity   INT,   # in %
-    air_humidity    INT,   # in %
-    light           INT,   # in lux
-    O2              FLOAT, # in %
+    temperature     SMALLINT, # in °C
+    soil_humidity   SMALLINT,   # in %
+    air_humidity    SMALLINT,   # in %
+    light           SMALLINT,   # in lux
+    O2              SMALLINT, # in %
+    need_downlink  BOOLEAN DEFAULT FALSE,
     user_name       VARCHAR(16),
     FOREIGN KEY (user_name) REFERENCES Users (user_name)
 );
@@ -58,7 +59,7 @@ CREATE TABLE Measures
 (
     sensor_id TINYINT UNSIGNED,
     date      DATETIME DEFAULT NOW(),
-    value     FLOAT,
+    value     SMALLINT,
     FOREIGN KEY (sensor_id) REFERENCES Sensors (id),
     PRIMARY KEY (sensor_id, date)
 );
@@ -78,7 +79,7 @@ CREATE TABLE Actions
 (
     actuator_id TINYINT UNSIGNED,
     date        DATETIME DEFAULT NOW(),
-    value       FLOAT,
+    value       SMALLINT,
     FOREIGN KEY (actuator_id) REFERENCES Actuators (id),
     PRIMARY KEY (actuator_id, date)
 );

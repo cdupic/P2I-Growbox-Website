@@ -9,7 +9,6 @@ from src.utils.user import is_user_authenticated
 def greenhouse_overview_page(greenhouse_serial):
     if not is_user_authenticated():
         return redirect(url_for('login_page'))
-    print('appelé', greenhouse_serial)
     if not check_greenhouse_owner(session['user_name'], greenhouse_serial):
         session['error'] = f"La serre {greenhouse_serial} n'existe pas ou n'est pas accessible avec votre compte."
         return redirect(url_for('greenhouses_page'))
@@ -17,9 +16,7 @@ def greenhouse_overview_page(greenhouse_serial):
     sensors = get_sensors_greenhouse(greenhouse_serial)
     actuators = get_actuators_greenhouse(greenhouse_serial)
 
-
     data_sensors = get_data_sensors_since(greenhouse_serial, [], session['graphs_days'])
-    # TODO: get data of all actuators the same way the data of sensors is fetched.
     data_actuators = get_data_actuators_since(greenhouse_serial, [], session['graphs_days'])
 
     return render_template('pages/greenhouse_overview.j2',
