@@ -1,12 +1,22 @@
-from flask import session, redirect, url_for, request
+from flask import session, redirect, url_for, request, render_template
 
 from src.database.database import get_db
+from src.database.measure import get_sensors_greenhouse, get_actuators_greenhouse, get_data_sensors_since, \
 
 
 
-def associate_manager(greenhouse_serial):
-    if verify_greenhouse_exists_and_not_linked(request.form['ghs']):
-        link_greenhouse_to_user(request.form['ghs'], session['user_name'], session['ghn'])
+def associate_manager():
+    if verify_greenhouse_exists_and_not_linked(request.args.get('ghs')):
+        link_greenhouse_to_user(request.args.get('ghs'), session['user_name'], request.args.get('ghn'))
+        session['success'] = 'Serre liée à votre profil !'
+        return render_template('pages/greenhouse_overview.j2',
+                               greenhouse_serial=request.args.get('ghs'),
+                               sensors=get_sensors_greenhouse(request.args.get('ghs')).items(),
+                               actuators=get_actuators_greenhouse(request.args.get('ghs')).items(),
+                               data_sensors=get_data_sensors_since(request.args.get('ghs'), [], session['graphs_days']),
+                               greenhouse_name=request.args.get('ghn'))
+    else :
+        session['error'] = "Numéro de série invalide ou serre deja liée à un compte."
         return redirect(url_for('greenhouses_page'))
 
 
