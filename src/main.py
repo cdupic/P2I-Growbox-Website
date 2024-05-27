@@ -19,7 +19,8 @@ from src.pages.signup import signup_page
 
 class GrowBoxApp(Flask):
     def __init__(self, root_path=None):
-        super().__init__(__name__.split('.')[0], root_path=root_path, template_folder='../templates/',
+        print("Starting GrowBoxApp with root path: ", root_path)
+        super().__init__(__name__.split('.')[0], root_path=root_path + '/src', template_folder='../templates/',
                          static_folder='../static/')
 
         self.secret_key = os.getenv("SECRET_KEY")
