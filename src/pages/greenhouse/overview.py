@@ -21,7 +21,8 @@ def greenhouse_overview_page(greenhouse_serial):
 
     return render_template('pages/greenhouse_overview.j2',
                            greenhouse_serial=greenhouse_serial,
-                           sensors=sensors.items(),
-                           actuators=actuators.items(),
+                           sidebar_sensors=sensors.items(),
+                           sidebar_actuators=actuators.items(),
+                           current_sidebar_item=('overview', None),
                            data_sensors=data_sensors,
                            greenhouse_name=get_greenhouse_name(greenhouse_serial))

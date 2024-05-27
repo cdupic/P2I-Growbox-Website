@@ -1,24 +1,24 @@
 <nav id="sidebar">
     <ul>
-        <li>
+        <li class="{{ 'current' if current_sidebar_item[0] == 'overview' else ''}}">
             <a href="{{ url_for('greenhouse_overview_page', greenhouse_serial=greenhouse_serial) }}">Tableau de bord</a>
         </li>
-        <li>
+        <li class="{{ 'current' if current_sidebar_item[0] == 'plants' else ''}}">
             <a href="{{ url_for('greenhouse_plants_page', greenhouse_serial=greenhouse_serial) }}">Plantes</a>
         </li>
         <li class="title">
             <p>Capteurs</p>
         </li>
-        {% for (sensor_id, sensor_name) in sensors %}
-            <li class="indented">
+        {% for (sensor_id, sensor_name) in sidebar_sensors %}
+            <li class="indented {{ 'current' if current_sidebar_item == ('sensor', sensor_id) else ''}}">
                 <a href="{{ url_for('greenhouse_sensor_page', greenhouse_serial=greenhouse_serial, sensor_id=sensor_id) }}">{{ sensor_name }}</a>
             </li>
         {% endfor %}
         <li class="title">
             <p>Actionneurs</p>
         </li>
-        {% for (actuator_id, actuator_name) in actuators %}
-            <li class="indented">
+        {% for (actuator_id, actuator_name) in sidebar_actuators %}
+            <li class="indented {{ 'current' if current_sidebar_item == ('actuator', actuator_id) else ''}}">
                 <a href="{{ url_for('greenhouse_actuator_page', greenhouse_serial=greenhouse_serial, actuator_id=actuator_id) }}">{{ actuator_name }}</a>
             </li>
         {% endfor %}

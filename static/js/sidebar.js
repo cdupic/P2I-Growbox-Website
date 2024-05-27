@@ -1,22 +1,39 @@
 const onResize = () => {
 
-    const nav = document.querySelector('nav.sidebar');
-    const forceSidebar = nav.classList.contains('force-sidebar');
-    const navButton = document.querySelector('header nav .sidebar-button');
+    const nav = document.querySelector('#sidebar');
+    const navButton = document.querySelector('header .sidebar-button');
 
-    if(forceSidebar || document.body.clientWidth < 800){ // Sidebar view
-        if(!nav.hasClass('hamburger')){ // Back to the Hamburger view
-            globalNav.animate({left: -400}, 0);
-            globalNav.addClass('nav-hide'); // Add hide nav info
-            nav.addClass('hamburger'); // Add condensed nav info
+    if(document.body.clientWidth < 800){ // Sidebar view
+        if(!navButton.classList.contains('active')){
+            navButton.classList.add('active');
         }
-
-    }else{ // Header view
-        globalNav.animate({left: 400}, 0);
-        navButton.removeClass('hamburger');
-
+        if(!nav.classList.contains('overlayed')){
+            nav.classList.add('overlayed');
+        }
+    }else{ // Full view
+        if(navButton.classList.contains('active')){
+            navButton.classList.remove('active');
+        }
+        if(nav.classList.contains('overlayed')){
+            nav.classList.remove('overlayed');
+        }
     }
 }
 
+const onToggleMenu = () => {
+    const nav = document.querySelector('#sidebar')
+    if(nav.classList.contains('active')){
+        nav.classList.remove('active');
+    }else{
+        nav.classList.add('active');
+    }
+}
+
+const onLoad = () => {
+    onResize();
+    const navButton = document.querySelector('header .sidebar-button');
+    navButton.addEventListener('click', onToggleMenu)
+}
+
 window.addEventListener('resize', onResize)
-onResize()
+window.addEventListener('load', onLoad)

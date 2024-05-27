@@ -7,7 +7,7 @@
 <div></div>
 <div></div>
 
-{% set sidebar_visible = current_sidebar_item != None %}
+{% set sidebar_visible = current_sidebar_item is defined %}
 
 <div>
     <nav>
@@ -16,7 +16,7 @@
                 <li>
                     <a href="{{ url_for('greenhouses_page') }}">Mes serres</a>
                 </li>
-                {% if sidebar_visible %}
+                {% if not sidebar_visible %}
                     <li>
                         <a href="{{ url_for('logout_manager') }}">Se déconnecter</a>
                     </li>
@@ -31,8 +31,9 @@
             {% endif %}
         </ul>
     </nav>
-
-    <button class="sidebar-button">
-        <img src="{{ url_for('static', filename='img/bars.svg') }}" alt="Menu latéral">
-    </button>
+    {% if sidebar_visible %}
+        <button class="sidebar-button">
+            <img src="{{ url_for('static', filename='img/bars.svg') }}" alt="Menu latéral">
+        </button>
+    {% endif %}
 </div>

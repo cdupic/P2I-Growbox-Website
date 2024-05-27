@@ -25,5 +25,6 @@ def greenhouse_actuator_page(greenhouse_serial, actuator_id):
 
     return render_template('pages/greenhouse_actuator.j2',
                            greenhouse_serial=greenhouse_serial,
-                           sensors=sensors.items(),
-                           actuators=actuators.items())
+                           sidebar_sensors=sensors.items(),
+                           current_sidebar_item=('actuator', int(actuator_id)),
+                           sidebar_actuators=actuators.items())

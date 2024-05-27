@@ -6,9 +6,10 @@
             display: flex;
             align-items: stretch;
             align-content: stretch;
+            padding: 0;
         }
     </style>
-    <section id="sidebar">
+    <section>
         {% block sidebar %}
             {% include "greenhouse_sidebar.j2" %}
         {% endblock %}
@@ -18,4 +19,5 @@
 
         {% endblock %}
     </section>
+    <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
 {% endblock %}

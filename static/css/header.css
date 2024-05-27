@@ -48,6 +48,7 @@ header nav ul li a:hover{
 /* SIDEBAR TOGGLE */
 
 header button.sidebar-button {
+    display: none;
     border: none;
     font: inherit;
     cursor: pointer;
@@ -63,6 +64,9 @@ header button.sidebar-button {
 }
 header button.sidebar-button:hover {
     background-color: rgba(255, 255, 255, 0.5);
+}
+header button.sidebar-button.active {
+    display: block;
 }
 
 header button.sidebar-button img {

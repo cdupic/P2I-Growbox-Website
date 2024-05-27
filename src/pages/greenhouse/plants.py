@@ -13,4 +13,7 @@ def greenhouse_plants_page(greenhouse_serial):
         return redirect(url_for('greenhouses_page'))
 
     return render_template('pages/greenhouse_plants.j2',
+                           sidebar_sensors={'test': 'TG'}.items(),
+                           sidebar_actuators={'test': 'Salut mec!'}.items(),
+                           current_sidebar_item=('plants', None),
                            greenhouse_serial=greenhouse_serial)
