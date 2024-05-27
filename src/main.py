@@ -53,7 +53,7 @@ class GrowBoxApp(Flask):
 
 
         # TODO: Add a manager to configure the session['graphs_days'] variable
-        super().add_url_rule("/manager/timestamp", methods=["GET"], view_func=timestamp_manager)
+        super().add_url_rule("/manager/timestamp", methods=["POST", "GET"], view_func=timestamp_manager)
 
     def before_request(self, *args, **kwargs):
         init_db()
