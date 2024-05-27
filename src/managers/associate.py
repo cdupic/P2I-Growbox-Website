@@ -1,7 +1,7 @@
 from flask import session, redirect, url_for, request, render_template
 
 from src.database.database import get_db
-from src.database.measure import get_sensors_greenhouse, get_actuators_greenhouse, get_data_sensors_since, \
+from src.database.measure import get_sensors_greenhouse, get_actuators_greenhouse, get_data_sensors_since
 
 
 
