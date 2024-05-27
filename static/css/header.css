@@ -53,6 +53,7 @@ header button.sidebar-button {
     font: inherit;
     cursor: pointer;
     outline: inherit;
+    z-index: 20;
 
     height: 35px;
     padding: 3px 5px;

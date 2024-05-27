@@ -1,26 +1,35 @@
 
 nav#sidebar {
-    background-color: rgba(0, 0, 40, 0.15);
-    backdrop-filter: blur(20px);
-    border-right: 1px solid rgba(0, 0, 40, 0.7);;
+    background-color: rgba(0, 0, 40, 0.05);
+    backdrop-filter: blur(30px);
+    border-right: 1px solid rgba(0, 0, 40, 0.6);;
     min-width: 200px;
     height: 100%;
 }
-
+nav#sidebar img{
+    display: none;
+}
+nav#sidebar.to-init {
+    display: none;
+}
 nav#sidebar.overlayed {
-    /*display: none;*/
     position: fixed;
-    left: 0;
+    left: -200px;
     top: 0;
     height: 100vh;
-    z-index: 1000;
+    z-index: 100;
 
-    transform: translateX(-100%);
+    transform: translateX(0);
     transition: transform 0.3s;
 }
-
+nav#sidebar.overlayed img{
+    display: block;
+    height: 20px;
+    margin: 20px auto;
+    filter: invert(.20);
+}
 nav#sidebar.overlayed.active {
-    transform: translateX(0);
+    transform: translateX(100%);
 }
 
 
@@ -35,7 +44,7 @@ nav#sidebar ul li {
     padding: 0;
 }
 nav#sidebar ul li.current {
-    background-color: rgba(0, 0, 40, 0.25);
+    background-color: rgba(0, 0, 40, 0.1);
 }
 nav#sidebar ul li > * {
     display: block;
@@ -53,5 +62,5 @@ nav#sidebar ul li a {
     color: inherit;
 }
 nav#sidebar ul li a:hover {
-    background-color: rgba(0, 0, 40, 0.25);
+    background-color: rgba(0, 0, 40, 0.2);
 }

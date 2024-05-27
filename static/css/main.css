@@ -140,3 +140,19 @@ section.greenhouses-tiles p {
     font-weight: 300;
     font-family: monospace;
 }
+
+/* OVERLAY */
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(3px);
+    z-index: 10;
+}
+#overlay:not(.active) {
+    display: none;
+}

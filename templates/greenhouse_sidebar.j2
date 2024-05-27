@@ -1,4 +1,5 @@
-<nav id="sidebar">
+<nav id="sidebar" class="to-init">
+    <img src="{{ url_for('static', filename='img/title.svg') }}" alt="GrowBox's icon" />
     <ul>
         <li class="{{ 'current' if current_sidebar_item[0] == 'overview' else ''}}">
             <a href="{{ url_for('greenhouse_overview_page', greenhouse_serial=greenhouse_serial) }}">Tableau de bord</a>
