@@ -52,6 +52,7 @@ def get_greenhouse_name(serial_number):
             "SELECT serial "
             "FROM GreenHouses "
             "WHERE serial = %s",
+            (serial_number,)
         )
         serial = cursor.fetchone()
         if serial is None:

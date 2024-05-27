@@ -7,6 +7,8 @@
         <li class="{{ 'current' if current_sidebar_item[0] == 'plants' else ''}}">
             <a href="{{ url_for('greenhouse_plants_page', greenhouse_serial=greenhouse_serial) }}">Plantes</a>
         </li>
+        <li class="{{ 'current' if current_sidebar_item[0] == 'timestamp' else ''}}">
+                <a href="{{ url_for('timestamp_manager', greenhouse_serial=greenhouse_serial) }}">Plage mesures</a>
         <li class="title">
             <p>Capteurs</p>
         </li>

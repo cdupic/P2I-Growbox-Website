@@ -8,6 +8,8 @@ from src.managers.associate import associate_manager
 from src.managers.login import login_manager
 from src.managers.logout import logout_manager
 from src.managers.signup import signup_manager
+from src.managers.plant import plant_manager
+from src.managers.timestamp import timestamp_manager
 from src.pages.greenhouse.actuator import greenhouse_actuator_page
 from src.pages.greenhouse.overview import greenhouse_overview_page
 from src.pages.greenhouse.plants import greenhouse_plants_page
@@ -47,8 +49,11 @@ class GrowBoxApp(Flask):
 
         # TODO: Add the plant manager that takes a comma separated list of plant ids
         #  (if a plant is present multiple times, it will appear multiple times in the list)
+        super().add_url_rule("/manager/plant", methods=["GET"], view_func=plant_manager)
+
 
         # TODO: Add a manager to configure the session['graphs_days'] variable
+        super().add_url_rule("/manager/timestamp", methods=["GET"], view_func=timestamp_manager)
 
     def before_request(self, *args, **kwargs):
         init_db()

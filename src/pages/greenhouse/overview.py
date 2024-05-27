@@ -16,6 +16,8 @@ def greenhouse_overview_page(greenhouse_serial):
     sensors = get_sensors_greenhouse(greenhouse_serial)
     actuators = get_actuators_greenhouse(greenhouse_serial)
 
+    session['serial'] = greenhouse_serial
+
     data_sensors = get_data_sensors_since(greenhouse_serial, [], session['graphs_days'])
     data_actuators = get_data_actuators_since(greenhouse_serial, [], session['graphs_days'])
 
