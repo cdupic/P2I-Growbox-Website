@@ -22,6 +22,7 @@ def greenhouse_actuator_page(greenhouse_serial, actuator_id):
         for date, value in measure.items():
             measures_actuator[date] = value
 
+
     return render_template('pages/greenhouse_actuator.j2',
                            greenhouse_serial=greenhouse_serial,
                            sensors=sensors.items(),
