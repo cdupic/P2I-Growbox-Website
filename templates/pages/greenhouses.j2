@@ -1,12 +1,40 @@
 {% extends "base.j2"%}
 
 {% block main %}
-<p> Bonjour, {{ session['user_name'] }}, voici vos serres : </p>
+    <p> Bonjour, {{ session['user_name'] }}, voici vos serres : </p>
 
-{% for (greenhouse_serial, greenhouse_name) in user_greenhouses %}
-<p>
-    <a href="{{ url_for('greenhouse_overview_page', greenhouse_serial=greenhouse_serial) }}" class="serre-button"> {{ greenhouse_name }} </a>
-</p>
-{% endfor %}
+    {% for (greenhouse_serial, greenhouse_name) in user_greenhouses %}
+    <p>
+        <a href="{{ url_for('greenhouse_overview_page', greenhouse_serial=greenhouse_serial) }}" class="serre-button"> {{ greenhouse_name }} </a>
+    </p>
+    {% endfor %}
+
+    <section class="title">
+        <h1>
+            Liste
+        </h1>
+    </section>
+
+    <section class="title">
+        <h1>
+            {% block title %}
+                Ajouter une serre
+            {% endblock %}
+        </h1>
+    </section>
+
+    <section class="single">
+        <form action="{{ url_for('associate_manager') }}" method="GET">
+
+            <label for="ghs">Numéro de série de la serre</label>
+            <input type="text" name="ghs" id="ghs" required>
+            <br>
+            <label for="ghn">Nom de la serre</label>
+            <input type="text" name="ghn" id="ghn" required>
+            <br>
+            <input type="submit" value="Enregistrer la serre">
+        </form>
+    </section>
+
 
 {% endblock %}

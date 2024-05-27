@@ -4,13 +4,14 @@ from datetime import timedelta
 from flask import Flask
 
 from src.database.database import init_db, close_db
+from src.managers.associate import associate_manager
 from src.managers.login import login_manager
 from src.managers.logout import logout_manager
 from src.managers.signup import signup_manager
+from src.pages.greenhouse.actuator import greenhouse_actuator_page
 from src.pages.greenhouse.overview import greenhouse_overview_page
 from src.pages.greenhouse.plants import greenhouse_plants_page
 from src.pages.greenhouse.sensor import greenhouse_sensor_page
-from src.pages.greenhouse.actuator import greenhouse_actuator_page
 from src.pages.greenhouses import greenhouses_page
 from src.pages.landing import landing_page
 from src.pages.login import login_page
@@ -42,6 +43,7 @@ class GrowBoxApp(Flask):
         super().add_url_rule("/manager/logout", methods=["POST", "GET"], view_func=logout_manager)
         super().add_url_rule("/manager/login", methods=["POST"], view_func=login_manager)
         super().add_url_rule("/manager/signup", methods=["POST"], view_func=signup_manager)
+        super().add_url_rule("/manager/associate", methods=["GET"], view_func=associate_manager)
 
     def before_request(self, *args, **kwargs):
         init_db()
