@@ -1,0 +1,14 @@
+#content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    overflow-x: auto;
+    padding: 10px 10px;
+
+}
+#barCanvas {
+    width: 100%;
+    height: 100%;
+}

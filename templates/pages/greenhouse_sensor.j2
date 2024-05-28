@@ -1,12 +1,31 @@
 {% extends "greenhouse_template.j2" %}
 
 {% block content %}
-    <h1>Mesures de la serre {{ greenhouse_name }}</h1>
-    <h2>Liste des mesures pour le capteur {{ sensor_type }}</h2>
-    <ul>
-        {% for date, value in measures.items() %}
-            <p> Le {{ date }}  valeur : {{ value}}
-            </p>
-        {% endfor %}
-    </ul>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/charts.css') }}">
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <canvas id="barCanvas" aria-label="chart" role="img"></canvas>
+    <script>
+        const barCanvas = document.getElementById('barCanvas');
+        const measures = {{ measures.values()|list|tojson }};
+        const dates = {{ measures.keys()|list|tojson }};
+        const lineChart = new Chart(barCanvas, {
+            type : "line",
+            data : {
+                labels : dates,
+                datasets : [{
+                    label : "Serre {{ greenhouse_serial }}, mesure du capteur {{ sensor_type }} {{ sensor_unit }}",
+                    data : measures,
+                    backgroundColor : "rgba(75, 192, 192, 0.2)",
+                    borderColor : "rgba(178, 218, 30, 1)",
+                    borderWidth : 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    </script>
 {% endblock %}

@@ -51,7 +51,6 @@ class GrowBoxApp(Flask):
         #  (if a plant is present multiple times, it will appear multiple times in the list)
         super().add_url_rule("/manager/plant", methods=["GET"], view_func=plant_manager)
 
-
         # TODO: Add a manager to configure the session['graphs_days'] variable
         super().add_url_rule("/manager/timestamp", methods=["POST", "GET"], view_func=timestamp_manager)
 

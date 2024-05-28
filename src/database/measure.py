@@ -213,3 +213,23 @@ def get_greenhouse_measures(greenhouse_serial, sensor_id, date_begin, date_end):
         print(f"Error when getting measures of greenhouse {greenhouse_serial}: {e}")
 
     return measures
+
+
+def get_sensor_unit(sensor_id):
+    db = get_db()
+    cursor = db.cursor()
+    sensor_type = get_sensor_type(sensor_id)
+
+    if sensor_type == "temperature":
+        return "°C"
+    elif "humidity" in sensor_type:
+        return "%"
+    elif sensor_type == "ligth":
+        return "lux"
+    elif sensor_type == "O2":
+        return "ppm"
+    elif sensor_type == "water_level":
+        return "cm"
+
+
+
