@@ -64,6 +64,25 @@ def get_greenhouse_name(serial_number):
         return None
 
 
+def get_greenhouse_targets(greenhouse_serial):
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+    targets = {}
+
+    try:
+        cursor.execute(
+            "SELECT temperature, soil_humidity, air_humidity, light, O2 "
+            "FROM GreenHouses "
+            "WHERE serial = %s",
+            (greenhouse_serial,)
+        )
+        for (data) in cursor:
+            targets = data
+
+        return targets
+
+    except Exception as e:
+        print(f"Error when getting greenhouse targets: {e}")
 
 
 
