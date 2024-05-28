@@ -1,11 +1,11 @@
 {% extends "greenhouse_template.j2" %}
 
 {% block content %}
-    <h1>Actions de la serre {{ greenhouse_serial }}</h1>
-    <h2>Liste des actions </h2>
+    <h1>Actions de la serre {{ greenhouse_name }}</h1>
+    <h2>Liste des actions pour l'actionneur {{ actuator_type }}</h2>
     <ul>
-        {% for liste_infos in mesures %}
-            <p> {{ liste_infos }}
+        {% for date, value in actions.items() %}
+            <p> Le {{ date }}  valeur : {{ value}}
             </p>
         {% endfor %}
     </ul>

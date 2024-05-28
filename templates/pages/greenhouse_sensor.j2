@@ -2,10 +2,10 @@
 
 {% block content %}
     <h1>Mesures de la serre {{ greenhouse_name }}</h1>
-    <h2>Liste des mesures </h2>
+    <h2>Liste des mesures pour le capteur {{ sensor_type }}</h2>
     <ul>
-        {% for liste_infos in measures %}
-            <p> {{ liste_infos }}
+        {% for date, value in measures.items() %}
+            <p> Le {{ date }}  valeur : {{ value}}
             </p>
         {% endfor %}
     </ul>

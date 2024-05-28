@@ -21,9 +21,9 @@ def greenhouse_actuator_page(greenhouse_serial, actuator_id):
         for date, value in data.items():
             actions[date] = value
 
-
     return render_template('pages/greenhouse_actuator.j2',
                            actions=actions,
+                           actuator_type=actuator_type_french,
                            greenhouse_serial=greenhouse_serial,
                            sidebar_sensors=sensors.items(),
                            current_sidebar_item=('actuator', int(actuator_id)),

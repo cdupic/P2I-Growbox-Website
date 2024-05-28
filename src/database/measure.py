@@ -50,7 +50,7 @@ def get_actuators_greenhouse(greenhouse_serial):
         print(f"Error when getting actuators: {e}")
 
 
-def get_data_sensors_since(serial_number, sensors_list, days):
+def get_data_sensors_since(serial_number, sensors_list, days, day_start=None, day_end=None):
     db = get_db()
     cursor = db.cursor()
     data = {}
@@ -59,17 +59,30 @@ def get_data_sensors_since(serial_number, sensors_list, days):
     sensors_list_str = ', '.join(map(str, sensors_list))
 
     try:
-        cursor.execute(
-            "SELECT Sensors.id,  Measures.date, Measures.value "
-            "FROM Sensors, GreenHouses, Measures "
-            "WHERE greenhouse_serial = %s and GreenHouses.serial = Sensors.greenhouse_serial "
-            "and Sensors.id = Measures.sensor_id and Sensors.id in (%s) and (Measures.date) > %s",
-            (serial_number, sensors_list_str, datetime.now() - timedelta(days=days))
-        )
-        for (sensor_id, date, value) in cursor:
-            if sensor_id not in data:
-                data[sensor_id] = {}
-            data[sensor_id][date] = value
+        if not day_start and not day_end:
+            cursor.execute(
+                "SELECT Sensors.id,  Measures.date, Measures.value "
+                "FROM Sensors, GreenHouses, Measures "
+                "WHERE greenhouse_serial = %s and GreenHouses.serial = Sensors.greenhouse_serial "
+                "and Sensors.id = Measures.sensor_id and Sensors.id in (%s) and (Measures.date) > %s",
+                (serial_number, sensors_list_str, datetime.now() - timedelta(days=days))
+            )
+            for (sensor_id, date, value) in cursor:
+                if sensor_id not in data:
+                    data[sensor_id] = {}
+                data[sensor_id][date] = value
+        else:
+            cursor.execute(
+                "SELECT Sensors.id,  Measures.date, Measures.value "
+                "FROM Sensors, GreenHouses, Measures "
+                "WHERE greenhouse_serial = %s and GreenHouses.serial = Sensors.greenhouse_serial "
+                "and Sensors.id = Measures.sensor_id and Sensors.id in (%s) and (Measures.date) BETWEEN %s and %s",
+                (serial_number, sensors_list_str, day_start, day_end)
+            )
+            for (sensor_id, date, value) in cursor:
+                if sensor_id not in data:
+                    data[sensor_id] = {}
+                data[sensor_id][date] = value
 
         return data
 
@@ -77,7 +90,7 @@ def get_data_sensors_since(serial_number, sensors_list, days):
         print(f"Error when getting data: {e}")
 
 
-def get_data_actuators_since(greenhouse_serial, actuators_list, days):
+def get_data_actuators_since(greenhouse_serial, actuators_list, days, day_start=None, day_end=None):
     db = get_db()
     cursor = db.cursor()
     data = {}
@@ -86,17 +99,31 @@ def get_data_actuators_since(greenhouse_serial, actuators_list, days):
     actuators_list_str = ', '.join(map(str, actuators_list))
 
     try:
-        cursor.execute(
-            "SELECT Actuators.id,  Actions.date, Actions.value "
-            "FROM Actuators, GreenHouses, Actions "
-            "WHERE greenhouse_serial = %s and GreenHouses.serial = Actuators.greenhouse_serial "
-            "and Actuators.id = Actions.actuator_id and Actuators.id in (%s) and (Actions.date) > %s",
-            (greenhouse_serial, actuators_list_str, datetime.now() - timedelta(days=days))
-        )
-        for (actuator_id, date, value) in cursor:
-            if actuator_id not in data:
-                data[actuator_id] = {}
-            data[actuator_id][date] = value
+        if not day_start and not day_end:
+            cursor.execute(
+                "SELECT Actuators.id,  Actions.date, Actions.value "
+                "FROM Actuators, GreenHouses, Actions "
+                "WHERE greenhouse_serial = %s and GreenHouses.serial = Actuators.greenhouse_serial "
+                "and Actuators.id = Actions.actuator_id and Actuators.id in (%s) and (Actions.date) > %s",
+                (greenhouse_serial, actuators_list_str, datetime.now() - timedelta(days=days))
+            )
+            for (actuator_id, date, value) in cursor:
+                if actuator_id not in data:
+                    data[actuator_id] = {}
+                data[actuator_id][date] = value
+
+        else:
+            cursor.execute(
+                "SELECT Actuators.id,  Actions.date, Actions.value "
+                "FROM Actuators, GreenHouses, Actions "
+                "WHERE greenhouse_serial = %s and GreenHouses.serial = Actuators.greenhouse_serial "
+                "and Actuators.id = Actions.actuator_id and Actuators.id in (%s) and (Actions.date) BETWEEN %s and %s",
+                (greenhouse_serial, actuators_list_str, day_start, day_end)
+            )
+            for (actuator_id, date, value) in cursor:
+                if actuator_id not in data:
+                    data[actuator_id] = {}
+                data[actuator_id][date] = value
 
         return data
 
@@ -146,7 +173,10 @@ def get_actuator_type(actuator_id):
         return None
 
 
-def get_greenhouse_actions(greenhouse_id, actuator_id, date_debut, date_fin):
+# ARE THEY STILL USEFUL ??
+
+
+def get_greenhouse_actions(greenhouse_serial, actuator_id, date_debut, date_fin):
     cursor = g.db.connect().cursor()
 
     try:
@@ -155,31 +185,31 @@ def get_greenhouse_actions(greenhouse_id, actuator_id, date_debut, date_fin):
             "FROM Actions, Actuators "
             "WHERE Actions.actuator_id = Actuators.id and Actuators.id= %s and Actuators.greenhouse_serial = %s and "
             "Actions.date BETWEEN %s and %s",
-            (actuator_id, greenhouse_id, date_debut, date_fin))
+            (actuator_id, greenhouse_serial, date_debut, date_fin))
 
         for (actuator_id, date, value, sensor_type) in cursor:
-            print(f"Action in {greenhouse_id} the {date}, done by actuator {actuator_id}, {sensor_type} : {value}")
+            print(f"Action in {greenhouse_serial} the {date}, done by actuator {actuator_id}, {sensor_type} : {value}")
 
     except Exception as e:
-        print(f"Error when getting actions of greenhouse : {greenhouse_id}: {e}")
+        print(f"Error when getting actions of greenhouse : {greenhouse_serial}: {e}")
 
 
-def get_greenhouse_measures(greenhouse_id, sensor_id, date_begin, date_end):
+def get_greenhouse_measures(greenhouse_serial, sensor_id, date_begin, date_end):
     cursor = g.db.cursor
     measures = []
 
     try:
         cursor.execute(
-            "SELECT Measures.sensor_id, Measures.date, Measures.value, Sensors.type, Sensors.unit "
+            "SELECT Measures.sensor_id, Measures.date, Measures.value, Sensors.type "
             "FROM Measures, Sensors "
             "WHERE Measures.sensor_id = Sensors.id  and Sensors.id = %s and Sensors.greenhouse_serial= %s and "
             "Measures.date BETWEEN %s and %s ",
-            (sensor_id, greenhouse_id, date_begin, date_end))
+            (sensor_id, greenhouse_serial, date_begin, date_end))
 
         for sensor in cursor:
             measures.append(sensor)
 
     except Exception as e:
-        print(f"Error when getting measures of greenhouse {greenhouse_id}: {e}")
+        print(f"Error when getting measures of greenhouse {greenhouse_serial}: {e}")
 
     return measures
