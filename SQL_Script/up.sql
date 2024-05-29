@@ -20,7 +20,6 @@ CREATE TABLE Users
 CREATE TABLE GreenHouses
 (
     serial   VARCHAR(32) PRIMARY KEY,
-    name            VARCHAR(16),
     update_interval INT UNSIGNED,   # in seconds
     plant_init_date DATETIME DEFAULT NOW(),
     temperature     SMALLINT, # in °C
@@ -35,6 +34,7 @@ CREATE TABLE UserGreenHouses
 (
     user_name VARCHAR(16),
     greenhouse_serial VARCHAR(32),
+    name VARCHAR(32),
     PRIMARY KEY (user_name, greenhouse_serial),
     FOREIGN KEY (user_name) REFERENCES Users (user_name),
     FOREIGN KEY (greenhouse_serial) REFERENCES GreenHouses (serial)

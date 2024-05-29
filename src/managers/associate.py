@@ -6,7 +6,7 @@ from src.database.measure import get_sensors_greenhouse, get_actuators_greenhous
 
 
 def associate_manager():
-    if verify_greenhouse_exists_and_not_linked(request.args.get('ghs')):
+    if verify_greenhouse_exists_and_not_linked(request.args.get('ghs'), session['user_name']):
         link_greenhouse_to_user(request.args.get('ghs'), session['user_name'], request.args.get('ghn'))
         session['success'] = 'Serre liée à votre profil !'
         # return render_template('pages/greenhouse_overview.j2',
@@ -22,21 +22,20 @@ def associate_manager():
     return redirect(url_for('greenhouses_page'))
 
 
-def verify_greenhouse_exists_and_not_linked(serial_number):
+def verify_greenhouse_exists_and_not_linked(serial_number, session_user_name):
     db = get_db()
     cursor = db.cursor()
 
     try:
         cursor.execute(
-            "SELECT serial "
-            "FROM GreenHouses "
-            "WHERE serial = %s and serial NOT IN (SELECT greenhouse_serial FROM UserGreenHouses)",
-            (serial_number,)
+            "SELECT greenhouse_serial FROM UserGreenHouses "
+            "WHERE greenhouse_serial = %s AND user_name = %s",
+            (serial_number, session_user_name),
         )
         serial = cursor.fetchone()
         if serial is None:
-            return False
-        return True
+            return True
+        return False
 
     except Exception as e:
         print(f"Error when verifying greenhouse exists: {e}")
@@ -49,14 +48,10 @@ def link_greenhouse_to_user(greenhouse_serial, user_name, greenhouse_name):
     cursor = db.cursor()
 
     try:
-        cursor.execute(
-            "UPDATE GreenHouses SET name = %s WHERE serial = %s",
-            (greenhouse_name, greenhouse_serial)
-        )
         db.commit()
         cursor.execute(
-            " INSERT INTO UserGreenHouses (user_name, greenhouse_serial) VALUES(%s, %s) ",
-            (user_name, greenhouse_serial)
+            " INSERT INTO UserGreenHouses (user_name, greenhouse_serial, name) VALUES(%s, %s, %s) ",
+            (user_name, greenhouse_serial, greenhouse_name)
         )
         db.commit()
 

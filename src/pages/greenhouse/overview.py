@@ -27,4 +27,4 @@ def greenhouse_overview_page(greenhouse_serial):
                            sidebar_actuators=actuators.items(),
                            current_sidebar_item=('overview', None),
                            data_sensors=data_sensors,
-                           greenhouse_name=get_greenhouse_name(greenhouse_serial))
+                           greenhouse_name=get_greenhouse_name(greenhouse_serial, session['user_name']))

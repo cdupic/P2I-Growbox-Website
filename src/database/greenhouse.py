@@ -29,9 +29,9 @@ def get_greenhouses(user_name):
 
     try:
         cursor.execute(
-            "SELECT UserGreenHouses.greenhouse_serial, GreenHouses.name "
-            "FROM UserGreenHouses, GreenHouses "
-            "WHERE UserGreenHouses.greenhouse_serial = GreenHouses.serial and UserGreenHouses.user_name = %s",
+            "SELECT greenhouse_serial, name "
+            "FROM UserGreenHouses "
+            "WHERE user_name = %s",
             (user_name,)
         )
         for (serial, greenhouse_name) in cursor:
@@ -43,21 +43,21 @@ def get_greenhouses(user_name):
         print(f"Error when getting greenhouses: {e}")
 
 
-def get_greenhouse_name(serial_number):
+def get_greenhouse_name(serial_number, user_name):
     db = get_db()
     cursor = db.cursor()
 
     try:
         cursor.execute(
-            "SELECT serial "
-            "FROM GreenHouses "
-            "WHERE serial = %s",
-            (serial_number,)
+            "SELECT name "
+            "FROM UserGreenHouses "
+            "WHERE greenhouse_serial = %s and user_name = %s ",
+            (serial_number, user_name)
         )
-        serial = cursor.fetchone()
-        if serial is None:
+        name = cursor.fetchone()
+        if name is None:
             return None
-        return serial[0]
+        return name[0]
 
     except Exception as e:
         print(f"Error when getting greenhouse name: {e}")
