@@ -72,7 +72,6 @@ def get_data_sensors_since(serial_number, sensors_list, days, day_start=None, da
                 (serial_number, sensors_list_str, datetime.utcnow() - timedelta(days=days))
             )
             for (sensor_id, date, value) in cursor:
-                print(date)
                 if sensor_id not in data:
                     data[sensor_id] = {}
                 data[sensor_id][date] = value
