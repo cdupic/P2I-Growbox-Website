@@ -6,7 +6,7 @@ from src.database.measure import get_sensors_greenhouse, get_actuators_greenhous
 
 
 def associate_manager():
-    if verify_greenhouse_exists(request.args.get('ghs')):
+    if verify_greenhouse_exists_and_not_linked(request.args.get('ghs')):
         link_greenhouse_to_user(request.args.get('ghs'), session['user_name'], request.args.get('ghn'))
         session['success'] = 'Serre liée à votre profil !'
         # return render_template('pages/greenhouse_overview.j2',
@@ -17,12 +17,12 @@ def associate_manager():
         #                        current_sidebar_item=('overview', None),
         #                        greenhouse_name=request.args.get('ghn'))
     else:
-        session['error'] = "Numéro de série invalide ou serre deja liée à un compte."
+        session['error'] = "Numéro de série invalide ou serre deja liée à vous."
 
     return redirect(url_for('greenhouses_page'))
 
 
-def verify_greenhouse_exists(serial_number):
+def verify_greenhouse_exists_and_not_linked(serial_number):
     db = get_db()
     cursor = db.cursor()
 
@@ -30,7 +30,7 @@ def verify_greenhouse_exists(serial_number):
         cursor.execute(
             "SELECT serial "
             "FROM GreenHouses "
-            "WHERE serial = %s ",
+            "WHERE serial = %s and serial NOT IN (SELECT greenhouse_serial FROM UserGreenHouses)",
             (serial_number,)
         )
         serial = cursor.fetchone()
