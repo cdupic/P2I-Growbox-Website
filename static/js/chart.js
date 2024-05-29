@@ -49,7 +49,7 @@ const getYMax = (max_val, type) => {
         return 100;
     }
     if(type === 'light'){
-        return Math.max(5000, max_val+100);
+        return Math.max(5000, max_val + 100);
     }
     if(type === 'temperature'){
         return Math.max(max_val + 5, 35);
@@ -60,12 +60,32 @@ const getYMax = (max_val, type) => {
     return max_val;
 }
 
-window.configureChart = (el_id, dates, measures, targets, gh_serial, is_sensor, type, id) => {
+window.configureChart = (el_id, dates, measures, targets, gh_serial, is_sensor, type, id, from_date, to_date) => {
+    if(from_date === undefined){
+        from_date = dates[0];
+    }
+    if(to_date === undefined){
+        to_date = dates[dates.length - 1];
+    }
+
+    dates = dates.map((date) => newUTCDate(date));
+
+    const hour_Scope = Math.ceil((new Date(to_date) - new Date(from_date)) / (1000 * 60 * 60));
+    let unit = 'minute'
+    if(hour_Scope > 24 * 365 * 4){ // > 4 years
+        unit = 'year'
+    }else if(hour_Scope > 24 * 265 * 2){ // > 2 years
+        unit = 'quarter'
+    }else if(hour_Scope > 24 * 30 * 4){ // > 4 month
+        unit = 'month'
+    }else if(hour_Scope > 24 * 4){ // > 4 day
+        unit = 'day'
+    }else if(hour_Scope > 12){ // > 12 hours
+        unit = 'hour'
+    }
 
     let yMin = Math.min(...measures);
     let yMax = Math.max(...measures);
-
-    dates = dates.map(date => new Date(date));
 
     let annotations = {}
     const target = targets[type];
@@ -84,7 +104,7 @@ window.configureChart = (el_id, dates, measures, targets, gh_serial, is_sensor, 
         data: {
             labels: dates,
             datasets: [{
-                data: measures,
+                "data": measures,
                 backgroundColor: "rgba(75, 192, 192, 0.2)",
                 borderColor: "rgba(178, 218, 30, 1)",
                 borderWidth: 1,
@@ -92,6 +112,7 @@ window.configureChart = (el_id, dates, measures, targets, gh_serial, is_sensor, 
             }]
         },
         options: {
+            locale: 'fr-FR',
             scales: {
                 y: {
                     min: getYMin(yMin, type),
@@ -103,8 +124,25 @@ window.configureChart = (el_id, dates, measures, targets, gh_serial, is_sensor, 
                 },
                 x: {
                     type: 'time',
+                    min: newUTCDate(from_date),
+                    max: newUTCDate(to_date, 30),
                     time: {
-                        tooltipFormat: 'DD T'
+                        tooltipFormat: 'YYYY-MM-DD HH:mm:ss',
+                        unit: unit,
+                        displayFormats: {
+                            minute: 'HH:mm',
+                            hour: "dd '-' H'h'",
+                            day: 'dd LLL',
+                            month: 'LLL yyyy',
+                            quarter: 'LLL yyyy',
+                            year: 'yyyy'
+                        },
+                    },
+                    adapters: {
+                        date: {
+                            locale: 'fr',
+                            zone: 'UTC+1'
+                        }
                     },
                     title: {
                         display: true,
@@ -118,6 +156,23 @@ window.configureChart = (el_id, dates, measures, targets, gh_serial, is_sensor, 
                 legend: {
                     display: false
                 },
+                tooltip: {
+                    callbacks: {
+                        title: function(context){
+                            const date = new Date(context[0].parsed.x);
+                            const formatter = new Intl.DateTimeFormat('fr-FR', {
+                                weekday: 'long',
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                second: '2-digit'
+                            });
+                            return formatter.format(date);
+                        }
+                    }
+                },
                 annotation: {
                     annotations
                 }
@@ -127,4 +182,10 @@ window.configureChart = (el_id, dates, measures, targets, gh_serial, is_sensor, 
 
     const canvas = document.getElementById(el_id);
     new Chart(canvas, config);
+}
+
+const newUTCDate = (text, shift_minutes = 0) => {
+    const date = new Date(text + ' UTC');
+    date.setMinutes(date.getMinutes() + shift_minutes);
+    return date;
 }

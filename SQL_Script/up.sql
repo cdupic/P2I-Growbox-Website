@@ -13,7 +13,7 @@ CREATE TABLE Users
 (
     user_name VARCHAR(16) PRIMARY KEY,
     password VARBINARY(64),
-    date_registration DATETIME DEFAULT NOW(),
+    date_registration DATETIME DEFAULT UTC_TIMESTAMP(),
     auth_token varchar(32)
 );
 
@@ -21,7 +21,7 @@ CREATE TABLE GreenHouses
 (
     serial   VARCHAR(32) PRIMARY KEY,
     update_interval INT UNSIGNED,   # in seconds
-    plant_init_date DATETIME DEFAULT NOW(),
+    plant_init_date DATETIME DEFAULT UTC_TIMESTAMP(),
     temperature     SMALLINT, # in °C
     soil_humidity   SMALLINT,   # in %
     air_humidity    SMALLINT,   # in %
@@ -46,7 +46,7 @@ CREATE TABLE GreenHousePlants
     id              INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     plant_id        INT UNSIGNED,
     greenhouse_serial   VARCHAR(32),
-    date_start DATETIME DEFAULT NOW(),
+    date_start DATETIME DEFAULT UTC_TIMESTAMP(),
     date_end DATETIME DEFAULT NULL,
     FOREIGN KEY (plant_id) REFERENCES Plants (id),
     FOREIGN KEY (greenhouse_serial) REFERENCES GreenHouses (serial)
@@ -66,7 +66,7 @@ CREATE TABLE Sensors
 CREATE TABLE Measures
 (
     sensor_id TINYINT UNSIGNED,
-    date      DATETIME DEFAULT NOW(),
+    date      DATETIME DEFAULT UTC_TIMESTAMP(),
     value     SMALLINT,
     FOREIGN KEY (sensor_id) REFERENCES Sensors (id),
     PRIMARY KEY (sensor_id, date)
@@ -86,7 +86,7 @@ CREATE TABLE Actuators
 CREATE TABLE Actions
 (
     actuator_id TINYINT UNSIGNED,
-    date        DATETIME DEFAULT NOW(),
+    date        DATETIME DEFAULT UTC_TIMESTAMP(),
     value       SMALLINT,
     FOREIGN KEY (actuator_id) REFERENCES Actuators (id),
     PRIMARY KEY (actuator_id, date)

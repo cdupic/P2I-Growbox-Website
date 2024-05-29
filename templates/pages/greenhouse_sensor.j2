@@ -4,7 +4,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/charts.css') }}">
 
     <div class="graph">
-        <canvas id="chart1" class="chart" aria-label="Graphique des valeurs du capteur {{ sensor_type }}" role="img"></canvas>
+        <canvas id="chart1" class="chart" aria-label="Graphique des valeurs du capteur {{ sensor_type }}"
+                role="img"></canvas>
     </div>
     <script>
         window.configureChart(
@@ -15,6 +16,9 @@
             {{ greenhouse_serial|tojson }},
             true,
             {{ sensor_type|tojson }},
-            {{ sensor_id|tojson }});
+            {{ sensor_id|tojson }},
+            {{ from_date|tojson }},
+            {{ to_date|tojson }}
+        );
     </script>
 {% endblock %}

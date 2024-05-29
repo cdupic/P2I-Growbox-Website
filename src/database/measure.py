@@ -3,8 +3,8 @@ from datetime import datetime, timedelta
 from flask import g
 
 from src.database.database import get_db
-from src.utils.measure import convert_sensor_type_to_french
 from src.utils.measure import convert_actuator_type_to_french
+from src.utils.measure import convert_sensor_type_to_french
 
 
 def get_sensors_greenhouse(greenhouse_serial):
@@ -64,11 +64,15 @@ def get_data_sensors_since(serial_number, sensors_list, days, day_start=None, da
             cursor.execute(
                 "SELECT Sensors.id,  Measures.date, Measures.value "
                 "FROM Sensors, GreenHouses, Measures "
-                "WHERE greenhouse_serial = %s and GreenHouses.serial = Sensors.greenhouse_serial "
-                "and Sensors.id = Measures.sensor_id and Sensors.id in (%s) and (Measures.date) > %s",
-                (serial_number, sensors_list_str, datetime.now() - timedelta(days=days))
+                "WHERE greenhouse_serial = %s "
+                "  AND GreenHouses.serial = Sensors.greenhouse_serial "
+                "  AND Sensors.id = Measures.sensor_id "
+                "  AND Sensors.id in (%s) "
+                "  AND Measures.date >= %s",
+                (serial_number, sensors_list_str, datetime.utcnow() - timedelta(days=days))
             )
             for (sensor_id, date, value) in cursor:
+                print(date)
                 if sensor_id not in data:
                     data[sensor_id] = {}
                 data[sensor_id][date] = value
@@ -231,6 +235,3 @@ def get_sensor_unit(sensor_id):
         return "ppm"
     elif sensor_type == "water_level":
         return "cm"
-
-
-
