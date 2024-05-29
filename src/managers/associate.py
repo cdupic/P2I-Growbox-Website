@@ -6,21 +6,23 @@ from src.database.measure import get_sensors_greenhouse, get_actuators_greenhous
 
 
 def associate_manager():
-    if verify_greenhouse_exists_and_not_linked(request.args.get('ghs')):
+    if verify_greenhouse_exists(request.args.get('ghs')):
         link_greenhouse_to_user(request.args.get('ghs'), session['user_name'], request.args.get('ghn'))
         session['success'] = 'Serre liée à votre profil !'
-        return render_template('pages/greenhouse_overview.j2',
-                               greenhouse_serial=request.args.get('ghs'),
-                               sensors=get_sensors_greenhouse(request.args.get('ghs')).items(),
-                               actuators=get_actuators_greenhouse(request.args.get('ghs')).items(),
-                               data_sensors=get_data_sensors_since(request.args.get('ghs'), [], session['graphs_days']),
-                               greenhouse_name=request.args.get('ghn'))
-    else :
+        # return render_template('pages/greenhouse_overview.j2',
+        #                        greenhouse_serial=request.args.get('ghs'),
+        #                        sensors=get_sensors_greenhouse(request.args.get('ghs')).items(),
+        #                        actuators=get_actuators_greenhouse(request.args.get('ghs')).items(),
+        #                        data_sensors=get_data_sensors_since(request.args.get('ghs'), [], session['graphs_days']),
+        #                        current_sidebar_item=('overview', None),
+        #                        greenhouse_name=request.args.get('ghn'))
+    else:
         session['error'] = "Numéro de série invalide ou serre deja liée à un compte."
-        return redirect(url_for('greenhouses_page'))
+
+    return redirect(url_for('greenhouses_page'))
 
 
-def verify_greenhouse_exists_and_not_linked(serial_number):
+def verify_greenhouse_exists(serial_number):
     db = get_db()
     cursor = db.cursor()
 
@@ -28,7 +30,7 @@ def verify_greenhouse_exists_and_not_linked(serial_number):
         cursor.execute(
             "SELECT serial "
             "FROM GreenHouses "
-            "WHERE serial = %s and user_name is NULL",
+            "WHERE serial = %s ",
             (serial_number,)
         )
         serial = cursor.fetchone()
@@ -42,13 +44,19 @@ def verify_greenhouse_exists_and_not_linked(serial_number):
 
 
 def link_greenhouse_to_user(greenhouse_serial, user_name, greenhouse_name):
+    print(greenhouse_serial, user_name, greenhouse_name)
     db = get_db()
     cursor = db.cursor()
 
     try:
         cursor.execute(
-            "UPDATE GreenHouses SET user_name = %s, name = %s WHERE serial = %s",
-            (user_name, greenhouse_name, greenhouse_serial)
+            "UPDATE GreenHouses SET name = %s WHERE serial = %s",
+            (greenhouse_name, greenhouse_serial)
+        )
+        db.commit()
+        cursor.execute(
+            " INSERT INTO UserGreenHouses (user_name, greenhouse_serial) VALUES(%s, %s) ",
+            (user_name, greenhouse_serial)
         )
         db.commit()
 

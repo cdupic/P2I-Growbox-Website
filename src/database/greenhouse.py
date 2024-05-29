@@ -7,13 +7,13 @@ def check_greenhouse_owner(user_name, greenhouse_serial):
 
     try:
         cursor.execute(
-            "SELECT name "
-            "FROM GreenHouses "
-            "WHERE user_name= %s AND serial = %s",
+            "SELECT user_name "
+            "FROM UserGreenHouses "
+            "WHERE user_name= %s AND greenhouse_serial = %s",
             (user_name, greenhouse_serial)
         )
-        name = cursor.fetchone()
-        if name is None:
+        user_name = cursor.fetchone()
+        if user_name is None:
             return False
         return True
 
@@ -29,9 +29,9 @@ def get_greenhouses(user_name):
 
     try:
         cursor.execute(
-            "SELECT serial, name "
-            "FROM GreenHouses "
-            "WHERE user_name = %s",
+            "SELECT UserGreenHouses.greenhouse_serial, GreenHouses.name "
+            "FROM UserGreenHouses, GreenHouses "
+            "WHERE UserGreenHouses.greenhouse_serial = GreenHouses.serial and UserGreenHouses.user_name = %s",
             (user_name,)
         )
         for (serial, greenhouse_name) in cursor:

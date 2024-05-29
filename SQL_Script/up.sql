@@ -28,10 +28,18 @@ CREATE TABLE GreenHouses
     air_humidity    SMALLINT,   # in %
     light           SMALLINT,   # in lux
     O2              SMALLINT, # in %
-    need_downlink  BOOLEAN DEFAULT FALSE,
-    user_name       VARCHAR(16),
-    FOREIGN KEY (user_name) REFERENCES Users (user_name)
+    need_downlink  BOOLEAN DEFAULT FALSE
 );
+
+CREATE TABLE UserGreenHouses
+(
+    user_name VARCHAR(16),
+    greenhouse_serial VARCHAR(32),
+    PRIMARY KEY (user_name, greenhouse_serial),
+    FOREIGN KEY (user_name) REFERENCES Users (user_name),
+    FOREIGN KEY (greenhouse_serial) REFERENCES GreenHouses (serial)
+);
+
 
 CREATE TABLE GreenHousePlants
 (
