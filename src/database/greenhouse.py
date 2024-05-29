@@ -86,3 +86,27 @@ def get_greenhouse_targets(greenhouse_serial):
 
 
 
+def get_list_users_greenhouse(greenhouse_serial):
+    db = get_db()
+    cursor = db.cursor()
+    users = []
+
+    try:
+        cursor.execute(
+            "SELECT user_name "
+            "FROM UserGreenHouses WHERE greenhouse_serial = %s",
+            (greenhouse_serial,)
+        )
+        for (user_name,) in cursor:
+            users.append(user_name)
+
+
+        return users
+
+    except Exception as e:
+        print(f"Error when getting list users greenhouse: {e}")
+        return None
+
+
+
+
