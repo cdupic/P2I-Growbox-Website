@@ -13,17 +13,18 @@ def convert_sensor_type_to_french(sensor_type):
         return "O2"
     return "Inconnu"
 
+
 def convert_actuator_type_to_french(sensor_type):
     if sensor_type == "temperature":
-        return "refroidisseur"
+        return "Chauffage/Climatisation"
     elif sensor_type == "soil_humidity":
-        return "arrosage"
+        return "Arroseur"
     elif sensor_type == "light":
-        return "velux"
+        return "Vélux"
     elif sensor_type == "air_humidity":
-        return "brumisateur"
+        return "Brumisateur"
     elif sensor_type == "water_level":
-        return "robinet"
+        return "Robinet"
     elif sensor_type == "O2":
-        return "ouveerture"
+        return "Ouverture"
     return "Inconnu"

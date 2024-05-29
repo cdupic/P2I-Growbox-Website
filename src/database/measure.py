@@ -4,6 +4,7 @@ from flask import g
 
 from src.database.database import get_db
 from src.utils.measure import convert_sensor_type_to_french
+from src.utils.measure import convert_actuator_type_to_french
 
 
 def get_sensors_greenhouse(greenhouse_serial):
@@ -22,10 +23,10 @@ def get_sensors_greenhouse(greenhouse_serial):
         for (sensor_id, sensor_type) in cursor:
             sensors[sensor_id] = convert_sensor_type_to_french(sensor_type)
 
-        return sensors
-
     except Exception as e:
         print(f"Error when getting sensors: {e}")
+
+    return sensors
 
 
 def get_actuators_greenhouse(greenhouse_serial):
@@ -42,12 +43,12 @@ def get_actuators_greenhouse(greenhouse_serial):
         )
 
         for (actuator_id, actuator_type) in cursor:
-            actuators[actuator_id] = convert_sensor_type_to_french(actuator_type)
-
-        return actuators
+            actuators[actuator_id] = convert_actuator_type_to_french(actuator_type)
 
     except Exception as e:
         print(f"Error when getting actuators: {e}")
+
+    return actuators
 
 
 def get_data_sensors_since(serial_number, sensors_list, days, day_start=None, day_end=None):

@@ -36,6 +36,7 @@ def greenhouse_sensor_page(greenhouse_serial, sensor_id):
 
     return render_template("pages/greenhouse_sensor.j2",
                            greenhouse_serial=greenhouse_serial,
+                           sensor_id=sensor_id,
                            sensor_type=sensor_type_french,
                            sensor_unit=sensor_unit,
                            sidebar_sensors=sensors.items(),

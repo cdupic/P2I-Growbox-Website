@@ -18,9 +18,4 @@ main > section.single form {
 }
 main > section.single form > * {
     width: 250px;
-    font-size: 1.1em;
-}
-
-main > section.single form > label {
-    font-weight: 500;
 }
