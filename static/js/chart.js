@@ -70,6 +70,7 @@ window.configureChart = (el_id, dates, measures, targets, gh_serial, is_sensor, 
 
     dates = dates.map((date) => newUTCDate(date));
 
+
     const hour_Scope = Math.ceil((new Date(to_date) - new Date(from_date)) / (1000 * 60 * 60));
     let unit = 'minute'
     if(hour_Scope > 24 * 365 * 4){ // > 4 years
@@ -105,10 +106,13 @@ window.configureChart = (el_id, dates, measures, targets, gh_serial, is_sensor, 
             labels: dates,
             datasets: [{
                 "data": measures,
-                backgroundColor: "rgba(75, 192, 192, 0.2)",
+                backgroundColor: "rgba(178, 218, 30, 0.08)",
                 borderColor: "rgba(178, 218, 30, 1)",
-                borderWidth: 1,
-                tension: 0.1
+                borderWidth: 2,
+                tension: 0,
+                pointStyle: false,
+                stepped: true,
+                fill: true,
             }]
         },
         options: {
