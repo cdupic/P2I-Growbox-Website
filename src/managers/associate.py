@@ -48,10 +48,13 @@ def link_greenhouse_to_user(greenhouse_serial, user_name, greenhouse_name):
     cursor = db.cursor()
 
     try:
-        db.commit()
+        if greenhouse_already_linked(greenhouse_serial):
+            role = "guest"
+        else:
+            role = "owner"
         cursor.execute(
-            " INSERT INTO UserGreenHouses (user_name, greenhouse_serial, name) VALUES(%s, %s, %s) ",
-            (user_name, greenhouse_serial, greenhouse_name)
+            " INSERT INTO UserGreenHouses (user_name, greenhouse_serial, name, role) VALUES(%s, %s, %s, %s) ",
+            (user_name, greenhouse_serial, greenhouse_name, role),
         )
         db.commit()
 
@@ -61,3 +64,23 @@ def link_greenhouse_to_user(greenhouse_serial, user_name, greenhouse_name):
 
     return True
 
+
+def greenhouse_already_linked(greenhouse_serial):
+    db = get_db()
+    cursor = db.cursor()
+
+    try:
+        cursor.execute(
+            "SELECT greenhouse_serial FROM UserGreenHouses "
+            "WHERE greenhouse_serial = %s",
+            (greenhouse_serial,),
+        )
+        serial = cursor.fetchone()
+        print(serial, 'liaison')
+        if serial is None:
+            return False
+        return True
+
+    except Exception as e:
+        print(f"Error when verifying greenhouse exists: {e}")
+        return False

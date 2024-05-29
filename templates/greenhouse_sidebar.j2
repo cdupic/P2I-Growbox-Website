@@ -25,5 +25,14 @@
                 <a href="{{ url_for('greenhouse_actuator_page', greenhouse_serial=greenhouse_serial, actuator_id=actuator_id) }}">{{ actuator_name }}</a>
             </li>
         {% endfor %}
+        <li class="title">
+            <p>Collaborateurs</p>
+        </li>
+        {% for (user_name, user_role) in sidebar_users %}
+            <li class="indented {{ 'current' if current_sidebar_item == ('user', user_name) else ''}}">
+                <p>{{ user_name }} :  {{ user_role }}</p>
+            </li>
+        {% endfor %}
+
     </ul>
 </nav>

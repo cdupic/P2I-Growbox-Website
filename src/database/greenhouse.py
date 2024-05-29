@@ -83,28 +83,27 @@ def get_greenhouse_targets(greenhouse_serial):
     return {}
 
 
-
-def get_list_users_greenhouse(greenhouse_serial):
+def get_dic_users_role_greenhouse(greenhouse_serial):
     db = get_db()
     cursor = db.cursor()
-    users = []
+    users = {}
 
     try:
         cursor.execute(
-            "SELECT user_name "
+            "SELECT user_name, role "
             "FROM UserGreenHouses WHERE greenhouse_serial = %s",
             (greenhouse_serial,)
         )
-        for (user_name,) in cursor:
-            users.append(user_name)
-
-
+        for (user_name, role) in cursor:
+            if role == "guest":
+                users[user_name] = "invité"
+            elif role == "owner":
+                users[user_name] = "propriétaire"
         return users
 
     except Exception as e:
         print(f"Error when getting list users greenhouse: {e}")
         return None
-
 
 
 

@@ -35,6 +35,7 @@ CREATE TABLE UserGreenHouses
     user_name VARCHAR(16),
     greenhouse_serial VARCHAR(32),
     name VARCHAR(32),
+    role ENUM ('owner', 'guest'),
     PRIMARY KEY (user_name, greenhouse_serial),
     FOREIGN KEY (user_name) REFERENCES Users (user_name),
     FOREIGN KEY (greenhouse_serial) REFERENCES GreenHouses (serial)

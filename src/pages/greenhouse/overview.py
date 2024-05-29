@@ -1,6 +1,6 @@
 from flask import render_template, redirect, url_for, session
 
-from src.database.greenhouse import check_greenhouse_owner, get_greenhouse_name
+from src.database.greenhouse import check_greenhouse_owner, get_greenhouse_name, get_dic_users_role_greenhouse
 from src.database.measure import get_sensors_greenhouse, get_actuators_greenhouse, get_data_sensors_since, \
     get_data_actuators_since
 from src.utils.user import is_user_authenticated
@@ -16,6 +16,8 @@ def greenhouse_overview_page(greenhouse_serial):
     sensors = get_sensors_greenhouse(greenhouse_serial)
     actuators = get_actuators_greenhouse(greenhouse_serial)
 
+    users_roles = get_dic_users_role_greenhouse(greenhouse_serial)
+
     session['serial'] = greenhouse_serial
 
     data_sensors = get_data_sensors_since(greenhouse_serial, [], session['graphs_days'])
@@ -25,6 +27,8 @@ def greenhouse_overview_page(greenhouse_serial):
                            greenhouse_serial=greenhouse_serial,
                            sidebar_sensors=sensors.items(),
                            sidebar_actuators=actuators.items(),
+                           sidebar_users=users_roles.items(),
+
                            current_sidebar_item=('overview', None),
                            data_sensors=data_sensors,
                            greenhouse_name=get_greenhouse_name(greenhouse_serial, session['user_name']))

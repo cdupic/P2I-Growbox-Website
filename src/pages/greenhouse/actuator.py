@@ -2,6 +2,8 @@ from flask import redirect, url_for, session, render_template
 
 from src.database.measure import get_sensors_greenhouse, get_actuators_greenhouse, get_data_actuators_since, \
     get_actuator_type
+from src.database.greenhouse import get_dic_users_role_greenhouse
+
 from src.utils.measure import convert_actuator_type_to_french
 from src.utils.user import is_user_authenticated
 
@@ -15,6 +17,8 @@ def greenhouse_actuator_page(greenhouse_serial, actuator_id):
 
     sensors = get_sensors_greenhouse(greenhouse_serial)
     actuators = get_actuators_greenhouse(greenhouse_serial)
+
+    users_roles = get_dic_users_role_greenhouse(greenhouse_serial)
 
     actions = {}
     for data in get_data_actuators_since(greenhouse_serial, [actuator_id], session['graphs_days']).values():
