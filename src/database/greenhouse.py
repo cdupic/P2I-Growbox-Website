@@ -67,7 +67,6 @@ def get_greenhouse_name(serial_number, user_name):
 def get_greenhouse_targets(greenhouse_serial):
     db = get_db()
     cursor = db.cursor(dictionary=True)
-    targets = {}
 
     try:
         cursor.execute(
@@ -76,13 +75,12 @@ def get_greenhouse_targets(greenhouse_serial):
             "WHERE serial = %s",
             (greenhouse_serial,)
         )
-        for (data) in cursor:
-            targets = data
-
-        return targets
+        return cursor.fetchone()
 
     except Exception as e:
         print(f"Error when getting greenhouse targets: {e}")
+
+    return {}
 
 
 

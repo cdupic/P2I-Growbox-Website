@@ -27,24 +27,17 @@ def greenhouse_sensor_page(greenhouse_serial, sensor_id):
             else:
                 measures[date] = value
 
-    if sensor_type != "water_level":
-        target_measure = get_greenhouse_targets(greenhouse_serial)[sensor_type]
-        target_measure_list = []
-        for i in range(len(measures.values())):
-            target_measure_list.append(target_measure)
 
-    else:
-        # TODO : create a condition in js to not display second chart if sensor is water_level
-        target_measure_list = [0 for _ in measures.values()]
+    targets = get_greenhouse_targets(greenhouse_serial)
 
     return render_template("pages/greenhouse_sensor.j2",
                            greenhouse_serial=greenhouse_serial,
                            sensor_id=sensor_id,
-                           sensor_type=sensor_type_french,
+                           sensor_type=sensor_type,
                            sensor_unit=sensor_unit,
                            sidebar_sensors=sensors.items(),
                            sidebar_actuators=actuators.items(),
                            current_sidebar_item=('sensor', int(sensor_id)),
                            measures=measures,
-                           target_measure=target_measure_list)
+                           targets=targets)
 

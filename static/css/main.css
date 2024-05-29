@@ -51,7 +51,7 @@ main > section.title {
     display: block;
     margin: 30px auto;
 }
-main > section.title h1{
+main > section.title h1 {
     text-align: center;
     font-size: 1.8em;
     font-weight: 600;
@@ -70,6 +70,7 @@ main > div.message {
 
     border-radius: 10px;
     backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
 
     animation: 5s error;
 }
@@ -151,6 +152,7 @@ section.greenhouses-tiles p {
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.08);
     backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
     z-index: 10;
 }
 #overlay:not(.active) {

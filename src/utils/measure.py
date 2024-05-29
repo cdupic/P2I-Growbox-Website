@@ -22,7 +22,7 @@ def convert_actuator_type_to_french(sensor_type):
     elif sensor_type == "light":
         return "Vélux"
     elif sensor_type == "air_humidity":
-        return "Brumisateur"
+        return "Humidificateur"
     elif sensor_type == "water_level":
         return "Robinet"
     elif sensor_type == "O2":
