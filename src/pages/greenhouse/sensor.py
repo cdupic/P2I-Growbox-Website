@@ -22,7 +22,10 @@ def greenhouse_sensor_page(greenhouse_serial, sensor_id):
     measures = {}
     for data in get_data_sensors_since(greenhouse_serial, [sensor_id], session['graphs_days']).values():
         for date, value in data.items():
-            measures[date] = value
+            if sensor_type != "light":
+                measures[date] = value/10
+            else:
+                measures[date] = value
 
     if sensor_type != "water_level":
         target_measure = get_greenhouse_targets(greenhouse_serial)[sensor_type]
