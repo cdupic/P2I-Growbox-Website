@@ -1,4 +1,6 @@
 from flask import render_template, redirect, url_for, session
+from datetime import datetime, timedelta, time
+import pytz
 
 from src.database.greenhouse import check_greenhouse_owner, get_greenhouse_name, get_dic_users_role_greenhouse
 from src.database.measure import get_sensors_greenhouse, get_actuators_greenhouse, get_data_sensors_since, \
@@ -20,8 +22,20 @@ def greenhouse_overview_page(greenhouse_serial):
 
     session['serial'] = greenhouse_serial
 
-    data_sensors = get_data_sensors_since(greenhouse_serial, [], session['graphs_days'])
-    data_actuators = get_data_actuators_since(greenhouse_serial, [], session['graphs_days'])
+    if session.get('graph_start_date') and session.get('graph_start_date'):
+        date_start = session['graph_start_date']
+        date_end = session['graph_end_date']
+
+    else:
+        if not session.get('graph_delta_time'):
+            session['graph_delta_time'] = 7
+
+        date_start = datetime.utcnow() - timedelta(days=session['graph_delta_time'])
+        date_end = datetime.utcnow()
+
+
+    data_sensors = get_data_sensors_since(greenhouse_serial, [], date_start, date_end)
+    data_actuators = get_data_actuators_since(greenhouse_serial, [], date_start, date_end)
 
     return render_template('pages/greenhouse_overview.j2',
                            greenhouse_serial=greenhouse_serial,

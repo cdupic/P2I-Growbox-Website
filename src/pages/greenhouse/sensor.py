@@ -23,15 +23,23 @@ def greenhouse_sensor_page(greenhouse_serial, sensor_id):
     users_roles = get_dic_users_role_greenhouse(greenhouse_serial)
 
     measures = {}
-    for data in get_data_sensors_since(greenhouse_serial, [sensor_id], session['graphs_days']).values():
+    if session.get('graph_start_date'):
+        date_start = session['graph_start_date']
+        date_end = session['graph_end_date']
+
+    else:
+        if not session.get('graph_delta_time'):
+            session['graph_delta_time'] = 7
+
+        date_start = datetime.utcnow() - timedelta(days=session['graph_delta_time'])
+        date_end = datetime.utcnow()
+
+    for data in get_data_sensors_since(greenhouse_serial, [sensor_id], date_start, date_end).values():
         for date, value in data.items():
             if sensor_type != "light":
                 measures[date] = value / 10
             else:
                 measures[date] = value
-
-    from_datetime_utc = datetime.utcnow() - timedelta(days=session['graphs_days'])
-    to_datetime_utc = datetime.utcnow()
 
     targets = get_greenhouse_targets(greenhouse_serial)
     return render_template("pages/greenhouse_sensor.j2",
@@ -46,7 +54,7 @@ def greenhouse_sensor_page(greenhouse_serial, sensor_id):
                            current_sensor_full_name=convert_sensor_type_to_full_name(sensor_type),
                            measures=measures,
                            targets=targets,
-                           from_datetime_utc=str(datetime.utcnow() - timedelta(days=session['graphs_days'])),
-                           to_datetime_utc=str(datetime.utcnow()),
-                           from_date=(datetime.now() - timedelta(days=session['graphs_days'])).strftime("%Y-%m-%d"),
-                           to_date=datetime.now().strftime("%Y-%m-%d"))
+                           from_datetime_utc=str(date_start),
+                           to_datetime_utc=str(date_end),
+                           from_date=date_start.strftime("%Y-%m-%d"),
+                           to_date=date_end.strftime("%Y-%m-%d"))

@@ -1,4 +1,5 @@
 from flask import redirect, url_for, session, render_template
+from datetime import datetime, timedelta
 
 from src.database.measure import get_sensors_greenhouse, get_actuators_greenhouse, get_data_actuators_since, \
     get_actuator_type
@@ -21,9 +22,22 @@ def greenhouse_actuator_page(greenhouse_serial, actuator_id):
     users_roles = get_dic_users_role_greenhouse(greenhouse_serial)
 
     actions = {}
-    for data in get_data_actuators_since(greenhouse_serial, [actuator_id], session['graphs_days']).values():
+
+    if session.get('graph_start_date'):
+        date_start = session['graph_start_date']
+        date_end = session['graph_end_date']
+
+    else:
+        if not session.get('graph_delta_time'):
+            session['graph_delta_time'] = 7
+
+        date_start = datetime.utcnow() - timedelta(days=session['graph_delta_time'])
+        date_end = datetime.utcnow()
+
+    for data in get_data_actuators_since(greenhouse_serial, [actuator_id], date_start, date_end).values():
         for date, value in data.items():
             actions[date] = value
+
 
     return render_template('pages/greenhouse_actuator.j2',
                            actions=actions,
