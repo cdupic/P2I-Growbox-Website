@@ -8,7 +8,7 @@ def get_plants_greenhouse(greenhouse_serial):
 
     try:
         cursor.execute(
-            "SELECT Plants.id, GreenHousePlants.date_start "
+            "SELECT Plants.name, GreenHousePlants.date_start "
             "FROM Plants, GreenHouses, GreenHousePlants "
             "WHERE GreenHouses.serial = GreenHousePlants.greenhouse_serial and Plants.id = GreenHousePlants.plant_id "
             "and greenhouse_serial = %s and date_end is NULL",
@@ -31,7 +31,7 @@ def get_history_greenhouse(greenhouse_serial):
 
     try:
         cursor.execute(
-            "SELECT Plants.id, GreenHousePlants.date_start, GreenHousePlants.date_end "
+            "SELECT Plants.name, GreenHousePlants.date_start, GreenHousePlants.date_end "
             "FROM Plants, GreenHousePlants "
             "WHERE GreenHousePlants.greenhouse_serial = %s and Plants.id = GreenHousePlants.plant_id "
             "and date_end is NOT NULL",

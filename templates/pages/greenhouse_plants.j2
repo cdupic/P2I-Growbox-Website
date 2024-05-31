@@ -4,5 +4,22 @@
 
     <h1>Gestion des plantes de la serre {{ greenhouse_name }} ({{ greenhouse_serial }})</h1>
     <h2>TODO: plants management form</h2>
+    <p> Plantes actuellement présentes</p>
+    <ul>
+        {% for couple in plants_in_greenhouse %}
+            {%  for plante, dates in couple.items() %}
+                <p>  {{ plante }}  depuis : {{ dates[0]}} </p>
+            {%  endfor %}
+        {% endfor %}
+    </ul>
+
+    <p> Plantes présentes auparavant </p>
+    <ul>
+        {% for couple in plants_history_greenhouse %}
+            {%  for plante, dates in couple.items() %}
+                <p>  {{ plante }}  du : {{ dates[0]}} au {{ dates[1] }} </p>
+            {%  endfor %}
+        {% endfor %}
+    </ul>
 
 {% endblock %}
