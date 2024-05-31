@@ -68,19 +68,16 @@ def greenhouse_sensor_page(greenhouse_serial, sensor_id):
 
 
 def get_format_latest_measure(date_latest):
-    if date_latest.month != datetime.utcnow().month:
-        date_latest_month = date_latest.Strftime("%B")
-        return f" en {date_latest_month}"
+    diff = datetime.utcnow() - date_latest
+    if diff < timedelta(minutes=1):
+        return f"il y a {diff.seconds} secondes"
+    elif diff < timedelta(hours=1):
+        return f"il y a {diff.seconds // 60} minutes"
+    elif diff < timedelta(days=1):
+        return f"il y a {diff.seconds // 3600} heures"
+    elif diff < timedelta(days=30):
+        return f"il y a {diff.days} jours"
+    else:
+        return f"en {date_latest.strftime('%B')}"
 
-    elif date_latest.day != datetime.utcnow().day:
-        date_latest_day = date_latest.strftime("%d")
-        return f" il y a  {datetime.now().day - int(date_latest_day)} jours"
-
-    elif date_latest.hour != datetime.utcnow().hour:
-        date_latest_hour = date_latest.strftime("%H")
-        return f" il y a  {datetime.now().hour - int(date_latest_hour)} heures"
-
-    elif date_latest.minute != datetime.utcnow().minute:
-        date_latest_minute = date_latest.strftime("%M")
-        return f" il y a  {datetime.now().minute - int(date_latest_minute)} minutes"
 

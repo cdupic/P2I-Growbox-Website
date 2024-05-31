@@ -207,20 +207,28 @@ def get_sensor_unit(sensor_id):
         return "cm"
 
 
-def get_number_of_measures(greenhouse_serial, sensor_id):
+def get_number_of_measures(greenhouse_serial, list_sensors):
     db = get_db()
     cursor = db.cursor()
     try:
-        cursor.execute(
-            "SELECT COUNT(*) "
-            "FROM Measures, Sensors "
-            "WHERE Measures.sensor_id = Sensors.id and Sensors.id = %s and Sensors.greenhouse_serial= %s ",
-            (sensor_id, greenhouse_serial))
+        if not list_sensors:
+            list_sensors = tuple(get_sensors_greenhouse(greenhouse_serial).keys())
+        sensors_list_str = ', '.join(map(str, list_sensors))
 
-        return cursor.fetchone()[0]
+        number_measures = 0
+
+        for sensor_id in sensors_list_str:
+            cursor.execute(
+                "SELECT count(*) "
+                "FROM Sensors, Measures "
+                "WHERE Sensors.greenhouse_serial = %s and Sensors.id = Measures.sensor_id and Sensors.id=%s ",
+                (greenhouse_serial, sensor_id)
+            )
+            number_measures += cursor.fetchone()[0]
+        return number_measures
 
     except Exception as e:
-        print(f"Error when getting number of measures of sensor {sensor_id} in greenhouse {greenhouse_serial}: {e}")
+        print(f"Error when getting number of measures of sensor {list_sensors} in greenhouse {greenhouse_serial}: {e}")
         return None
 
 
@@ -255,5 +263,32 @@ def get_date_last_measure(greenhouse_serial, sensor_id):
 
     except Exception as e:
         print(f"Error when getting last measure of sensor {sensor_id} in greenhouse {greenhouse_serial}: {e}")
+        return None
+
+
+def get_number_measures(greenhouse_serial, date_start=None, date_end=None):
+    db = get_db()
+    cursor = db.cursor()
+    try:
+        if not date_start:
+            cursor.execute(
+                "SELECT count(*) "
+                "FROM Sensors, Measures "
+                "WHERE Sensors.greenhouse_serial = %s and Sensors.id = Measures.sensor_id",
+                (greenhouse_serial,)
+            )
+            return cursor.fetchone()[0]
+        else:
+            cursor.execute(
+                "SELECT count(*) "
+                "FROM Sensors, Measures "
+                "WHERE Sensors.greenhouse_serial = %s and Sensors.id = Measures.sensor_id and (Measures.date) BETWEEN %s and %s",
+                (greenhouse_serial, date_start, date_end)
+            )
+            return cursor.fetchone()[0]
+
+
+    except Exception as e:
+        print(f"Error when getting number of measures in greenhouse {greenhouse_serial}: {e}")
         return None
 

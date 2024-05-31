@@ -23,11 +23,16 @@ def timestamp_manager():
         session['error'] = "La date de fin doit être postérieure à la date de début."
         return redirect(request.form.get('r'))
 
-    if abs(now - end_datetime_local) < timedelta(minutes=1):
+    if abs(now - end_datetime_local) < timedelta(seconds=1) and start_datetime_local.day != end_datetime_local.day:
         # Gliding window mode
         session['graph_delta_time'] = (end_datetime_utc - start_datetime_utc).days
         session['graph_start_date'] = None
         session['graph_end_date'] = None
+    elif start_datetime_utc.day == end_datetime_utc.day:
+        # Real time mode
+        session['graph_start_date'] = datetime.combine(start_datetime_utc.date(), time(0, 0, 0))
+        session['graph_end_date'] = datetime.utcnow()
+        session['graphs_delta_time'] = None
     else:
         # Start and end date mode
         session['graph_start_date'] = start_datetime_local
