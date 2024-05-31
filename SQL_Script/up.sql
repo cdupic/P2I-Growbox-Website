@@ -20,14 +20,15 @@ CREATE TABLE Users
 CREATE TABLE GreenHouses
 (
     serial   VARCHAR(32) PRIMARY KEY,
-    update_interval INT UNSIGNED,   # in seconds
+    update_interval INT UNSIGNED,   # in minutes
     plant_init_date DATETIME DEFAULT UTC_TIMESTAMP(),
-    temperature     SMALLINT, # in °C
-    soil_humidity   SMALLINT,   # in %
-    air_humidity    SMALLINT,   # in %
+    temperature     SMALLINT, # in °C (/10)
+    soil_humidity   SMALLINT,   # in % (/10)
+    air_humidity    SMALLINT,   # in % (/10)
     light           SMALLINT,   # in lux
-    O2              SMALLINT, # in %
-    need_downlink  BOOLEAN DEFAULT FALSE
+    O2              SMALLINT, # in % (/10)
+    need_downlink  BOOLEAN DEFAULT FALSE,
+    is_custom_config BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE UserGreenHouses

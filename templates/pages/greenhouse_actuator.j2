@@ -3,6 +3,7 @@
 {% block content %}
     <h1>Actions de la serre {{ greenhouse_name }}</h1>
     <h2>Liste des actions pour l'actionneur {{ actuator_type }}</h2>
+
     <ul>
         {% for date, value in actions.items() %}
             <p> Le {{ date }}  valeur : {{ value}}

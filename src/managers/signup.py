@@ -10,6 +10,7 @@ def signup_manager():
             session['user_name'] = request.form['user_name']
             session['auth_token'] = auth_token
             session['graphs_days'] = 7
+            session.permanent = True
             session['success'] = 'Votre compte a été créé avec succès'
             return redirect(url_for('greenhouses_page'))
 

@@ -54,6 +54,8 @@ def authenticate_user(user_name, password):
         if result:
             session['user_name'] = user_name
             session['auth_token'] = result[0]
+            session['graphs_days'] = 7
+            session.permanent = True
             return True
 
     except Exception as e:
@@ -78,4 +80,5 @@ def create_user(user_name, password):
     except Exception as e:
         print(f"Error when creating user: {e}")
         return None
+
 

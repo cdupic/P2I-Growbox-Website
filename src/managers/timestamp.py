@@ -26,10 +26,13 @@ def timestamp_manager():
     if abs(now - end_datetime_local) < timedelta(minutes=1):
         # Gliding window mode
         session['graphs_delta_time'] = (end_datetime_utc - start_datetime_utc).days
+        session['graph_start_date'] = None
+        session['graph_end_date'] = None
     else:
         # Start and end date mode
         session['graph_start_date'] = start_datetime_local
         session['graph_end_date'] = end_datetime_local
+        session['graphs_delta_time'] = None
 
     session['success'] = f"Vue actualisée sur {(end_datetime_utc - start_datetime_utc).days} jours."
     return redirect(request.form.get('r'))
