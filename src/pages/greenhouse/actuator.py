@@ -2,7 +2,7 @@ from flask import redirect, url_for, session, render_template
 from datetime import datetime, timedelta
 
 from src.database.measure import get_sensors_greenhouse, get_actuators_greenhouse, get_data_actuators_since, \
-    get_actuator_type
+    get_actuator_type, get_number_of_actions
 from src.database.greenhouse import get_dic_users_role_greenhouse
 
 from src.utils.sensor_names import convert_actuator_type_to_french
@@ -34,9 +34,13 @@ def greenhouse_actuator_page(greenhouse_serial, actuator_id):
         date_start = datetime.utcnow() - timedelta(days=session['graph_delta_time'])
         date_end = datetime.utcnow()
 
+    date_latest = datetime(2020, 1, 1, 1)
     for data in get_data_actuators_since(greenhouse_serial, [actuator_id], date_start, date_end).values():
         for date, value in data.items():
+            if date > date_latest:
+                date_latest = date
             actions[date] = value
+
 
 
     return render_template('pages/greenhouse_actuator.j2',

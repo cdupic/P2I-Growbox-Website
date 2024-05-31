@@ -158,7 +158,8 @@ def get_greenhouse_actions(greenhouse_serial, actuator_id, date_start, date_end)
             "SELECT Actions.actuator_id, Actions.date, Actions.value, Actuators.type "
             "FROM Actions, Actuators "
             "WHERE Actions.actuator_id = Actuators.id and Actuators.id= %s and Actuators.greenhouse_serial = %s and "
-            "Actions.date BETWEEN %s and %s",
+            "Actions.date BETWEEN %s and %s "
+            "ORDER BY Actions.date",
             (actuator_id, greenhouse_serial, date_start, date_end))
 
         for (actuator_id, date, value, sensor_type) in cursor:
@@ -204,3 +205,55 @@ def get_sensor_unit(sensor_id):
         return "ppm"
     elif sensor_type == "water_level":
         return "cm"
+
+
+def get_number_of_measures(greenhouse_serial, sensor_id):
+    db = get_db()
+    cursor = db.cursor()
+    try:
+        cursor.execute(
+            "SELECT COUNT(*) "
+            "FROM Measures, Sensors "
+            "WHERE Measures.sensor_id = Sensors.id and Sensors.id = %s and Sensors.greenhouse_serial= %s ",
+            (sensor_id, greenhouse_serial))
+
+        return cursor.fetchone()[0]
+
+    except Exception as e:
+        print(f"Error when getting number of measures of sensor {sensor_id} in greenhouse {greenhouse_serial}: {e}")
+        return None
+
+
+def get_number_of_actions(greenhouse_serial, actuator_id):
+    db = get_db()
+    cursor = db.cursor()
+    try:
+        cursor.execute(
+            "SELECT COUNT(*) "
+            "FROM Actions, Actuators "
+            "WHERE Actions.actuator_id = Actuators.id and Actuators.id = %s and Actuators.greenhouse_serial= %s ",
+            (actuator_id, greenhouse_serial))
+
+        return cursor.fetchone()[0]
+
+    except Exception as e:
+        print(f"Error when getting number of actions of actuator {actuator_id} in greenhouse {greenhouse_serial}: {e}")
+        return None
+
+
+def get_date_last_measure(greenhouse_serial, sensor_id):
+    db = get_db()
+    cursor = db.cursor()
+    try:
+        cursor.execute(
+            "SELECT MAX(Measures.date) "
+            "FROM Measures, Sensors "
+            "WHERE Measures.sensor_id = Sensors.id and Sensors.id = %s and Sensors.greenhouse_serial= %s ",
+            (sensor_id, greenhouse_serial))
+
+        return cursor.fetchone()[0]
+
+    except Exception as e:
+        print(f"Error when getting last measure of sensor {sensor_id} in greenhouse {greenhouse_serial}: {e}")
+        return None
+
