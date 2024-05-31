@@ -1,18 +1,39 @@
-<div>
+<div class="authors">
+    <div>
+        <p>Projet de P2I 2 (221-A)</p>
+        <p>INSA Lyon FIMI Promo 66</p>
+        <div class="authors-list">
+            <div>
+                <p><a href="https://github.com/ClementGre">Clément Grennerat</a></p>
+                <p><a href="">Clément Dupic</a></p>
+                <p><a href="">Nathan Daval</a></p>
+            </div>
+            <div>
+                <p><a href="">Victoria Nomezine</a></p>
+                <p><a href="https://img.20mn.fr/-hvcINCVRtOYTmgHym9-VCk/1444x920_un-paresseux-dans-la-foret-tropicale-du-costa-rica">Hicham Boudjeroua</a></p>
+                <p><a href="">Sophie Anthoine</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="image">
+    <div>
+        <img src="{{ url_for('static', filename='img/title.svg') }}" alt="GrowBox">
+        <p>Copyright &copy; GrowBox project - 2024</p>
+    </div>
+</div>
+<div class="links">
+    <p><a href="petit malin !">CGU</a></p>
+    <p><a href="so sexy">Conditions de ventes</a></p>
+    <p><a href="bien vu">Politique de confidentialité</a></p>
+    {% if 'user_name' not in session %}
+        <p><a href="{{ url_for('signup_page') }}">Créer un compte</a></p>
+        <p><a href="{{ url_for('login_page') }}">Connexion</a></p>
+    {% else %}
+        <p><a href="{{ url_for('greenhouses_page') }}">Mes serres</a></p>
+        <p><a href="{{ url_for('logout_manager') }}">Déconnexion</a></p>
+    {% endif %}
+</div>
 
-</div>
-<div>
-    <div>
-        <p>Clément Grennerat</p>
-        <p>Clément Dupic</p>
-        <p>Nathan Daval</p>
-    </div>
-    <div>
-        <p>Victoria Nomezine</p>
-        <p>Hicham Boudjeroua</p>
-        <p>Sophie Anthoine</p>
-    </div>
-</div>
-<div>
-    <img src="{{ url_for('static', filename='img/title.svg') }}" alt="GrowBox">
-</div>
+
+
