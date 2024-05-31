@@ -13,5 +13,13 @@
 #content .heading > div {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
+    align-items: flex-start;
 }
+
+#content .heading > div.title {
+    flex-direction: column;
+}
+#content .heading > div.title p {
+    font-size: 0.8em;
+}
+
