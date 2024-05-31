@@ -10,62 +10,57 @@
     </div>
 
     <div>
-        <h2>Plantes actuellement dans la serre</h2>
-{#        <ul>#}
-{#            {% for couple in plants_in_greenhouse %}#}
-{#                {%  for plante, dates in couple.items() %}#}
-{#                    <p>  {{ plante }}  depuis : {{ dates[0]}} </p>#}
-{#                {%  endfor %}#}
-{#            {% endfor %}#}
-{#        </ul>#}
+
+        <style>
+            #plantForm {
+
+            }
+            #plantForm .association {
+
+            }
+            #plantForm .association .controls {
+                display: flex;
+            }
+            #plantForm .association .config p{
+                font-size: .8em;
+            }
+        </style>
+
 
         <form id="plantForm" method="POST" action="{{ url_for('plant_manager') }}">
-            <table>
-                <thead>
-                <tr>
-                    <th>Plant Name</th>
-                    <th>Temperature</th>
-                    <th>Soil Humidity</th>
-                    <th>Air Humidity</th>
-                    <th>Light</th>
-                    <th>O2</th>
-                    <th>Start Date</th>
-                    <th>Count</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody id="currentPlants">
-                {% for association_id, (plant_id, count, start_date, _) in current_plants.items() %}
-                    <tr data-association-id="{{ association_id }}">
-                        <td>{{ available_plants[plant_id][0] }}</td>
-                        <td>{{ available_plants[plant_id][1] }}</td>
-                        <td>{{ available_plants[plant_id][2] }}</td>
-                        <td>{{ available_plants[plant_id][3] }}</td>
-                        <td>{{ available_plants[plant_id][4] }}</td>
-                        <td>{{ available_plants[plant_id][5] }}</td>
-                        <td>{{ start_date }}</td>
-                        <td><input type="number" name="count_{{ association_id }}" value="{{ count }}" min="0"></td>
-                        <td><button type="button" onclick="removePlant({{ association_id }})">Remove</button></td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-                <tfoot>
-                <tr>
-                    <td colspan="7">
-                        <select id="newPlantSelect">
-                            {% for plant_id, (name, _, _, _, _, _) in available_plants.items() %}
-                                <option value="{{ plant_id }}">{{ name }}</option>
-                            {% endfor %}
-                        </select>
-                    </td>
-                    <td><input type="number" id="newPlantCount" value="1" min="1"></td>
-                    <td><button type="button" onclick="addPlant()">Add Plant</button></td>
-                </tr>
-                </tfoot>
-            </table>
-            <input type="hidden" name="new_plants" id="newPlantsInput">
-            <input type="hidden" name="remove_plants" id="removePlantsInput">
-            <button type="submit">Submit</button>
+
+            <h2>Plantes actuellement dans la serre</h2>
+
+            {% for association_id, (plant_id, count, start_date, _) in current_plants.items() %}
+
+                <div class="association" data-association-id="{{ association_id }}">
+                    <div class="controls">
+                        <p>{{ available_plants[plant_id][0] }}</p>
+                        <p>{{ start_date }}</p>
+
+
+                        <input type="number" name="count_{{ association_id }}" value="{{ count }}" min="0">
+
+                        <button type="button" onclick="removePlant({{ association_id }})">Remove</button>
+                    </div>
+                    <div class="config">
+                        <p>Temp&#x202F;: {{ available_plants[plant_id][1] }}°C, Sol HR&#x202F;: {{ available_plants[plant_id][2] }}%, Air HR&#x202F;: {{ available_plants[plant_id][3] }}, Lux&#x202F;: {{ available_plants[plant_id][4] }}, O2&#x202F;: {{ available_plants[plant_id][5] }}</p>
+                    </div>
+                </div>
+
+            {% endfor %}
+
+            <h2>Ajouter une plante</h2>
+
+            <div class="add-plant-inputs">
+                <label for="input-plant-search" style="display: none">Rechercher une plante</label>
+                <input type="text" name="input-plant-search" id="input-plant-search">
+                <label for="input-plant-count" style="display: none">Rechercher une plante</label>
+                <input type="number" min="0" name="input-plant-count" id="input-plant-count">
+            </div>
+            <ul id="plant-results">
+
+            </ul>
         </form>
 
         <p> Plantes présentes auparavant </p>
@@ -131,6 +126,30 @@
             document.getElementById('removePlantsInput').value = removePlants.join(',');
         }
 
+        document.addEventListener("DOMContentLoaded", function() {
+            const availablePlants = Object.entries({{ available_plants|tojson }});
+            const plantInput = document.getElementById('newPlantInput');
+            const plantList = document.getElementById('plantList');
+
+            plantInput.addEventListener('input', function() {
+                const searchValue = plantInput.value.toLowerCase();
+                const filteredPlants = availablePlants.filter(([id, [name]]) => name.toLowerCase().includes(searchValue));
+
+                plantList.innerHTML = '';
+                filteredPlants.forEach(([id, [name]]) => {
+                    const option = document.createElement('div');
+                    option.textContent = name;
+                    option.setAttribute('data-plant-id', id);
+                    option.addEventListener('click', function() {
+                        plantInput.value = name;
+                        plantInput.setAttribute('data-plant-id', id);
+                        plantList.innerHTML = '';
+                    });
+                    plantList.appendChild(option);
+                });
+            });
+        });
+
         document.getElementById('plantForm').addEventListener('submit', function(event) {
             const counts = document.querySelectorAll('input[name^="count_"]');
             counts.forEach(count => {
@@ -145,7 +164,6 @@
             updateHiddenInputs();
         });
     </script>
-
 
 
 {% endblock %}
