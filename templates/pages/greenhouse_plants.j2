@@ -5,19 +5,68 @@
     <div class="heading">
         <div class="title">
             <h1>Gestion des plantes</h1>
-            <p>{{ greenhouse_name }} contient {{ plants_in_greenhouse|length }} plantes</p>
+            <p>{{ greenhouse_name }} contient {{ available_plants|length }} plantes</p>
         </div>
     </div>
 
     <div>
-        <p> Plantes actuellement présentes</p>
-        <ul>
-            {% for couple in plants_in_greenhouse %}
-                {%  for plante, dates in couple.items() %}
-                    <p>  {{ plante }}  depuis : {{ dates[0]}} </p>
-                {%  endfor %}
-            {% endfor %}
-        </ul>
+        <h2>Plantes actuellement dans la serre</h2>
+{#        <ul>#}
+{#            {% for couple in plants_in_greenhouse %}#}
+{#                {%  for plante, dates in couple.items() %}#}
+{#                    <p>  {{ plante }}  depuis : {{ dates[0]}} </p>#}
+{#                {%  endfor %}#}
+{#            {% endfor %}#}
+{#        </ul>#}
+
+        <form id="plantForm" method="POST" action="{{ url_for('plant_manager') }}">
+            <table>
+                <thead>
+                <tr>
+                    <th>Plant Name</th>
+                    <th>Temperature</th>
+                    <th>Soil Humidity</th>
+                    <th>Air Humidity</th>
+                    <th>Light</th>
+                    <th>O2</th>
+                    <th>Start Date</th>
+                    <th>Count</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody id="currentPlants">
+                {% for association_id, (plant_id, count, start_date, _) in current_plants.items() %}
+                    <tr data-association-id="{{ association_id }}">
+                        <td>{{ available_plants[plant_id][0] }}</td>
+                        <td>{{ available_plants[plant_id][1] }}</td>
+                        <td>{{ available_plants[plant_id][2] }}</td>
+                        <td>{{ available_plants[plant_id][3] }}</td>
+                        <td>{{ available_plants[plant_id][4] }}</td>
+                        <td>{{ available_plants[plant_id][5] }}</td>
+                        <td>{{ start_date }}</td>
+                        <td><input type="number" name="count_{{ association_id }}" value="{{ count }}" min="0"></td>
+                        <td><button type="button" onclick="removePlant({{ association_id }})">Remove</button></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="7">
+                        <select id="newPlantSelect">
+                            {% for plant_id, (name, _, _, _, _, _) in available_plants.items() %}
+                                <option value="{{ plant_id }}">{{ name }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td><input type="number" id="newPlantCount" value="1" min="1"></td>
+                    <td><button type="button" onclick="addPlant()">Add Plant</button></td>
+                </tr>
+                </tfoot>
+            </table>
+            <input type="hidden" name="new_plants" id="newPlantsInput">
+            <input type="hidden" name="remove_plants" id="removePlantsInput">
+            <button type="submit">Submit</button>
+        </form>
 
         <p> Plantes présentes auparavant </p>
         <ul>
@@ -28,6 +77,75 @@
             {% endfor %}
         </ul>
     </div>
+
+    <div>
+        <h2>Configurer les asservissements manuellement</h2>
+        <p> Plantes actuellement présentes</p>
+    </div>
+
+    <script>
+        let newPlants = [];
+        let removePlants = [];
+
+        function addPlant() {
+            const plantSelect = document.getElementById('newPlantSelect');
+            const plantCount = document.getElementById('newPlantCount').value;
+            const plantId = plantSelect.value;
+            const plantName = plantSelect.options[plantSelect.selectedIndex].text;
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${plantName}</td>
+                <td>...</td> <!-- Temperature -->
+                <td>...</td> <!-- Soil Humidity -->
+                <td>...</td> <!-- Air Humidity -->
+                <td>...</td> <!-- Light -->
+                <td>...</td> <!-- O2 -->
+                <td>New</td> <!-- Start Date -->
+                <td><input type="number" name="count_new_${plantId}" value="${plantCount}" min="1"></td>
+                <td><button type="button" onclick="removeNewPlant(this, '${plantId}')">Remove</button></td>
+            `;
+            document.getElementById('currentPlants').appendChild(row);
+            newPlants.push(plantId + ':' + plantCount);
+            updateHiddenInputs();
+        }
+
+        function removePlant(associationId) {
+            const row = document.querySelector(`tr[data-association-id="${associationId}"]`);
+            if (row) {
+                row.remove();
+                removePlants.push(associationId);
+                updateHiddenInputs();
+            }
+        }
+
+        function removeNewPlant(button, plantId) {
+            const row = button.closest('tr');
+            row.remove();
+            newPlants = newPlants.filter(np => !np.startsWith(plantId + ':'));
+            updateHiddenInputs();
+        }
+
+        function updateHiddenInputs() {
+            document.getElementById('newPlantsInput').value = newPlants.join(',');
+            document.getElementById('removePlantsInput').value = removePlants.join(',');
+        }
+
+        document.getElementById('plantForm').addEventListener('submit', function(event) {
+            const counts = document.querySelectorAll('input[name^="count_"]');
+            counts.forEach(count => {
+                if (count.name.startsWith('count_new_') && count.value == 0) {
+                    const plantId = count.name.replace('count_new_', '');
+                    newPlants = newPlants.filter(np => !np.startsWith(plantId + ':'));
+                } else if (count.name.startsWith('count_') && count.value == 0) {
+                    const associationId = count.name.replace('count_', '');
+                    removePlants.push(associationId);
+                }
+            });
+            updateHiddenInputs();
+        });
+    </script>
+
 
 
 {% endblock %}
