@@ -129,7 +129,7 @@ window.configureChart = (el_id, dates, measures, targets, gh_serial, is_sensor, 
                 x: {
                     type: 'time',
                     min: newUTCDate(from_date),
-                    max: newUTCDate(to_date, 30),
+                    max: newUTCDate(to_date, 0),
                     time: {
                         tooltipFormat: 'YYYY-MM-DD HH:mm:ss',
                         unit: unit,

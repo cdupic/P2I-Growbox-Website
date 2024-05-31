@@ -1,21 +1,18 @@
 from datetime import datetime
 
-from flask import render_template, session, request
-
-from src.database.measure import get_sensors_greenhouse, get_actuators_greenhouse
+from flask import session, request, redirect
+from datetime import time
 
 
 def timestamp_manager():
-    greenhouse_serial = session['serial']
-
     if 'start_date' in request.form and 'end_date' in request.form:
-        start_date = datetime.strptime(request.form.get('start_date'), "%Y-%m-%d").date()
-        end_date = datetime.strptime(request.form.get('end_date'), "%Y-%m-%d").date()
-        session['graphs_days'] = (end_date - start_date).days
-        print(session['graphs_days'])
+        if request.form.get('start_date') != '' and request.form.get('end_date') != '':
+            start_date = datetime.strptime(request.form.get('start_date'), "%Y-%m-%d").date()
+            end_date = datetime.strptime(request.form.get('end_date'), "%Y-%m-%d").date()
 
-    return render_template("pages/timestamp.j2",
-                           greenhouse_serial=greenhouse_serial,
-                           sidebar_sensors=get_sensors_greenhouse(greenhouse_serial).items(),
-                           sidebar_actuators=get_actuators_greenhouse(greenhouse_serial).items(),
-                           current_sidebar_item=('timestamp'))
+            start_datetime_local = datetime.combine(start_date, time(0, 0))
+            end_datetime_local = datetime.combine(end_date, time(23, 59))
+
+            session['graphs_days'] = (end_datetime_local - start_datetime_local).days
+
+    return redirect(request.form.get('r'))

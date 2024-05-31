@@ -3,9 +3,27 @@
 {% block content %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/charts.css') }}">
 
-    <div class="graph">
-        <canvas id="chart1" class="chart" aria-label="Graphique des valeurs du capteur {{ sensor_type }}"
-                role="img"></canvas>
+    <div class="heading">
+        <div>
+            <h1>{{ current_sensor_full_name }}</h1>
+        </div>
+        <div>
+
+            <form action="{{ url_for('timestamp_manager') }}" method="POST" class="auto-submit">
+                <label for="start_date">Du</label>
+                <input type="date" id="from_date" name="start_date" value="{{ from_date }}">
+                <label for="end_date">au</label>
+                <input type="date" id="to_date" name="end_date" value="{{ to_date }}">
+                <input type="hidden" name="r" value="{{ url_for('greenhouse_sensor_page', greenhouse_serial=greenhouse_serial, sensor_id=sensor_id) }}">
+            </form>
+        </div>
+    </div>
+
+    <div class="graph-tiles">
+        <div class="graph">
+            <canvas id="chart1" class="chart" aria-label="Graphique des valeurs du capteur {{ sensor_type }}"
+                    role="img"></canvas>
+        </div>
     </div>
     <script>
         window.configureChart(
@@ -17,8 +35,8 @@
             true,
             {{ sensor_type|tojson }},
             {{ sensor_id|tojson }},
-            {{ from_date|tojson }},
-            {{ to_date|tojson }}
+            {{ from_datetime_utc|tojson }},
+            {{ to_datetime_utc|tojson }}
         );
     </script>
 {% endblock %}

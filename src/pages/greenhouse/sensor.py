@@ -1,11 +1,12 @@
+from datetime import datetime, timedelta
+
 from flask import render_template, redirect, url_for, session
 
 from src.database.greenhouse import get_greenhouse_targets, get_dic_users_role_greenhouse
 from src.database.measure import get_sensors_greenhouse, get_actuators_greenhouse, get_data_sensors_since, \
     get_sensor_type, get_sensor_unit
-from src.utils.measure import convert_sensor_type_to_french
+from src.utils.measure import convert_sensor_type_to_french, convert_sensor_type_to_full_name
 from src.utils.user import is_user_authenticated
-from datetime import datetime, timedelta
 
 
 def greenhouse_sensor_page(greenhouse_serial, sensor_id):
@@ -29,6 +30,9 @@ def greenhouse_sensor_page(greenhouse_serial, sensor_id):
             else:
                 measures[date] = value
 
+    from_datetime_utc = datetime.utcnow() - timedelta(days=session['graphs_days'])
+    to_datetime_utc = datetime.utcnow()
+
     targets = get_greenhouse_targets(greenhouse_serial)
     return render_template("pages/greenhouse_sensor.j2",
                            greenhouse_serial=greenhouse_serial,
@@ -39,7 +43,10 @@ def greenhouse_sensor_page(greenhouse_serial, sensor_id):
                            sidebar_actuators=actuators.items(),
                            sidebar_users=users_roles.items(),
                            current_sidebar_item=('sensor', int(sensor_id)),
+                           current_sensor_full_name=convert_sensor_type_to_full_name(sensor_type),
                            measures=measures,
                            targets=targets,
-                           from_date=str(datetime.utcnow() - timedelta(days=session['graphs_days'])),
-                           to_date=str(datetime.utcnow()))
+                           from_datetime_utc=str(datetime.utcnow() - timedelta(days=session['graphs_days'])),
+                           to_datetime_utc=str(datetime.utcnow()),
+                           from_date=(datetime.now() - timedelta(days=session['graphs_days'])).strftime("%Y-%m-%d"),
+                           to_date=datetime.now().strftime("%Y-%m-%d"))

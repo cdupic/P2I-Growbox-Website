@@ -1,11 +1,40 @@
-function openNav() {
-    document.getElementById("mySidebar").style.width = "250px";
-    document.getElementById("main").style.marginLeft = "250px";
-    document.querySelector(".openbtn").style.display = "none"; // cache le bouton
-}
+document.addEventListener("DOMContentLoaded", () => {
+    const AUTO_SUBMIT_DELAY = 1500;
 
-function closeNav() {
-    document.getElementById("mySidebar").style.width = "0";
-    document.getElementById("main").style.marginLeft= "0";
-    document.querySelector(".openbtn").style.display = "block"; // montre le bouton
-}
+    const forms = document.querySelectorAll('form.auto-submit');
+
+    forms.forEach(form => {
+        const inputs = form.querySelectorAll('input, textarea, select');
+        inputs.forEach(input => {
+            let timeout;
+            let previousValue = input.value;
+
+            if (input.type === 'date') {
+                // Handle date inputs separately
+                input.addEventListener('change', () => {
+                    if (input.value !== previousValue) {
+                        form.submit();
+                    }
+                });
+
+                input.addEventListener('input', () => {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => {
+                        if (input.value !== previousValue) {
+                            form.submit();
+                        }
+                    }, AUTO_SUBMIT_DELAY);
+                });
+            } else {
+                input.addEventListener('input', () => {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => {
+                        if (input.value !== previousValue) {
+                            form.submit();
+                        }
+                    }, AUTO_SUBMIT_DELAY);
+                });
+            }
+        });
+    });
+});
