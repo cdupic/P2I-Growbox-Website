@@ -4,7 +4,7 @@ nav#sidebar {
     backdrop-filter: blur(30px);
     -webkit-backdrop-filter: blur(30px);
     border-right: 1px solid rgba(0, 0, 40, 0.6);;
-    min-width: 200px;
+    width: 200px;
     height: 100%;
 }
 nav#sidebar img{

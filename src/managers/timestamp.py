@@ -10,9 +10,18 @@ def timestamp_manager():
             start_date = datetime.strptime(request.form.get('start_date'), "%Y-%m-%d").date()
             end_date = datetime.strptime(request.form.get('end_date'), "%Y-%m-%d").date()
 
-            start_datetime_local = datetime.combine(start_date, time(0, 0))
-            end_datetime_local = datetime.combine(end_date, time(23, 59))
+            now = datetime.now()
+            now_time = time(now.hour, now.minute, now.second)
+            start_datetime_local = datetime.combine(start_date, now_time)
+            end_datetime_local = datetime.combine(end_date, now_time)
 
-            session['graphs_days'] = (end_datetime_local - start_datetime_local).days
+
+            if now - end_datetime_local > timedelta(seconds=1):
+                # Start and end date mode
+                session['graph_start_date'] = start_datetime_local.date()
+                session['graph_end_date'] = end_datetime_local.date()
+            else:
+                # Gliding window mode
+                session['graphs_delta_time'] = end_datetime_local - start_datetime_local
 
     return redirect(request.form.get('r'))

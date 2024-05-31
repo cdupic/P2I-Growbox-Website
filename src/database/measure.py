@@ -3,8 +3,8 @@ from datetime import datetime, timedelta
 from flask import g
 
 from src.database.database import get_db
-from src.utils.measure import convert_actuator_type_to_french
-from src.utils.measure import convert_sensor_type_to_french
+from src.utils.sensor_names import convert_actuator_type_to_french
+from src.utils.sensor_names import convert_sensor_type_to_french
 
 
 def get_sensors_greenhouse(greenhouse_serial):

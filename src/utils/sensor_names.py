@@ -29,6 +29,7 @@ def convert_actuator_type_to_french(sensor_type):
         return "Ouverture"
     return "Inconnu"
 
+
 def convert_sensor_type_to_full_name(sensor_type):
     if sensor_type == "temperature":
         return "Capteur de température (°C)"
@@ -43,6 +44,7 @@ def convert_sensor_type_to_full_name(sensor_type):
     elif sensor_type == "O2":
         return "Capteur d'O2 (%)"
     return "Capteur Inconnu"
+
 
 def convert_actuator_type_to_full_name(sensor_type):
     if sensor_type == "temperature":

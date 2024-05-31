@@ -4,7 +4,7 @@ from src.database.measure import get_sensors_greenhouse, get_actuators_greenhous
     get_actuator_type
 from src.database.greenhouse import get_dic_users_role_greenhouse
 
-from src.utils.measure import convert_actuator_type_to_french
+from src.utils.sensor_names import convert_actuator_type_to_french
 from src.utils.user import is_user_authenticated
 
 
