@@ -5,7 +5,8 @@
     <div class="heading">
         <div class="title">
             <h1>Gestion des plantes</h1>
-            <p>{{ greenhouse_name }} contient {{ available_plants|length }} plantes</p>
+            <p>{{ greenhouse_name }} contient {{ nb_distinct_plants }} plantes distinctes
+                ({{ nb_crops }} graines en tout)</p>
         </div>
     </div>
 
@@ -31,12 +32,11 @@
 
             <h2>Plantes actuellement dans la serre</h2>
 
-            {% for association_id, (plant_id, count, start_date, _) in current_plants.items() %}
+            {% for association_id, (plant_id, plant_name, count, start_date) in current_plants.items() %}
 
                 <div class="association" data-association-id="{{ association_id }}">
                     <div class="controls">
-                        <p>{{ available_plants[plant_id][0] }}</p>
-                        <p>{{ start_date }}</p>
+                        <p>{{ plant_name }} depuis le {{ start_date }}</p>
 
 
                         <input type="number" name="count_{{ association_id }}" value="{{ count }}" min="0">
@@ -44,7 +44,7 @@
                         <button type="button" onclick="removePlant({{ association_id }})">Remove</button>
                     </div>
                     <div class="config">
-                        <p>Temp&#x202F;: {{ available_plants[plant_id][1] }}°C, Sol HR&#x202F;: {{ available_plants[plant_id][2] }}%, Air HR&#x202F;: {{ available_plants[plant_id][3] }}, Lux&#x202F;: {{ available_plants[plant_id][4] }}, O2&#x202F;: {{ available_plants[plant_id][5] }}</p>
+                        <p>Temp&#x202F;: {{ data_plant[plant_id]['temperature'] }}°C, Sol HR&#x202F;: {{ data_plant[plant_id]['soil_humidity'] }}%, Air HR&#x202F;: {{ data_plant[plant_id]['air_humidity'] }}, Lux&#x202F;: {{ data_plant[plant_id]['light'] }}, O2&#x202F;: {{ data_plant[plant_id]['O2'] }}</p>
                     </div>
                 </div>
 
@@ -67,7 +67,7 @@
         <ul>
             {% for couple in plants_history_greenhouse %}
                 {%  for plante, dates in couple.items() %}
-                    <p>  {{ plante }}  du : {{ dates[0]}} au {{ dates[1] }} </p>
+                    <p>  {{ plante }} du : {{ dates[0]}} au {{ dates[1] }} </p>
                 {%  endfor %}
             {% endfor %}
         </ul>

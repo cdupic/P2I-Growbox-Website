@@ -2,150 +2,155 @@ from src.database.database import get_db
 
 
 def get_plants_greenhouse(greenhouse_serial):
-    db = get_db()
-    cursor = db.cursor()
-    plants = []
+	db = get_db()
+	cursor = db.cursor()
+	plants = {}
 
-    try:
-        cursor.execute(
-            "SELECT Plant.id, Plants.name, GreenHousePlants.date_start "
-            "FROM Plants, GreenHouses, GreenHousePlants "
-            "WHERE GreenHouses.serial = GreenHousePlants.greenhouse_serial and Plants.id = GreenHousePlants.plant_id "
-            "and greenhouse_serial = %s and date_end is NULL",
-            (greenhouse_serial,)
-        )
+	try:
+		cursor.execute(
+			"SELECT GreenHousePlants.id, Plants.id, Plants.name, GreenHousePlants.count, GreenHousePlants.date_start "
+			"FROM Plants, GreenHousePlants "
+			"WHERE Plants.id = GreenHousePlants.plant_id "
+			"and GreenHousePlants.greenhouse_serial = %s and date_end is NULL",
+			(greenhouse_serial,)
+		)
 
-        for (plant_id, date_start) in cursor:
-            plants.append({plant_id: (date_start, None)})
-        return plants
+		for (association_id, plant_id, plant_name, count, date_start) in cursor:
+			plants[association_id] = (plant_id, plant_name, count, date_start)
+		return plants
 
-    except Exception as e:
-        print(f"Error when getting plants: {e}")
-        return None
+	except Exception as e:
+		print(f"Error when getting plants: {e}")
+		return None
 
 
 def get_history_greenhouse(greenhouse_serial):
-    db = get_db()
-    cursor = db.cursor()
-    history = []
+	db = get_db()
+	cursor = db.cursor()
+	history = []
 
-    try:
-        cursor.execute(
-            "SELECT Plants.name, GreenHousePlants.date_start, GreenHousePlants.date_end "
-            "FROM Plants, GreenHousePlants "
-            "WHERE GreenHousePlants.greenhouse_serial = %s and Plants.id = GreenHousePlants.plant_id "
-            "and date_end is NOT NULL",
-            (greenhouse_serial,)
-        )
+	try:
+		cursor.execute(
+			"SELECT Plants.name, GreenHousePlants.date_start, GreenHousePlants.date_end "
+			"FROM Plants, GreenHousePlants "
+			"WHERE GreenHousePlants.greenhouse_serial = %s and Plants.id = GreenHousePlants.plant_id "
+			"and date_end is NOT NULL",
+			(greenhouse_serial,)
+		)
 
-        for (plant_id, date_start, date_end) in cursor:
-            history.append({plant_id: (date_start, date_end)})
-        return history
+		for (plant_name, date_start, date_end) in cursor:
+			history.append({plant_name: (date_start, date_end)})
+		return history
 
-    except Exception as e:
-        print(f"Error when getting history: {e}")
-        return None
+	except Exception as e:
+		print(f"Error when getting history: {e}")
+		return None
 
 
 def get_data_plant():
-    db = get_db()
-    cursor = db.cursor(dictionary=True)
-    plants = {}
+	db = get_db()
+	cursor = db.cursor(dictionary=True)
+	plants = {}
 
-    try:
-        cursor.execute(
-            "SELECT id, name, temperature, soil_humidity, air_humidity, light, O2 "
-            "FROM Plants ")
+	try:
+		cursor.execute(
+			"SELECT id, name, temperature, soil_humidity, air_humidity, light, O2 "
+			"FROM Plants ")
 
-        for (data) in cursor:
-            plant_name = data['id']
-            data.pop('id')
-            dic_data = dict(data)
-            plants[plant_name] = dic_data
+		for (data) in cursor:
+			plant_name = data['id']
+			data.pop('id')
+			dic_data = dict(data)
+			plants[plant_name] = dic_data
 
-        return plants
+		return plants
 
-    except Exception as e:
-        print(f"Error when getting plants: {e}")
-        return None
+	except Exception as e:
+		print(f"Error when getting plants: {e}")
+		return None
 
 
 def add_mix_plant(greenhouse_serial, list_plants):
-    db = get_db()
-    cursor = db.cursor()
-    list_plants_id = list_plants[0]
-    list_plants_units = list_plants[1]
+	db = get_db()
+	cursor = db.cursor()
+	list_plants_id = list_plants[0]
+	list_plants_units = list_plants[1]
 
-    try:
+	try:
 
-        temperature_moy = soil_humidity_moy = air_humidity_moy = light_moy = O2_moy = 0
-        nb_plants = sum(list_plants_units)
-        serial_exist = False
+		temperature_moy = soil_humidity_moy = air_humidity_moy = light_moy = O2_moy = 0
+		nb_plants = sum(list_plants_units)
+		serial_exist = False
 
-        cursor.execute("SELECT serial FROM GreenHouses WHERE EXISTS (SELECT serial FROM GreenHouses WHERE serial = %s )"
-                       , (greenhouse_serial,))
-        for (serial,) in cursor:
-            if serial:
-                serial_exist = True
+		cursor.execute(
+			"SELECT serial FROM GreenHouses "
+			"WHERE EXISTS (SELECT serial FROM GreenHouses WHERE serial = %s)",
+			(greenhouse_serial,))
+		for (serial,) in cursor:
+			if serial:
+				serial_exist = True
 
-        # get the average of the plants' parameters
-        for i in range(len(list_plants_id)):
-            cursor.execute("SELECT temperature, soil_humidity, air_humidity, light, O2 FROM Plants WHERE id = %s",
-                           (list_plants_id[i],))
-            for (temperature, soil_humidity, air_humidity, light, O2,) in cursor:
-                temperature_moy += temperature * list_plants_units[i]
-                soil_humidity_moy += soil_humidity * list_plants_units[i]
-                air_humidity_moy += air_humidity * list_plants_units[i]
-                light_moy += light * list_plants_units[i]
-                O2_moy += O2 * list_plants_units[i]
+		# get the average of the plants' parameters
+		for i in range(len(list_plants_id)):
+			cursor.execute(
+				"SELECT temperature, soil_humidity, air_humidity, light, O2 FROM Plants WHERE id = %s",
+				(list_plants_id[i],))
+			for (temperature, soil_humidity, air_humidity, light, O2,) in cursor:
+				temperature_moy += temperature * list_plants_units[i]
+				soil_humidity_moy += soil_humidity * list_plants_units[i]
+				air_humidity_moy += air_humidity * list_plants_units[i]
+				light_moy += light * list_plants_units[i]
+				O2_moy += O2 * list_plants_units[i]
 
-        # check if the greenhouse already exists, if it doesn't, should show an error on the website
-        if serial_exist:
-            cursor.execute("UPDATE GreenHouses "
-                           "SET temperature = %s, soil_humidity = %s, air_humidity = %s, light = %s, O2 = %s, "
-                           "plant_init_date = NOW() "
-                           "WHERE serial = %s ",
-                           (temperature_moy / nb_plants, soil_humidity_moy / nb_plants, air_humidity_moy / nb_plants,
-                            light_moy / nb_plants, O2_moy / nb_plants, greenhouse_serial))
-            db.commit()
+		# check if the greenhouse already exists, if it doesn't, should show an error on the website
+		if serial_exist:
+			cursor.execute(
+				"UPDATE GreenHouses "
+				"SET temperature = %s, soil_humidity = %s, air_humidity = %s, light = %s, O2 = %s, "
+				"plant_init_date = NOW() "
+				"WHERE serial = %s ",
+				(temperature_moy / nb_plants, soil_humidity_moy / nb_plants, air_humidity_moy / nb_plants,
+				light_moy / nb_plants, O2_moy / nb_plants, greenhouse_serial))
+			db.commit()
 
-        # add the relations in GreenHousePlants and update them if they already exist
-        for plant_id in list_plants_id:
+		# add the relations in GreenHousePlants and update them if they already exist
+		for plant_id in list_plants_id:
 
-            plant_exist = False
-            cursor.execute("SELECT plant_id, date_end "
-                           "FROM GreenHousePlants WHERE EXISTS (SELECT plant_id FROM GreenHouses WHERE "
-                           "plant_id = %s and greenhouse_serial = %s)"
-                           , (plant_id, greenhouse_serial))
-            for (id_plant, date_end) in cursor:
-                if id_plant and date_end is None:
-                    plant_exist = True
+			plant_exist = False
+			cursor.execute(
+				"SELECT plant_id, date_end "
+				"FROM GreenHousePlants WHERE EXISTS (SELECT plant_id FROM GreenHouses WHERE "
+				"plant_id = %s and greenhouse_serial = %s)",
+				(plant_id, greenhouse_serial))
 
-            if not plant_exist:
-                cursor.execute("INSERT INTO GreenHousePlants (plant_id, greenhouse_serial) VALUES (%s , %s)",
-                               (plant_id, greenhouse_serial))
-                db.commit()
+			for (id_plant, date_end) in cursor:
+				if id_plant and date_end is None:
+					plant_exist = True
 
-        # check if there are plants that are not in the list anymore :-> update the date_fin
-        list_plant_id_to_end = []
-        cursor.execute("SELECT plant_id "
-                       "FROM GreenHousePlants WHERE greenhouse_serial = %s and date_end is NULL ",
-                       (greenhouse_serial,))
+			if not plant_exist:
+				cursor.execute(
+					"INSERT INTO GreenHousePlants (plant_id, greenhouse_serial) VALUES (%s , %s)",
+					(plant_id, greenhouse_serial))
+				db.commit()
 
-        for (plant_id,) in cursor:
-            list_plant_id_to_end.append(plant_id)
+		# check if there are plants that are not in the list anymore :-> update the date_fin
+		list_plant_id_to_end = []
+		cursor.execute(
+			"SELECT plant_id "
+			"FROM GreenHousePlants WHERE greenhouse_serial = %s and date_end is NULL ",
+			(greenhouse_serial,))
 
-        for i in range(len(list_plants_id)):
-            if list_plant_id_to_end[i] not in list_plants_id:
-                cursor.execute("UPDATE GreenHousePlants SET date_end = NOW() "
-                               "WHERE plant_id = %s and greenhouse_serial = %s and date_end is NULL",
-                               (list_plant_id_to_end[i], greenhouse_serial))
-                db.commit()
+		for (plant_id,) in cursor:
+			list_plant_id_to_end.append(plant_id)
 
-    except Exception as e:
-        print(f"Error when adding plants: {e}")
-        return False
+		for i in range(len(list_plants_id)):
+			if list_plant_id_to_end[i] not in list_plants_id:
+				cursor.execute(
+					"UPDATE GreenHousePlants SET date_end = NOW() "
+					"WHERE plant_id = %s and greenhouse_serial = %s and date_end is NULL",
+					(list_plant_id_to_end[i], greenhouse_serial))
+				db.commit()
 
-
-
-
+	except Exception as e:
+		print(f"Error when adding plants: {e}")
+		return False
