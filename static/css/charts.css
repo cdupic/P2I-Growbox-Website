@@ -4,7 +4,7 @@ main .graph-tiles {
     align-items: stretch;
     align-content: stretch;
     margin: 10px;
-    gap: 10px;
+    gap: 5px;
     flex-grow: 1;
 }
 main .graph-tiles div.graph {
@@ -12,8 +12,13 @@ main .graph-tiles div.graph {
     flex-shrink: 1;
     flex-basis: 100%;
     min-width: 0;
-    max-height: calc(100vh - 180px);
+    min-height: 250px;
+    max-height: min(525px, calc(100vh - 180px));
 }
+main .graph-tiles.overview div.graph {
+    height: 250px;
+}
+
 @media (min-width: 1000px) {
     main .graph-tiles div.graph {
         flex-basis: 40%;
