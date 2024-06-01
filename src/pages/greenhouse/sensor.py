@@ -1,10 +1,11 @@
 from datetime import datetime, timedelta, time
+import pytz
 
 from flask import render_template, redirect, url_for, session
 
 from src.database.greenhouse import get_greenhouse_targets, get_dic_users_role_greenhouse
 from src.database.measure import get_sensors_greenhouse, get_actuators_greenhouse, get_data_sensors_since, \
-    get_sensor_type, get_sensor_unit, get_number_of_measures
+    get_sensor_type, get_sensor_unit, get_number_of_measures, get_date_end_start, get_format_latest_measure
 from src.utils.sensor_names import convert_sensor_type_to_french, convert_sensor_type_to_full_name
 from src.utils.user import is_user_authenticated
 
@@ -24,15 +25,7 @@ def greenhouse_sensor_page(greenhouse_serial, sensor_id):
 
     measures = {}
 
-    if session.get('graph_start_date') and session.get('graph_end_date'):
-        date_start = session['graph_start_date']
-        date_end = session['graph_end_date']
-
-    else:
-        if not session.get('graph_delta_time') and session.get('graph_delta_time') != 0:
-            session['graph_delta_time'] = 7
-        date_start = datetime.combine(datetime.utcnow(), time(0, 0, 0)) - timedelta(days=session['graph_delta_time'])
-        date_end = datetime.utcnow()
+    date_start, date_end = get_date_end_start()
 
     date_latest = datetime.utcnow() - timedelta(days=365)
 
@@ -43,10 +36,12 @@ def greenhouse_sensor_page(greenhouse_serial, sensor_id):
             measures[date] = value
 
     targets = get_greenhouse_targets(greenhouse_serial)
+
     return render_template("pages/greenhouse_sensor.j2",
                            greenhouse_serial=greenhouse_serial,
                            sensor_id=sensor_id,
                            sensor_type=sensor_type,
+                           sensor_type_french=sensor_type_french,
                            sensor_unit=sensor_unit,
                            sidebar_sensors=sensors.items(),
                            sidebar_actuators=actuators.items(),
@@ -60,19 +55,7 @@ def greenhouse_sensor_page(greenhouse_serial, sensor_id):
                            targets=targets,
                            from_datetime_utc=str(date_start),
                            to_datetime_utc=str(date_end),
-                           from_date=date_start.strftime("%Y-%m-%d"),  # TODO: convert this to local time
-                           to_date=date_end.strftime("%Y-%m-%d"))  # TODO: convert this to local time
+                           from_date=date_start.astimezone(pytz.timezone('Europe/Paris')).strftime("%Y-%m-%d"),
+                           to_date=date_end.astimezone(pytz.timezone('Europe/Paris')).strftime("%Y-%m-%d"))
 
 
-def get_format_latest_measure(date_latest):
-    diff = datetime.utcnow() - date_latest
-    if diff < timedelta(minutes=1):
-        return f"il y a {diff.seconds} secondes"
-    elif diff < timedelta(hours=1):
-        return f"il y a {diff.seconds // 60} minutes"
-    elif diff < timedelta(days=1):
-        return f"il y a {diff.seconds // 3600} heures"
-    elif diff < timedelta(days=30):
-        return f"il y a {diff.days} jours"
-    else:
-        return f"en {date_latest.strftime('%B')}"

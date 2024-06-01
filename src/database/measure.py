@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta, time
 
-from flask import g
+from flask import g, session
 
 from src.database.database import get_db
 from src.utils.sensor_names import convert_actuator_type_to_french
@@ -295,5 +295,71 @@ def get_number_measures(greenhouse_serial, date_start=None, date_end=None):
         return None
 
 
+def get_date_end_start():
+    if session.get('graph_start_date') and session.get('graph_end_date'):
+        return session['graph_start_date'], session['graph_end_date']
+
+    else:
+        if not session.get('graph_delta_time') and session.get('graph_delta_time') != 0:
+            session['graph_delta_time'] = 7
+        return (datetime.combine(datetime.utcnow(), time(0, 0, 0)) -
+                timedelta(days=session['graph_delta_time'])), datetime.utcnow()
 
 
+def get_data_all_sensors(greenhouse_serial, date_start, date_end):
+    db = get_db()
+    cursor = db.cursor()
+    data = {}
+    try:
+        cursor.execute(
+            "SELECT Sensors.id, Sensors.type, Measures.date, Measures.value "
+            "FROM Sensors, Measures "
+            "WHERE Sensors.greenhouse_serial = %s "
+            "and Sensors.id = Measures.sensor_id and (Measures.date) BETWEEN %s and %s",
+            (greenhouse_serial, date_start, date_end)
+        )
+        for (sensor_id, sensor_type, date, value) in cursor:
+            if sensor_id not in data:
+                data[sensor_id] = [[],[],[]]
+                data[sensor_id][2] = sensor_type
+            if sensor_type != "light":
+                data[sensor_id][0].append(value / 10)
+            elif sensor_type == "light":
+                data[sensor_id][0].append(value)
+            data[sensor_id][1].append(date)
+        return data
+
+    except Exception as e:
+        print(f"Error when getting data: {e}")
+        return None
+
+
+def get_date_latest_measure(greenhouse_serial):
+    db = get_db()
+    cursor = db.cursor()
+    try:
+        cursor.execute(
+            "SELECT MAX(Measures.date) "
+            "FROM Sensors, Measures "
+            "WHERE Sensors.greenhouse_serial = %s and Sensors.id = Measures.sensor_id ",
+            (greenhouse_serial,)
+        )
+        return cursor.fetchone()[0]
+
+    except Exception as e:
+        print(f"Error when getting latest measure of greenhouse {greenhouse_serial}: {e}")
+        return None
+
+
+def get_format_latest_measure(date_latest):
+    diff = datetime.utcnow() - date_latest
+    if diff < timedelta(minutes=1):
+        return f"il y a {diff.seconds} secondes"
+    elif diff < timedelta(hours=1):
+        return f"il y a {diff.seconds // 60} minutes"
+    elif diff < timedelta(days=1):
+        return f"il y a {diff.seconds // 3600} heures"
+    elif diff < timedelta(days=30):
+        return f"il y a {diff.days} jours"
+    else:
+        return f"en {date_latest.strftime('%B')}"

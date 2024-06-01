@@ -2,9 +2,10 @@ from flask import render_template, redirect, url_for, session
 from datetime import datetime, timedelta, time
 import pytz
 
-from src.database.greenhouse import check_greenhouse_owner, get_greenhouse_name, get_dic_users_role_greenhouse
-from src.database.measure import get_sensors_greenhouse, get_actuators_greenhouse, get_data_sensors_since, \
-    get_data_actuators_since, get_number_measures
+from src.database.greenhouse import check_greenhouse_owner, get_greenhouse_name, get_dic_users_role_greenhouse,\
+    get_greenhouse_targets
+from src.database.measure import get_sensors_greenhouse, get_actuators_greenhouse, get_data_all_sensors, \
+    get_data_actuators_since, get_number_measures, get_date_end_start, get_date_latest_measure, get_format_latest_measure
 from src.utils.user import is_user_authenticated
 
 
@@ -22,37 +23,28 @@ def greenhouse_overview_page(greenhouse_serial):
 
     session['serial'] = greenhouse_serial
 
-    if session.get('graph_start_date') and session.get('graph_start_date'):
-        date_start = session['graph_start_date']
-        date_end = session['graph_end_date']
+    date_start, date_end = get_date_end_start()
 
-    else:
-        if not session.get('graph_delta_time'):
-            session['graph_delta_time'] = 7
+    data_measures = get_data_all_sensors(greenhouse_serial, date_start, date_end)
 
-        date_start = datetime.utcnow() - timedelta(days=session['graph_delta_time'])
-        date_end = datetime.utcnow()
+    targets = get_greenhouse_targets(greenhouse_serial)
 
-    data_sensors = get_data_sensors_since(greenhouse_serial, [], date_start, date_end)
-    data_actuators = get_data_actuators_since(greenhouse_serial, [], date_start, date_end)
+    date_latest = get_date_latest_measure(greenhouse_serial)
 
-    if session.get('graph_start_date') and session.get('graph_end_date'):
-        date_start = session['graph_start_date']
-        date_end = session['graph_end_date']
-
-    else:
-        if not session.get('graph_delta_time'):
-            session['graph_delta_time'] = 7
-        date_start = datetime.utcnow() - timedelta(days=session['graph_delta_time'])
-        date_end = datetime.utcnow()
 
     return render_template('pages/greenhouse_overview.j2',
                            greenhouse_serial=greenhouse_serial,
                            sidebar_sensors=sensors.items(),
                            sidebar_actuators=actuators.items(),
                            sidebar_users=users_roles.items(),
-                           number_mesures=str(get_number_measures(greenhouse_serial, date_start, date_end)) + ' sur ' +
+                           ratio_measures=str(get_number_measures(greenhouse_serial, date_start, date_end)) + ' sur ' +
                            str(get_number_measures(greenhouse_serial, [])),
                            current_sidebar_item=('overview', None),
-                           data_sensors=data_sensors,
-                           greenhouse_name=get_greenhouse_name(greenhouse_serial, session['user_name']))
+                           data_sensors=data_measures,
+                           targets=targets,
+                           date_latest=get_format_latest_measure(date_latest),
+                           greenhouse_name=get_greenhouse_name(greenhouse_serial, session['user_name']),
+                           from_datetime_utc=str(date_start),
+                           to_datetime_utc=str(date_end),
+                           from_date=date_start.astimezone(pytz.timezone('Europe/Paris')).strftime("%Y-%m-%d"),
+                           to_date=date_end.astimezone(pytz.timezone('Europe/Paris')).strftime("%Y-%m-%d"))
