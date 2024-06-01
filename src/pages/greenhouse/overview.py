@@ -36,7 +36,6 @@ def greenhouse_overview_page(greenhouse_serial):
     data_sensors = get_data_sensors_since(greenhouse_serial, [], date_start, date_end)
     data_actuators = get_data_actuators_since(greenhouse_serial, [], date_start, date_end)
 
-
     if session.get('graph_start_date') and session.get('graph_end_date'):
         date_start = session['graph_start_date']
         date_end = session['graph_end_date']

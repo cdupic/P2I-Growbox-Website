@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 
 from flask import render_template, redirect, url_for, session
 
@@ -29,20 +29,18 @@ def greenhouse_sensor_page(greenhouse_serial, sensor_id):
         date_end = session['graph_end_date']
 
     else:
-        if not session.get('graph_delta_time'):
+        if not session.get('graph_delta_time') and session.get('graph_delta_time') != 0:
             session['graph_delta_time'] = 7
-        date_start = datetime.utcnow() - timedelta(days=session['graph_delta_time'])
+        date_start = datetime.combine(datetime.utcnow(), time(0, 0, 0)) - timedelta(days=session['graph_delta_time'])
         date_end = datetime.utcnow()
 
     date_latest = datetime.utcnow() - timedelta(days=365)
+
     for data in get_data_sensors_since(greenhouse_serial, [sensor_id], date_start, date_end).values():
         for date, value in data.items():
             if date > date_latest:
                 date_latest = date
-            if sensor_type != "light":
-                measures[date] = value / 10
-            if sensor_type == "light":
-                measures[date] = value
+            measures[date] = value
 
     targets = get_greenhouse_targets(greenhouse_serial)
     return render_template("pages/greenhouse_sensor.j2",

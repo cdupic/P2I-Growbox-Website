@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 
 from flask import g
 
@@ -58,19 +58,22 @@ def get_data_sensors_since(serial_number, sensors_list, day_start, day_end):
     if not sensors_list:
         sensors_list = tuple(get_sensors_greenhouse(serial_number).keys())
     sensors_list_str = ', '.join(map(str, sensors_list))
-
     try:
         cursor.execute(
-            "SELECT Sensors.id,  Measures.date, Measures.value "
+            "SELECT Sensors.type,  Measures.date, Measures.value "
             "FROM Sensors, GreenHouses, Measures "
             "WHERE greenhouse_serial = %s and GreenHouses.serial = Sensors.greenhouse_serial "
-            "and Sensors.id = Measures.sensor_id and Sensors.id in (%s) and (Measures.date) BETWEEN %s and %s",
+            "and Sensors.id = Measures.sensor_id and Sensors.id in (%s) "
+            "and (Measures.date) BETWEEN (%s) and (%s)",
             (serial_number, sensors_list_str, day_start, day_end)
         )
-        for (sensor_id, date, value) in cursor:
-            if sensor_id not in data:
-                data[sensor_id] = {}
-            data[sensor_id][date] = value
+        for (sensor_type, date, value) in cursor:
+            if sensor_type not in data:
+                data[sensor_type] = {}
+            if sensor_type != "light":
+                data[sensor_type][date] = value / 10
+            elif sensor_type == "light":
+                data[sensor_type][date] = value
 
         return data
 
@@ -190,10 +193,9 @@ def get_greenhouse_measures(greenhouse_serial, sensor_id, date_start, date_end):
     return measures
 
 
-def get_sensor_unit(sensor_id):
+def get_sensor_unit(sensor_type):
     db = get_db()
     cursor = db.cursor()
-    sensor_type = get_sensor_type(sensor_id)
 
     if sensor_type == "temperature":
         return "°C"
@@ -291,4 +293,7 @@ def get_number_measures(greenhouse_serial, date_start=None, date_end=None):
     except Exception as e:
         print(f"Error when getting number of measures in greenhouse {greenhouse_serial}: {e}")
         return None
+
+
+
 

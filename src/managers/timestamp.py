@@ -23,21 +23,31 @@ def timestamp_manager():
         session['error'] = "La date de fin doit être postérieure à la date de début."
         return redirect(request.form.get('r'))
 
-    if abs(now - end_datetime_local) < timedelta(seconds=1) and start_datetime_local.day != end_datetime_local.day:
+    if start_datetime_local != end_datetime_local and abs(now-end_datetime_local) < timedelta(minutes=1):
         # Gliding window mode
         session['graph_delta_time'] = (end_datetime_utc - start_datetime_utc).days
+
         session['graph_start_date'] = None
         session['graph_end_date'] = None
-    elif start_datetime_utc.day == end_datetime_utc.day:
+        session['success'] = f"Vue actualisée sur {(end_datetime_utc - start_datetime_utc).days +1} jours."
+
+
+    elif (datetime.combine(start_datetime_utc, time(0, 0, 0)) ==
+          datetime.combine(end_datetime_utc, time(0, 0, 0))):
+
         # Real time mode
-        session['graph_start_date'] = datetime.combine(start_datetime_utc.date(), time(0, 0, 0))
-        session['graph_end_date'] = datetime.utcnow()
-        session['graphs_delta_time'] = None
+        session['graph_delta_time'] = 0
+        session['graph_start_date'] = None
+        session['graph_end_date'] = None
+        session['success'] = f"Vue actualisée sur les mesures d'ajourd'hui."
     else:
         # Start and end date mode
-        session['graph_start_date'] = start_datetime_local
-        session['graph_end_date'] = end_datetime_local
+        session['graph_start_date'] = datetime.combine(start_datetime_utc, time(0, 0, 0))
+        session['graph_end_date'] = end_datetime_utc
         session['graphs_delta_time'] = None
 
-    session['success'] = f"Vue actualisée sur {(end_datetime_utc - start_datetime_utc).days} jours."
+        session['success'] = f"Vue actualisée sur {(end_datetime_utc - start_datetime_utc).days + 1} jours."
     return redirect(request.form.get('r'))
+
+
+
