@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-import pytz
 
 from flask import render_template, redirect, url_for, session
 
@@ -57,14 +56,14 @@ def greenhouse_sensor_page(greenhouse_serial, sensor_id):
                            current_sidebar_item=('sensor', int(sensor_id)),
                            current_sensor_full_name=convert_sensor_type_to_full_name(sensor_type),
                            measures=measures,
-                           ratio_measures=str(len(measures))+' sur '+ str(get_number_of_measures(greenhouse_serial, sensor_id)),
+                           ratio_measures=str(len(measures)) + ' sur ' + str(
+                               get_number_of_measures(greenhouse_serial, sensor_id)),
                            date_latest=get_format_latest_measure(date_latest),
                            targets=targets,
                            from_datetime_utc=str(date_start),
                            to_datetime_utc=str(date_end),
-                           from_date=date_start.strftime("%Y-%m-%d"),
-                           to_date=date_end.strftime("%Y-%m-%d"))
-
+                           from_date=date_start.strftime("%Y-%m-%d"),  # TODO: convert this to local time
+                           to_date=date_end.strftime("%Y-%m-%d"))  # TODO: convert this to local time
 
 
 def get_format_latest_measure(date_latest):
@@ -79,5 +78,3 @@ def get_format_latest_measure(date_latest):
         return f"il y a {diff.days} jours"
     else:
         return f"en {date_latest.strftime('%B')}"
-
-
