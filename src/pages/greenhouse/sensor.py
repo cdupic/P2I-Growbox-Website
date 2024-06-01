@@ -1,7 +1,7 @@
-from datetime import datetime, timedelta, time
+from datetime import datetime, timedelta
 import pytz
 
-from flask import render_template, redirect, url_for, session
+from flask import render_template, redirect, url_for
 
 from src.database.greenhouse import get_greenhouse_targets, get_dic_users_role_greenhouse
 from src.database.measure import get_sensors_greenhouse, get_actuators_greenhouse, get_data_sensors_since, \
@@ -57,5 +57,4 @@ def greenhouse_sensor_page(greenhouse_serial, sensor_id):
                            to_datetime_utc=str(date_end),
                            from_date=date_start.astimezone(pytz.timezone('Europe/Paris')).strftime("%Y-%m-%d"),
                            to_date=date_end.astimezone(pytz.timezone('Europe/Paris')).strftime("%Y-%m-%d"))
-
 

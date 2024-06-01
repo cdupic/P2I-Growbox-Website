@@ -4,14 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f7d90c1e-3bc4-49ad-bdcd-93849f38fe2b" name="Changes" comment="modif to the code to show the good hour and timestamp">
+    <list default="true" id="f7d90c1e-3bc4-49ad-bdcd-93849f38fe2b" name="Changes" comment="typo error + display of graphs in overview">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SQL_Script/script.sql" beforeDir="false" afterPath="$PROJECT_DIR$/SQL_Script/script.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/database/measure.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/measure.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/greenhouse/overview.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/greenhouse/overview.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/greenhouse/sensor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/greenhouse/sensor.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/pages/greenhouse_overview.j2" beforeDir="false" afterPath="$PROJECT_DIR$/templates/pages/greenhouse_overview.j2" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/pages/greenhouse_sensor.j2" beforeDir="false" afterPath="$PROJECT_DIR$/templates/pages/greenhouse_sensor.j2" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,12 +30,12 @@
     &quot;assignee&quot;: &quot;ClementGre&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Linkipit4/P2I-Growbox-Python-backend.git",
-    "accountId": "ea4a33a6-2455-4e54-8bae-bfdace6ad49d"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Linkipit4/P2I-Growbox-Python-backend.git&quot;,
+    &quot;accountId&quot;: &quot;ea4a33a6-2455-4e54-8bae-bfdace6ad49d&quot;
   }
-}]]></component>
+}</component>
   <component name="MacroExpansionManager">
     <option name="directoryName" value="365lp95w" />
   </component>
@@ -50,23 +49,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.main.executor": "Run",
-    "Python.measure.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Clement/Code/Python/P2I-Growbox-Website/main.py",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.measure.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Clement/Code/Python/P2I-Growbox-Website/main.py&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Python.main">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="P2I-Growbox-Python-backend" />
@@ -125,7 +124,9 @@
       <updated>1717182586402</updated>
       <workItem from="1717182588785" duration="144000" />
       <workItem from="1717182735912" duration="4628000" />
-      <workItem from="1717245163147" duration="7788000" />
+      <workItem from="1717245163147" duration="8516000" />
+      <workItem from="1717264174508" duration="790000" />
+      <workItem from="1717265138655" duration="758000" />
     </task>
     <task id="LOCAL-00001" summary="modif to the code to show the good hour and timestamp">
       <option name="closed" value="true" />
@@ -135,7 +136,15 @@
       <option name="project" value="LOCAL" />
       <updated>1717247436623</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="overview done + time utc">
+      <option name="closed" value="true" />
+      <created>1717253218195</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1717253218195</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -143,11 +152,13 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="modif to the code to show the good hour and timestamp" />
-    <option name="LAST_COMMIT_MESSAGE" value="modif to the code to show the good hour and timestamp" />
+    <MESSAGE value="overview done + time utc" />
+    <MESSAGE value="typo error + display of graphs in overview" />
+    <option name="LAST_COMMIT_MESSAGE" value="typo error + display of graphs in overview" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/P2I_Growbox_Python_backend$measure.coverage" NAME="measure Coverage Results" MODIFIED="1717251043368" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/database" />
-    <SUITE FILE_PATH="coverage/P2I_Growbox_Python_backend$main.coverage" NAME="main Coverage Results" MODIFIED="1717249577615" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/P2I_Growbox_Python_backend$main.coverage" NAME="main Coverage Results" MODIFIED="1717265163834" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/P2I_Growbox_Website$main.coverage" NAME="main Coverage Results" MODIFIED="1717183748547" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
 </project>

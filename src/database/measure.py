@@ -194,14 +194,11 @@ def get_greenhouse_measures(greenhouse_serial, sensor_id, date_start, date_end):
 
 
 def get_sensor_unit(sensor_type):
-    db = get_db()
-    cursor = db.cursor()
-
     if sensor_type == "temperature":
         return "°C"
     elif "humidity" in sensor_type:
         return "%"
-    elif sensor_type == "ligth":
+    elif sensor_type == "light":
         return "lux"
     elif sensor_type == "O2":
         return "ppm"

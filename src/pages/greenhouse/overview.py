@@ -1,11 +1,10 @@
 from flask import render_template, redirect, url_for, session
-from datetime import datetime, timedelta, time
 import pytz
 
-from src.database.greenhouse import check_greenhouse_owner, get_greenhouse_name, get_dic_users_role_greenhouse,\
+from src.database.greenhouse import check_greenhouse_owner, get_greenhouse_name, get_dic_users_role_greenhouse, \
     get_greenhouse_targets
 from src.database.measure import get_sensors_greenhouse, get_actuators_greenhouse, get_data_all_sensors, \
-    get_data_actuators_since, get_number_measures, get_date_end_start, get_date_latest_measure, get_format_latest_measure
+    get_number_measures, get_date_end_start, get_date_latest_measure, get_format_latest_measure
 from src.utils.user import is_user_authenticated
 
 
