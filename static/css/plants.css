@@ -6,6 +6,11 @@
     font-size: 1.2em;
 }
 
+#plantForm ul {
+    list-style-type: none;
+    padding: 0;
+}
+
 
 #plantForm .association {
     background-color: white;
@@ -23,10 +28,18 @@
     font-size: 1.1em;
     font-weight: 600;
 }
-#plantForm .association .controls p span {
+#plantForm .association .controls p span:first-child {
+    font-size: 1.1em;
+    color: #28a745;
+    font-style: italic;
+}
+#plantForm .association .controls p span:first-child span {
+    font-size: 1.2em;
+}
+#plantForm .association .controls p span:last-child {
     font-size: .85em;
 }
-#plantForm .association .controls input[type="number"] {
+#plantForm input[type="number"] {
     width: 75px;
 }
 #plantForm .association .config p{
@@ -41,4 +54,19 @@
     height: 38px;
     background-color: hsl(73, 76%, 90%);
     border: 2px solid hsl(73, 76%, 60%);
+}
+
+#plantForm .add-plant-inputs {
+    display: flex;
+    gap: 5px;
+}
+#plantForm .add-plant-inputs > div > * {
+    display: block;
+    margin-bottom: 5px;
+}
+#plantForm .add-plant-inputs > div:first-child {
+    flex-grow: 1;
+}
+#plantForm .add-plant-inputs > div:first-child > input {
+    width: 100%;
 }

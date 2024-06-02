@@ -17,24 +17,34 @@
     </div>
 
     <div>
-
         <form id="plantForm" method="POST" action="{{ url_for('plant_manager') }}">
+
+            <input type="hidden" name="greenhouse_id" value="{{ greenhouse_id }}">
+            <input type="hidden" name="action" value="update">
+
+            <input type="hidden" id="removeAssociationsInput" name="remove-associations" value="">
+            <input type="hidden" id="addPlantsInput" name="add-plant" value="">
+            <input type="hidden" id="addPlantsCountInput" name="add-plant-count" value="">
 
             <h2>Plantes actuellement dans la serre</h2>
 
-            <div id="currentPlants">
+            <ul id="currentPlants">
 
-            </div>
+            </ul>
 
             <input type="submit" value="Enregistrer les modifications">
 
             <h2>Ajouter une plante</h2>
 
             <div class="add-plant-inputs">
-                <label for="input-plant-search" style="display: none">Rechercher une plante</label>
-                <input type="text" name="input-plant-search" id="input-plant-search">
-                <label for="input-plant-count" style="display: none">Rechercher une plante</label>
-                <input type="number" min="0" name="input-plant-count" id="input-plant-count">
+                <div>
+                    <label for="input-plant-search">Rechercher une plante</label>
+                    <input type="text" name="input-plant-search" id="newPlantSearch">
+                </div>
+                <div>
+                    <label for="input-plant-count">Nombre</label>
+                    <input type="number" min="0" name="input-plant-count" id="newPlantCount" value="1">
+                </div>
             </div>
             <ul id="plant-results">
 
