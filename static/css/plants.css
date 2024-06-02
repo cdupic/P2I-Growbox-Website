@@ -1,5 +1,7 @@
 #plantForm {
-    margin: 5px;
+    margin: 0 auto;
+    padding: 5px;
+    max-width: 600px;
 }
 #plantForm h2 {
     margin: 15px 0 5px 0;
