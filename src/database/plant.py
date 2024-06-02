@@ -8,15 +8,15 @@ def get_plants_greenhouse(greenhouse_serial):
 
 	try:
 		cursor.execute(
-			"SELECT GreenHousePlants.id, Plants.id, Plants.name, GreenHousePlants.count, GreenHousePlants.date_start "
+			"SELECT GreenHousePlants.id, Plants.id, GreenHousePlants.count, GreenHousePlants.date_start "
 			"FROM Plants, GreenHousePlants "
 			"WHERE Plants.id = GreenHousePlants.plant_id "
 			"and GreenHousePlants.greenhouse_serial = %s and date_end is NULL",
 			(greenhouse_serial,)
 		)
 
-		for (association_id, plant_id, plant_name, count, date_start) in cursor:
-			plants[association_id] = (plant_id, plant_name, count, date_start)
+		for (association_id, plant_id, count, date_start) in cursor:
+			plants[association_id] = (plant_id, count, date_start.isoformat())
 		return plants
 
 	except Exception as e:

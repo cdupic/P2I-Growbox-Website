@@ -1,0 +1,44 @@
+#plantForm {
+    margin: 5px;
+}
+#plantForm h2 {
+    margin: 15px 0 5px 0;
+    font-size: 1.2em;
+}
+
+
+#plantForm .association {
+    background-color: white;
+    border-radius: 10px;
+    margin: 5px 0;
+    padding: 10px;
+}
+#plantForm .association .controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+#plantForm .association .controls p {
+    font-size: 1.1em;
+    font-weight: 600;
+}
+#plantForm .association .controls p span {
+    font-size: .85em;
+}
+#plantForm .association .controls input[type="number"] {
+    width: 75px;
+}
+#plantForm .association .config p{
+    font-size: .85em;
+}
+
+
+#plantForm > input {
+    display: block;
+    margin: 20px auto;
+    padding: 0 12px;
+    height: 38px;
+    background-color: hsl(73, 76%, 90%);
+    border: 2px solid hsl(73, 76%, 60%);
+}

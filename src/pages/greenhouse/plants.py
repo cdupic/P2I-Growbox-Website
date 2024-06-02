@@ -19,10 +19,10 @@ def greenhouse_plants_page(greenhouse_serial):
     # available_plants = {id: (name, temperature, soil_humidity, air_humidity, light, O2)}
 
     # List of current plants ids in the greenhouse with start date
-    # current_plants = {id: (plant_id, count, start_date, None)}
+    # current_plants = {id: (plant_id, count, start_date)}
     current_plants = get_plants_greenhouse(greenhouse_serial)
     nb_distinct_plants = len(current_plants)
-    nb_crops = sum([current_plants[plant][2] for plant in current_plants])
+    nb_crops = sum([current_plants[plant][1] for plant in current_plants])
 
     # List of plants ids that were in the greenhouse with start and end date
     # old_plants = {association_id: (plant_id, count, start_date, end_date)}

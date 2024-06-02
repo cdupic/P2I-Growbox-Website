@@ -18,34 +18,13 @@
 
     <div>
 
-        <style>
-            #plantForm {
-                margin: 5px;
-            }
-            #plantForm .association {
-                background-color: white;
-                border-radius: 10px;
-                margin: 5px 0;
-                padding: 10px;
-            }
-            #plantForm .association .controls {
-                display: flex;
-            }
-            #plantForm .association .config p{
-                font-size: .8em;
-            }
-        </style>
-
-
         <form id="plantForm" method="POST" action="{{ url_for('plant_manager') }}">
 
             <h2>Plantes actuellement dans la serre</h2>
 
-            {% for association_id, (plant_id, plant_name, count, start_date) in current_plants.items() %}
-                <div id="currentPlants">
+            <div id="currentPlants">
 
-                </div>
-            {% endfor %}
+            </div>
 
             <input type="submit" value="Enregistrer les modifications">
 
