@@ -1,13 +1,20 @@
-let addPlantsInput = [];
-let removeAssociationIds = [];
+let addPlantsData = [];
+let addPlantsCountData = [];
+let removeAssociationData = [];
+let removeAssociationCountData = [];
 
+function updateHiddenInputs(){
+    document.getElementById('addPlantsInput').value = addPlantsData.join(',');
+    document.getElementById('addPlantsCountInput').value = addPlantsCountData.join(',');
+    document.getElementById('removeAssociationsInput').value = removeAssociationData.join(',');
+    document.getElementById('removeAssociationsCountInput').value = removeAssociationCountData.join(',');
+}
 
 function createElementFromHTML(htmlString){
     const div = document.createElement('div');
     div.innerHTML = htmlString.trim();
     return div.firstChild;
 }
-
 
 const toDisplayDate = (localDate) => {
     console.log(localDate);
@@ -18,36 +25,109 @@ const toDisplayDate = (localDate) => {
     return `${day}/${month}/${year}`;
 }
 
-function removePlant(associationId) {
-    const row = document.querySelector(`tr[data-association-id="${associationId}"]`);
-    if (row) {
-        row.remove();
-        removeAssociationIds.push(associationId);
+
+function removeExistingPlant(associationId, all = false){
+    const row = document.querySelector(`ul#currentPlants li[data-association-id="${associationId}"]`);
+    if(row){
+        let count = 0;
+        if(!all) count = Math.max(0, parseInt(row.getAttribute('data-count')) - 1);
+
+        if(removeAssociationData.includes(associationId)){
+            const index = removeAssociationData.indexOf(associationId);
+            removeAssociationCountData[index] = count;
+        }else{
+            removeAssociationData.push(associationId);
+            removeAssociationCountData.push(count);
+        }
+
+        row.querySelector('span').innerHTML = `<span>×</span>${count}`;
+        row.setAttribute('data-count', count.toString());
         updateHiddenInputs();
     }
 }
 
-function removeNewPlant(plantId){
-    const element = document.querySelector(`ul.currentPlants li[data-plant-id="${plantId}"]`);
-    addPlantsInput = addPlantsInput.filter(np => !np.startsWith(plantId + ':'));
-    updateHiddenInputs();
+function addExistingPlant(associationId){
+    const row = document.querySelector(`ul#currentPlants li[data-association-id="${associationId}"]`);
+    if(row){
+        let count = parseInt(row.getAttribute('data-count')) + 1;
+        const original_count = parseInt(row.getAttribute('data-original-count'));
+        if(count > original_count) count = original_count;
+
+        row.querySelector('span').innerHTML = `<span>×</span>${count}`;
+        row.setAttribute('data-count', count.toString());
+
+        if(count === original_count){
+            if(removeAssociationData.includes(associationId)){
+                const index = removeAssociationData.indexOf(associationId);
+                delete removeAssociationData[index];
+                delete removeAssociationCountData[index];
+            }
+        }else{
+            if(removeAssociationData.includes(associationId)){
+                const index = removeAssociationData.indexOf(associationId);
+                removeAssociationCountData[index] = count;
+            }else{
+                removeAssociationData.push(associationId);
+                removeAssociationCountData.push(count);
+            }
+        }
+        updateHiddenInputs();
+    }
 }
 
+function removeNewPlant(plantId, all = false){
+    const row = document.querySelector(`ul#currentPlants li[data-plant-id="${plantId}"]`);
 
-function updateHiddenInputs() {
-    document.getElementById('addPlantsInput').value = addPlantsInput.join(',');
-    document.getElementById('removeAssociationsInput').value = removeAssociationIds.join(',');
+    if(row){
+        let count = 0;
+        if(!all) count = Math.max(0, parseInt(row.getAttribute('data-count')) - 1);
+
+        if(count === 0){
+            row.remove();
+            if(addPlantsData.includes(plantId)){
+                const index = addPlantsData.indexOf(plantId);
+                delete addPlantsData[index];
+                delete addPlantsCountData[index];
+            }
+        }else{
+            if(addPlantsData.includes(plantId)){
+                const index = addPlantsData.indexOf(plantId);
+                addPlantsCountData[index] = count;
+            }else{
+                addPlantsData.push(plantId);
+                addPlantsCountData.push(count);
+            }
+
+            row.querySelector('span').innerHTML = `<span>×</span>${count}`;
+            row.setAttribute('data-count', count.toString());
+        }
+        updateHiddenInputs();
+    }
 }
 
-
-const addPlant = (plant_id) => {
-    const count = document.getElementById('newPlantCount').value;
+const addNewPlant = (plant_id) => {
+    let count = parseInt(document.getElementById('newPlantCount').value);
+    if(count < 0) count = -count;
+    if(!count || count < 1) count = 1;
     const currentPlants = document.getElementById('currentPlants');
-    const [plant_name, temperature, soil_humidity, air_humidity, light, o2] = window.available_plants[plant_id];
-    const start_date_local = new Date();
 
-    const element = `
-            <li class="association" data-plant-id="${plant_id}">
+    if(addPlantsData.includes(plant_id)){
+        const index = addPlantsData.indexOf(plant_id);
+        addPlantsCountData[index] = addPlantsCountData[index] + count;
+
+        const row = document.querySelector(`ul#currentPlants li[data-plant-id="${plant_id}"]`);
+        row.querySelector('span').innerHTML = `<span>×</span>${addPlantsCountData[index]}`;
+        row.setAttribute('data-count', addPlantsCountData[index].toString());
+
+    }else{
+        addPlantsData.push(plant_id);
+        addPlantsCountData.push(count);
+
+        const [plant_name, temperature, soil_humidity, air_humidity, light, o2] = window.available_plants[plant_id];
+        const start_date_local = new Date();
+
+        const element = `
+            <li class="association" data-plant-id="${plant_id}" data-count="${count}">
                 <div class="controls">
                     <p>
                         <span><span>×</span>${count}</span>&nbsp;
@@ -55,7 +135,11 @@ const addPlant = (plant_id) => {
                         <span>(${toDisplayDate(start_date_local)})</span>
                     </p>
     
-                    <button type="button" onclick="removeNewPlant(${plant_id})">Retirer</button>
+                    <div>
+                        <button type="button" class="button-pm" onclick="removeNewPlant(${plant_id})">–</button>
+                        <button type="button" class="button-pm" onclick="addNewPlant(${plant_id})">+</button>
+                        <button type="button" class="button-rm" onclick="removeNewPlant(${plant_id}, true)">Retirer</button>
+                    </div>
                 </div>
                 <div class="config">
                     <p>
@@ -68,8 +152,9 @@ const addPlant = (plant_id) => {
                 </div>
             </li>`
 
-    currentPlants.innerHTML += element;
-
+        currentPlants.innerHTML += element;
+    }
+    updateHiddenInputs()
 }
 
 const updateSearchPlants = (searchValue) => {
@@ -82,11 +167,11 @@ const updateSearchPlants = (searchValue) => {
     filteredPlants.forEach((id) => {
         const [plant_name, temperature, soil_humidity, air_humidity, light, o2] = window.available_plants[id];
         const element = createElementFromHTML(`
-            <li data-plant-id="${id}">
+            <li data-plant-id="${id}" onclick="addNewPlant(${id})">
                 <div role="button">
                     <p>${plant_name}</p>
                 </div>
-                <div>
+                <div class="config">
                     <p>
                         Temp&#x202F;: ${temperature}°C,
                         Sol HR&#x202F;: ${soil_humidity}%,
@@ -97,13 +182,6 @@ const updateSearchPlants = (searchValue) => {
                 </div>
             </li>`)
 
-        element.addEventListener('click', function(){
-            const plantInput = document.getElementById('newPlantInput');
-            plantInput.value = plant_name;
-            plantInput.setAttribute('data-plant-id', id);
-            plantList.innerHTML = '';
-        });
-
         plantList.appendChild(element);
     });
 
@@ -113,7 +191,7 @@ const updateSearchPlants = (searchValue) => {
 
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function(){
 
     const currentPlants = document.getElementById('currentPlants');
 
@@ -121,21 +199,23 @@ document.addEventListener("DOMContentLoaded", function() {
         const [plant_id, count, start_date] = window.current_plants[association_id];
         const [plant_name, temperature, soil_humidity, air_humidity, light, o2] = window.available_plants[plant_id];
 
-
-        console.log(window.current_plants, start_date)
         const start_date_utc = new Date(start_date);
         const start_date_local = new Date(start_date_utc.getTime() - (start_date_utc.getTimezoneOffset() * 60000))
 
 
         const element = `
-            <li class="association" data-association-id="${association_id}">
+            <li class="association" data-association-id="${association_id}" data-count="${count}" data-original-count="${count}">
                 <div class="controls">
                     <p>
                         <span><span>×</span>${count}</span>&nbsp;
                         ${plant_name}&nbsp;
-                        <span>(${toDisplayDate(start_date_local)})</span></p>
-    
-                    <button type="button" onclick="removePlant(${association_id})">Retirer</button>
+                        <span>(${toDisplayDate(start_date_local)})</span>
+                    </p>
+                    <div>
+                        <button type="button" class="button-pm" onclick="removeExistingPlant(${association_id})">–</button>
+                        <button type="button" class="button-pm" onclick="addExistingPlant(${association_id})">+</button>
+                        <button type="button" class="button-rm" onclick="removeExistingPlant(${association_id}, true)">Retirer</button>
+                    </div>
                 </div>
                 <div class="config">
                     <p>
@@ -156,40 +236,4 @@ document.addEventListener("DOMContentLoaded", function() {
         updateSearchPlants(searchValue);
     })
     updateSearchPlants('');
-
-
-    // const plantInput = document.getElementById('newPlantInput');
-    // const plantList = document.getElementById('plantList');
-    //
-    // plantInput.addEventListener('input', function() {
-    //     const searchValue = plantInput.value.toLowerCase();
-    //     const filteredPlants = availablePlants.filter(([id, [name]]) => name.toLowerCase().includes(searchValue));
-    //
-    //     plantList.innerHTML = '';
-    //     filteredPlants.forEach(([id, [name]]) => {
-    //         const option = document.createElement('div');
-    //         option.textContent = name;
-    //         option.setAttribute('data-plant-id', id);
-    //         option.addEventListener('click', function() {
-    //             plantInput.value = name;
-    //             plantInput.setAttribute('data-plant-id', id);
-    //             plantList.innerHTML = '';
-    //         });
-    //         plantList.appendChild(option);
-    //     });
-    // });
 });
-
-// document.getElementById('plantForm').addEventListener('submit', function(event) {
-//     const counts = document.querySelectorAll('input[name^="count_"]');
-//     counts.forEach(count => {
-//         if (count.name.startsWith('count_new_') && count.value == 0) {
-//             const plantId = count.name.replace('count_new_', '');
-//             newPlants = newPlants.filter(np => !np.startsWith(plantId + ':'));
-//         } else if (count.name.startsWith('count_') && count.value == 0) {
-//             const associationId = count.name.replace('count_', '');
-//             removePlants.push(associationId);
-//         }
-//     });
-//     updateHiddenInputs();
-// });

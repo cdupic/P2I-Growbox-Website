@@ -13,6 +13,15 @@
     padding: 0;
 }
 
+/* LIST OF PLANTS */
+
+#plantForm button.button-pm {
+    padding: 0 10px;
+}
+#plantForm button.button-rm {
+    margin-left: 15px;
+}
+
 
 #plantForm .association {
     background-color: white;
@@ -29,6 +38,7 @@
 #plantForm .association .controls p {
     font-size: 1.1em;
     font-weight: 600;
+    line-height: 34px;
 }
 #plantForm .association .controls p span:first-child {
     font-size: 1.1em;
@@ -44,10 +54,11 @@
 #plantForm input[type="number"] {
     width: 75px;
 }
-#plantForm .association .config p{
-    font-size: .85em;
+#plantForm .association .config p {
+    font-size: .75em;
 }
 
+/* ADD PLANT */
 
 #plantForm > input {
     display: block;
@@ -71,4 +82,30 @@
 }
 #plantForm .add-plant-inputs > div:first-child > input {
     width: 100%;
+}
+
+#plantForm ul#plant-results {
+    list-style-type: none;
+    padding: 0 5px;
+    margin: 2px;
+    max-height: 150px;
+    overflow-y: auto;
+    border-radius: 5px;
+    outline: 2px solid #ccc;
+}
+#plantForm ul#plant-results li {
+    background-color: white;
+    border-radius: 10px;
+    margin: 5px 0;
+    padding: 10px;
+}
+#plantForm ul#plant-results li:hover {
+    background-color: hsl(73, 76%, 90%);
+    border-radius: 10px;
+    margin: 5px 0;
+    padding: 10px;
+}
+
+#plantForm ul#plant-results .config p {
+    font-size: .75em;
 }

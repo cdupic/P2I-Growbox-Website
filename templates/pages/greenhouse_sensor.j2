@@ -9,7 +9,6 @@
             <p>{{ ratio_measures }} mesures, dernière mesure {{ date_latest }} pour le capteur {{ sensor_type_french }}</p>
         </div>
         <div>
-
             <form action="{{ url_for('timestamp_manager') }}" method="POST" class="auto-submit">
                 <label for="start_date">Du</label>
                 <input type="date" id="from_date" name="start_date" value="{{ from_date }}">
