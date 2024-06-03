@@ -53,17 +53,14 @@
 
         <p> Plantes présentes auparavant </p>
         <ul>
-            {% for couple in plants_history_greenhouse %}
-                {%  for plante, dates in couple.items() %}
-                    <p>  {{ plante }} du : {{ dates[0]}} au {{ dates[1] }} </p>
-                {%  endfor %}
+            {% for association_id, data in old_plants.items() %}
+                <p>  {{ data[1] }} du : {{ data[3]}} au {{ data[4] }} </p>
             {% endfor %}
         </ul>
     </div>
 
     <div>
         <h2>Configurer les asservissements manuellement</h2>
-        <p> Plantes actuellement présentes</p>
     </div>
 
 

@@ -25,7 +25,7 @@ def greenhouse_plants_page(greenhouse_serial):
     nb_crops = sum([current_plants[plant][1] for plant in current_plants])
 
     # List of plants ids that were in the greenhouse with start and end date
-    # old_plants = {association_id: (plant_id, count, start_date, end_date)}
+    # old_plants = {association_id: (plant_id, plant_name, count, start_date, end_date)}
 
     return render_template('pages/greenhouse_plants.j2',
                            current_sidebar_item=('plants', None),
@@ -35,10 +35,9 @@ def greenhouse_plants_page(greenhouse_serial):
                            sidebar_actuators=get_actuators_greenhouse(greenhouse_serial).items(),
                            sidebar_users=get_dic_users_role_greenhouse(greenhouse_serial).items(),
 
-                           available_plants={1: ('Tomate', 25, 50, 60, 100, 21), 2: ('Basilic', 25, 50, 60, 100, 21),
-                                             3: ('Piment', 25, 50, 60, 100, 21), 4: ('Persil', 25, 50, 60, 100, 21)},
-                           old_plants={3: (3, 2, '2021-01-01', '2021-01-15'), 4: (4, 1, '2021-01-01', '2021-01-15')},
-                           current_plants=current_plants,
+                           available_plants=get_data_plant(),
+                           old_plants=get_history_greenhouse(greenhouse_serial),
+                           current_plants=get_plants_greenhouse(greenhouse_serial),
 
                            nb_distinct_plants=nb_distinct_plants,
                            nb_crops=nb_crops)

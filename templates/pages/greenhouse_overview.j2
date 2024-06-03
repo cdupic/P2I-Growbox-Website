@@ -3,46 +3,44 @@
 {% block content %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/charts.css') }}">
 
-
     <div class="heading">
         <div class="title">
             <h1>Tableau de bord de {{ greenhouse_serial }} </h1>
-            <p>{{ ratio_measures }} mesures, dernière mesure {{ date_latest }}</p>
-        </div>
-        <div>
-
-            <form action="{{ url_for('timestamp_manager') }}" method="POST" class="auto-submit">
-                <label for="start_date">Du</label>
-                <input type="date" id="from_date" name="start_date" value="{{ from_date }}">
-                <label for="end_date">au</label>
-                <input type="date" id="to_date" name="end_date" value="{{ to_date }}">
-                <input type="hidden" name="r" value="{{ url_for('greenhouse_overview_page', greenhouse_serial=greenhouse_serial) }}">
-            </form>
+            {% if date_latest %}
+                <p>{{ ratio_measures }} mesures, dernière mesure {{ date_latest }}</p>
+                <form action="{{ url_for('timestamp_manager') }}" method="POST" class="auto-submit">
+                    <label for="start_date">Du</label>
+                    <input type="date" id="from_date" name="start_date" value="{{ from_date }}">
+                    <label for="end_date">au</label>
+                    <input type="date" id="to_date" name="end_date" value="{{ to_date }}">
+                    <input type="hidden" name="r" value="{{ url_for('greenhouse_overview_page', greenhouse_serial=greenhouse_serial) }}">
+                </form>
+            {% else %}
+                <p>aucune mesure pour la serre {{ greenhouse_serial }}</p>
+            {% endif %}
         </div>
     </div>
 
     <div class="graph-tiles">
-    {%  for sensor_id, data in data_sensors.items() %}
+        {% for sensor_id, data in data_sensors.items() %}
             <div class="graph">
                 <canvas id="chart{{ loop.index }}" class="chart" aria-label="Graphique des valeurs du capteur {{ sensor_id }}"
                         role="img"></canvas>
+                <script>
+                    window.configureChart(
+                        'chart{{ loop.index }}',
+                        {{ data[1]|tojson }},
+                        {{ data[0]|tojson }},
+                        {{ targets }},
+                        {{ greenhouse_serial|tojson }},
+                        true,
+                        {{ data[2]|tojson }},
+                        {{ sensor_id|tojson }},
+                        {{ from_datetime_utc|tojson }},
+                        {{ to_datetime_utc|tojson }}
+                    );
+                </script>
             </div>
-        <script>
-            window.configureChart(
-                'chart{{ loop.index }}',
-                {{ data[1]|tojson }},
-                {{ data[0]|tojson }},
-                {{ targets }},
-                {{ greenhouse_serial|tojson }},
-                true,
-                {{ data[2]|tojson }},
-                {{ sensor_id|tojson }},
-                {{ from_datetime_utc|tojson }},
-                {{ to_datetime_utc|tojson }}
-            );
-        </script>
-    {% endfor %}
+        {% endfor %}
     </div>
-
 {% endblock %}
-

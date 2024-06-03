@@ -28,8 +28,12 @@ def greenhouse_overview_page(greenhouse_serial):
 
     targets = get_greenhouse_targets(greenhouse_serial)
 
-    date_latest = get_date_latest_measure(greenhouse_serial)
+    if data_measures != {}:
+        date_latest = get_date_latest_measure(greenhouse_serial)
+        date_latest = get_format_latest_measure(date_latest)
 
+    else:
+        date_latest = None
 
     return render_template('pages/greenhouse_overview.j2',
                            greenhouse_serial=greenhouse_serial,
@@ -37,11 +41,11 @@ def greenhouse_overview_page(greenhouse_serial):
                            sidebar_actuators=actuators.items(),
                            sidebar_users=users_roles.items(),
                            ratio_measures=str(get_number_measures(greenhouse_serial, date_start, date_end)) + ' sur ' +
-                           str(get_number_measures(greenhouse_serial, [])),
+                                          str(get_number_measures(greenhouse_serial, [])),
                            current_sidebar_item=('overview', None),
                            data_sensors=data_measures,
                            targets=targets,
-                           date_latest=get_format_latest_measure(date_latest),
+                           date_latest=date_latest,
                            greenhouse_name=get_greenhouse_name(greenhouse_serial, session['user_name']),
                            from_datetime_utc=str(date_start),
                            to_datetime_utc=str(date_end),

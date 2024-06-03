@@ -106,4 +106,20 @@ def get_dic_users_role_greenhouse(greenhouse_serial):
         return None
 
 
+def switch_greenhouse_custom_config(greenhouse_seria):
+    db = get_db()
+    cursor = db.cursor()
+
+    try:
+        cursor.execute(
+            "UPDATE GreenHouses "
+            "SET is_custom_config = 1 "
+            "WHERE serial = %s",
+            (greenhouse_seria,)
+        )
+        db.commit()
+
+    except Exception as e:
+        print(f"Error when switching greenhouse custom config: {e}")
+
 
