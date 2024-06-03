@@ -12,8 +12,8 @@
     <div class="heading">
         <div class="title">
             <h1>Gestion des plantes</h1>
-            <p>{{ greenhouse_name }} contient {{ nb_distinct_plants }} plantes distinctes
-                ({{ nb_crops }} graines en tout)</p>
+            <p>{{ greenhouse_name }} contient {{ nb_crops }} plantes
+                ({{ nb_distinct_plants}} espèces)</p>
         </div>
     </div>
 
@@ -24,7 +24,6 @@
             <input type="hidden" name="action" value="update">
 
             <input type="hidden" id="removeAssociationsInput" name="remove-associations" value="">
-            <input type="hidden" id="removeAssociationsCountInput" name="remove-associations-count" value="">
             <input type="hidden" id="addPlantsInput" name="add-plant" value="">
             <input type="hidden" id="addPlantsCountInput" name="add-plant-count" value="">
 
@@ -40,7 +39,7 @@
 
             <div class="add-plant-inputs">
                 <div>
-                    <label for="input-plant-search">Rechercher</label>
+                    <label for="input-plant-search">Rechercher une plante</label>
                     <input type="text" name="input-plant-search" id="newPlantSearch">
                 </div>
                 <div>
@@ -56,9 +55,9 @@
         <p> Plantes présentes auparavant </p>
         <ul>
             {% for couple in plants_history_greenhouse %}
-                {% for plante, dates in couple.items() %}
-                    <p>  {{ plante }} du : {{ dates[0] }} au {{ dates[1] }} </p>
-                {% endfor %}
+                {%  for plante, dates in couple.items() %}
+                    <p>  {{ plante }} du : {{ dates[0]}} au {{ dates[1] }} </p>
+                {%  endfor %}
             {% endfor %}
         </ul>
     </div>

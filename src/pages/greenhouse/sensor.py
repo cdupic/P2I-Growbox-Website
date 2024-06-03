@@ -37,6 +37,12 @@ def greenhouse_sensor_page(greenhouse_serial, sensor_id):
 
     targets = get_greenhouse_targets(greenhouse_serial)
 
+    if measures != {}:
+        date_latest = get_format_latest_measure(date_latest)
+
+    else:
+        date_latest = None
+
     return render_template("pages/greenhouse_sensor.j2",
                            greenhouse_serial=greenhouse_serial,
                            sensor_id=sensor_id,
@@ -51,10 +57,9 @@ def greenhouse_sensor_page(greenhouse_serial, sensor_id):
                            measures=measures,
                            ratio_measures=str(len(measures)) + ' sur ' + str(
                                get_number_of_measures(greenhouse_serial, sensor_id)),
-                           date_latest=get_format_latest_measure(date_latest),
+                           date_latest=date_latest,
                            targets=targets,
                            from_datetime_utc=str(date_start),
                            to_datetime_utc=str(date_end),
                            from_date=date_start.astimezone(pytz.timezone('Europe/Paris')).strftime("%Y-%m-%d"),
                            to_date=date_end.astimezone(pytz.timezone('Europe/Paris')).strftime("%Y-%m-%d"))
-
