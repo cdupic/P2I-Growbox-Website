@@ -21,7 +21,8 @@ def greenhouse_plants_page(greenhouse_serial):
     # List of current plants ids in the greenhouse with start date
     # current_plants = {id: (plant_id, count, start_date)}
     current_plants = get_plants_greenhouse(greenhouse_serial)
-    nb_distinct_plants = len(current_plants)
+    id_plants = [current_plants[plant][0] for plant in current_plants]
+    nb_distinct_plants = len(set(id_plants))
     nb_crops = sum([current_plants[plant][1] for plant in current_plants])
 
     # List of plants ids that were in the greenhouse with start and end date

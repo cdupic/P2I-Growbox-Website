@@ -5,6 +5,7 @@ from src.database.plant import add_association_plant, terminate_association
 
 
 def plant_manager():
+    pass
     # TODO:
     #       If the parameter 'is-custom' is True,
     #           the config is specified as post parameters, e.g. 'temperature' = 25

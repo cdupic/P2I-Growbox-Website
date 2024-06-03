@@ -73,8 +73,7 @@ def add_association_plant(greenhouse_serial, list_plants):
 	cursor = db.cursor()
 	list_plants_id = list_plants[0]
 	list_plants_units = list_plants[1]
-	print('appelé', list_plants_id, list_plants_units)
-	print(list_plants_id, list_plants_units)
+
 
 	try:
 		for i in range(len(list_plants_id)):

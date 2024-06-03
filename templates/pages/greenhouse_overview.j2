@@ -16,7 +16,8 @@
                     <input type="hidden" name="r" value="{{ url_for('greenhouse_overview_page', greenhouse_serial=greenhouse_serial) }}">
                 </form>
             {% else %}
-                <p>aucune mesure pour la serre {{ greenhouse_serial }}</p>
+                <p>Aucune mesure pour la serre {{ greenhouse_serial }}</p>
+
             {% endif %}
         </div>
     </div>
