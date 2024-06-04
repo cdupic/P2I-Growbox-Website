@@ -121,3 +121,42 @@ def terminate_association(list_association_id, list_new_count_association):
 	except Exception as e:
 		print(f"Error when terminating association: {e}")
 		return False
+
+
+def actualiaze_greenhouse_targets(greenhouse_serial):
+	db = get_db()
+	cursor = db.cursor()
+	dic_id_plants_count = {}
+	for id_association, (id_plant, id_count, _, _) in get_plants_greenhouse(greenhouse_serial).items():
+		dic_id_plants_count[id_plant] = id_count
+
+	temperature_avg = 0
+	soil_humidity_avg = 0
+	air_humidity_avg = 0
+	light_avg = 0
+	O2_avg = 0
+
+	try:
+		for id_plant, count in dic_id_plants_count.items():
+			cursor.execute(
+				"SELECT temperature, soil_humidity, air_humidity, light, O2 FROM Plants WHERE id = %s",
+				(id_plant,))
+			for temperature, soil_humidity, air_humidity, light, O2 in cursor:
+				temperature_avg += temperature/10 * count/sum(dic_id_plants_count.values())
+				soil_humidity_avg += soil_humidity/10 * count/sum(dic_id_plants_count.values())
+				air_humidity_avg += air_humidity/10 * count/sum(dic_id_plants_count.values())
+				light_avg += light * count/sum(dic_id_plants_count.values())
+				O2_avg += 0 * count/sum(dic_id_plants_count.values())
+
+		cursor.execute(
+			"UPDATE GreenHouses SET temperature = %s, soil_humidity = %s, air_humidity = %s, light = %s, O2 = %s, "
+			"plant_init_date = UTC_TIMESTAMP() "
+			" WHERE serial = %s",
+			(temperature_avg, soil_humidity_avg, air_humidity_avg, light_avg, O2_avg, greenhouse_serial))
+		db.commit()
+
+	except Exception as e:
+		print(f"Error when updating plants: {e}")
+		return False
+
+
