@@ -1,5 +1,6 @@
 from src.database.database import get_db
 
+from datetime import datetime, timedelta
 
 def get_plants_greenhouse(greenhouse_serial):
 	db = get_db()
@@ -8,15 +9,15 @@ def get_plants_greenhouse(greenhouse_serial):
 
 	try:
 		cursor.execute(
-			"SELECT GreenHousePlants.id, Plants.id, GreenHousePlants.count, GreenHousePlants.date_start "
+			"SELECT GreenHousePlants.id, Plants.id, GreenHousePlants.count, GreenHousePlants.date_start, Plants.cultivation_duration "
 			"FROM Plants, GreenHousePlants "
 			"WHERE Plants.id = GreenHousePlants.plant_id "
 			"and GreenHousePlants.greenhouse_serial = %s and date_end is NULL",
 			(greenhouse_serial,)
 		)
 
-		for (association_id, plant_id, count, date_start) in cursor:
-			plants[association_id] = (plant_id, count, date_start.isoformat())
+		for (association_id, plant_id, count, date_start, cultivation_duration) in cursor:
+			plants[association_id] = (plant_id, count, date_start.isoformat(), date_start + timedelta(days=cultivation_duration))
 		return plants
 
 	except Exception as e:
@@ -119,5 +120,4 @@ def terminate_association(list_association_id, list_new_count_association):
 	except Exception as e:
 		print(f"Error when terminating association: {e}")
 		return False
-
 

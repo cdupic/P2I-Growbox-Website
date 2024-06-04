@@ -54,10 +54,8 @@
 
         <p> Plantes présentes auparavant </p>
         <ul>
-            {% for couple in plants_history_greenhouse %}
-                {%  for plante, dates in couple.items() %}
-                    <p>  {{ plante }} du : {{ dates[0]}} au {{ dates[1] }} </p>
-                {%  endfor %}
+            {% for id, data in old_plants.items() %}
+                <p>  {{ data[1] }} du : {{ data[3]}} au {{ data[4] }}, {{ data[2] }} plants cultivés</p>
             {% endfor %}
         </ul>
     </div>

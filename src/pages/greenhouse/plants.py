@@ -19,7 +19,7 @@ def greenhouse_plants_page(greenhouse_serial):
     # available_plants = {id: (name, temperature, soil_humidity, air_humidity, light, O2)}
 
     # List of current plants ids in the greenhouse with start date
-    # current_plants = {id: (plant_id, count, start_date)}
+    # current_plants = {id: (plant_id, count, start_date, end_calculated_date)}
     current_plants = get_plants_greenhouse(greenhouse_serial)
     id_plants = [current_plants[plant][0] for plant in current_plants]
     nb_distinct_plants = len(set(id_plants))
@@ -27,7 +27,6 @@ def greenhouse_plants_page(greenhouse_serial):
 
     # List of plants ids that were in the greenhouse with start and end date
     # old_plants = {association_id: (plant_id, plant_name, count, start_date, end_date)}
-
     return render_template('pages/greenhouse_plants.j2',
                            current_sidebar_item=('plants', None),
                            greenhouse_serial=greenhouse_serial,
