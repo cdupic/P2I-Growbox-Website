@@ -1,12 +1,13 @@
 CREATE TABLE Plants
 (
     id            INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    name          VARCHAR(16),
+    name          VARCHAR(32),
     temperature   SMALLINT, # in °C
     soil_humidity SMALLINT,   # in %
     air_humidity  SMALLINT,   # in %
     light         SMALLINT,   # in lux
-    O2            SMALLINT  # in %
+    O2            SMALLINT,  # in %
+    date_bloom  INT UNSIGNED DEFAULT 0
 );
 
 CREATE TABLE Users
@@ -48,6 +49,7 @@ CREATE TABLE GreenHousePlants
     id              INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     plant_id        INT UNSIGNED,
     greenhouse_serial   VARCHAR(32),
+    count INT UNSIGNED,
     date_start DATETIME DEFAULT UTC_TIMESTAMP(),
     date_end DATETIME DEFAULT NULL,
     FOREIGN KEY (plant_id) REFERENCES Plants (id),

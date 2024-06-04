@@ -1,6 +1,7 @@
 from src.database.database import get_db
 
-from datetime import datetime, timedelta
+from datetime import timedelta
+
 
 def get_plants_greenhouse(greenhouse_serial):
 	db = get_db()
@@ -9,15 +10,15 @@ def get_plants_greenhouse(greenhouse_serial):
 
 	try:
 		cursor.execute(
-			"SELECT GreenHousePlants.id, Plants.id, GreenHousePlants.count, GreenHousePlants.date_start, Plants.cultivation_duration "
+			"SELECT GreenHousePlants.id, Plants.id, GreenHousePlants.count, GreenHousePlants.date_start, Plants.date_bloom "
 			"FROM Plants, GreenHousePlants "
 			"WHERE Plants.id = GreenHousePlants.plant_id "
 			"and GreenHousePlants.greenhouse_serial = %s and date_end is NULL",
 			(greenhouse_serial,)
 		)
 
-		for (association_id, plant_id, count, date_start, cultivation_duration) in cursor:
-			plants[association_id] = (plant_id, count, date_start.isoformat(), date_start + timedelta(days=cultivation_duration))
+		for (association_id, plant_id, count, date_start, date_bloom) in cursor:
+			plants[association_id] = (plant_id, count, date_start.isoformat(), date_start + timedelta(days=date_bloom))
 		return plants
 
 	except Exception as e:
@@ -60,7 +61,7 @@ def get_data_plant():
 			"FROM Plants ")
 
 		for (id_plant, name, temperature, soil_humidity, air_humidity, light, O2) in cursor:
-			plants[id_plant] = (name, temperature, soil_humidity, air_humidity, light, O2)
+			plants[id_plant] = (name, temperature/10, soil_humidity/10, air_humidity/10, light, O2)
 
 		return plants
 
@@ -120,4 +121,3 @@ def terminate_association(list_association_id, list_new_count_association):
 	except Exception as e:
 		print(f"Error when terminating association: {e}")
 		return False
-
