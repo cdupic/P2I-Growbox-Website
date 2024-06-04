@@ -150,7 +150,10 @@ def get_actuator_type(actuator_id):
         return None
 
 
-# ARE THEY STILL USEFUL ??
+def get_actuator_unit(actuator_type):
+    if actuator_type == "water_level":
+        return "mm"
+
 
 
 def get_greenhouse_actions(greenhouse_serial, actuator_id, date_start, date_end):
@@ -281,7 +284,8 @@ def get_number_measures(greenhouse_serial, date_start=None, date_end=None):
             cursor.execute(
                 "SELECT count(*) "
                 "FROM Sensors, Measures "
-                "WHERE Sensors.greenhouse_serial = %s and Sensors.id = Measures.sensor_id and (Measures.date) BETWEEN %s and %s",
+                "WHERE Sensors.greenhouse_serial = %s and Sensors.id = Measures.sensor_id"
+                " and (Measures.date) BETWEEN %s and %s",
                 (greenhouse_serial, date_start, date_end)
             )
             return cursor.fetchone()[0]
@@ -317,7 +321,7 @@ def get_data_all_sensors(greenhouse_serial, date_start, date_end):
         )
         for (sensor_id, sensor_type, date, value) in cursor:
             if sensor_id not in data:
-                data[sensor_id] = [[],[],[]]
+                data[sensor_id] = [[], [], []]
                 data[sensor_id][2] = sensor_type
             if sensor_type != "light":
                 data[sensor_id][0].append(value / 10)
@@ -360,3 +364,4 @@ def get_format_latest_measure(date_latest):
         return f"il y a {diff.days} jours"
     else:
         return f"en {date_latest.strftime('%B')}"
+

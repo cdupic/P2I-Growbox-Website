@@ -43,6 +43,10 @@ def greenhouse_sensor_page(greenhouse_serial, sensor_id):
     else:
         date_latest = None
 
+    print(measures.keys())
+    print()
+    print(measures.values())
+
     return render_template("pages/greenhouse_sensor.j2",
                            greenhouse_serial=greenhouse_serial,
                            sensor_id=sensor_id,

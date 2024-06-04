@@ -1,4 +1,4 @@
-from flask import session
+from flask import session, request
 
 from src.database.greenhouse import switch_greenhouse_custom_config
 from src.database.plant import add_association_plant, terminate_association
@@ -24,5 +24,5 @@ def plant_manager():
     #               If the value appears once while the association contains multiple plants, only one plant is removed.
     #       the code should update the plants in the GreenHousePlants table and switch is_custom_config to false.
     else:
-        add_association_plant(add_plants_count, add_plants_count)
-        terminate_association(remove_associations, remove_associations_count)
+        add_association_plant(request.args.get('add_plants_count'), request.args.get('add_plants_count'))
+        terminate_association(request.args.get('remove_associations'), request.args.get('remove_associations_count'))

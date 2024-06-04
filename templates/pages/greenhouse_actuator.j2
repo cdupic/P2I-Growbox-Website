@@ -1,13 +1,51 @@
 {% extends "greenhouse_template.j2" %}
 
 {% block content %}
-    <h1>Actions de la serre {{ greenhouse_name }}</h1>
-    <h2>Liste des actions pour l'actionneur {{ actuator_type }}</h2>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/charts.css') }}">
 
-    <ul>
-        {% for date, value in actions.items() %}
-            <p> Le {{ date }}  valeur : {{ value}}
-            </p>
-        {% endfor %}
-    </ul>
+    {% if date_latest %}
+        <div class="heading">
+        <div class="title">
+            <h1>{{ current_sensor_full_name }}</h1>
+            <p>{{ ratio_measures }} actions, dernière action {{ date_latest }}</p>
+        </div>
+        <div>
+            <form action="{{ url_for('timestamp_manager') }}" method="POST" class="auto-submit">
+                <label for="start_date">Du</label>
+                <input type="date" id="from_date" name="start_date" value="{{ from_date }}">
+                <label for="end_date">au</label>
+                <input type="date" id="to_date" name="end_date" value="{{ to_date }}">
+                <input type="hidden" name="r" value="{{ url_for('greenhouse_actuator_page', greenhouse_serial=greenhouse_serial, actuator_id= actuator_id) }}">
+            </form>
+        </div>
+    {% else %}
+        <div class="heading">
+        <div class="title">
+        <h1>{{ current_actuator_full_name }}</h1>
+        <p>Aucune mesure pour cet actionneur</p>
+
+    {% endif %}
+</div>
+</div>
+
+    <div class="graph-tiles">
+        <div class="graph">
+            <canvas id="chart1" class="chart" aria-label="Graphique des valeurs du capteur {{ sensor_type }}"
+                    role="img"></canvas>
+        </div>
+    </div>
+    <script>
+        window.configureChart(
+            'chart1',
+            {{ actions.keys()|list|tojson }},
+            {{ actions.values()|list|tojson }},
+            {{ targets }},
+            {{ greenhouse_serial|tojson }},
+            true,
+            {{ actuator_type|tojson }},
+            {{ actuator_id|tojson }},
+            {{ from_datetime_utc|tojson }},
+            {{ to_datetime_utc|tojson }}
+        );
+    </script>
 {% endblock %}
