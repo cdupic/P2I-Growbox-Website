@@ -128,7 +128,7 @@ def actualiaze_greenhouse_targets(greenhouse_serial):
 	cursor = db.cursor()
 	dic_id_plants_count = {}
 	for id_association, (id_plant, id_count, _, _) in get_plants_greenhouse(greenhouse_serial).items():
-		dic_id_plants_count[id_plant] = id_count
+		dic_id_plants_count[id_association] = (id_plant, id_count)
 
 	temperature_avg = 0
 	soil_humidity_avg = 0
@@ -137,7 +137,7 @@ def actualiaze_greenhouse_targets(greenhouse_serial):
 	O2_avg = 0
 
 	try:
-		for id_plant, count in dic_id_plants_count.items():
+		for id_association, (id_plant, count) in dic_id_plants_count.items():
 			cursor.execute(
 				"SELECT temperature, soil_humidity, air_humidity, light, O2 FROM Plants WHERE id = %s",
 				(id_plant,))
