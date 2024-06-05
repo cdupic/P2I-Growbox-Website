@@ -20,7 +20,7 @@
     <div>
         <form id="plantForm" method="POST" action="{{ url_for('plant_manager') }}">
 
-            <input type="hidden" name="greenhouse_id" value="{{ greenhouse_id }}">
+            <input type="hidden" name="ghs" value="{{ greenhouse_serial }}">
             <input type="hidden" name="action" value="update">
 
             <input type="hidden" id="removeAssociationsInput" name="remove-associations" value="">
