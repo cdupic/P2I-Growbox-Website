@@ -1,7 +1,8 @@
-from flask import session
+from flask import session, request, redirect, url_for
 
 from src.database.greenhouse import switch_greenhouse_custom_config
-from src.database.plant import get_plants_greenhouse
+from src.database.plant import (get_plants_greenhouse, actualiaze_greenhouse_targets,
+                                add_association_plant, terminate_association)
 
 
 def plant_manager():
@@ -23,15 +24,16 @@ def plant_manager():
     #               If the value appears once while the association contains multiple plants, only one plant is removed.
     #       the code should update the plants in the GreenHousePlants table and switch is_custom_config to false.
     else:
-
+        print(request.args.get('add-plants'))
+        print()
+        print(request.args.get('add-plants-count'))
+        print()
+        print(request.args.get('remove-associations'))
+        print()
+        print(request.args.get('remove-associations-count'))
         # add_association_plant(request.args.get('add_plants'), request.args.get('add_plants_count'))
         # terminate_association(request.args.get('remove_associations'), request.args.get('remove_associations_count'))
-        greenhouse_serial = session['serial']
-        current_plants = get_plants_greenhouse(greenhouse_serial)
-        id_plants = [current_plants[plant][0] for plant in current_plants]
-        nb_distinct_plants = len(set(id_plants))
-        nb_crops = sum([current_plants[plant][1] for plant in current_plants])
+        # actualiaze_greenhouse_targets(session['serial'])
 
         # List of plants ids that were in the greenhouse with start and end date
-        # old_plants = {association_id: (plant_id, plant_name, count, start_date, end_date)}
-        return redirect(url_for('greenhouse_plants_page', greenhouse_serial=requests.args.get('ghs')))
+        return redirect(url_for('greenhouse_plants_page', greenhouse_serial=request.args.get('ghs')))

@@ -155,7 +155,6 @@ def get_actuator_unit(actuator_type):
         return "mm"
 
 
-
 def get_greenhouse_actions(greenhouse_serial, actuator_id, date_start, date_end):
     cursor = g.db.connect().cursor()
 
@@ -362,4 +361,22 @@ def get_format_latest_measure(date_latest):
         return f"il y a {diff.seconds // 3600} heure{'' if diff.seconds // 3600 == 1 else 's'}"
     else:
         return f"le {date_latest.strftime('%d/%m/%Y à %H:%M')}"
+
+
+def get_sensor_id(sensor_type):
+    db = get_db()
+    cursor = db.cursor()
+    try:
+        cursor.execute(
+            "SELECT id "
+            "FROM Sensors "
+            "WHERE type = %s",
+            (sensor_type,)
+        )
+        return cursor.fetchone()[0]
+
+    except Exception as e:
+        print(f"Error when getting sensor id of type {sensor_type}: {e}")
+        return None
+
 

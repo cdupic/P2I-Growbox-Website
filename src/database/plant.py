@@ -57,11 +57,11 @@ def get_data_plant():
 
 	try:
 		cursor.execute(
-			"SELECT id, name, temperature, soil_humidity, air_humidity, light, O2 "
+			"SELECT id, name, temperature, soil_humidity, air_humidity, light "
 			"FROM Plants ")
 
-		for (id_plant, name, temperature, soil_humidity, air_humidity, light, O2) in cursor:
-			plants[id_plant] = (name, temperature/10, soil_humidity/10, air_humidity/10, light, O2)
+		for (id_plant, name, temperature, soil_humidity, air_humidity, light) in cursor:
+			plants[id_plant] = (name, temperature/10, soil_humidity/10, air_humidity/10, light)
 
 		return plants
 
@@ -129,34 +129,37 @@ def actualiaze_greenhouse_targets(greenhouse_serial):
 	dic_id_plants_count = {}
 	for id_association, (id_plant, id_count, _, _) in get_plants_greenhouse(greenhouse_serial).items():
 		dic_id_plants_count[id_association] = (id_plant, id_count)
-
+		
 	temperature_avg = 0
 	soil_humidity_avg = 0
 	air_humidity_avg = 0
 	light_avg = 0
-	O2_avg = 0
+	sum_plants = 0
+	for id_association, (id_plant, count) in dic_id_plants_count.items():
+		sum_plants += count
 
 	try:
 		for id_association, (id_plant, count) in dic_id_plants_count.items():
 			cursor.execute(
-				"SELECT temperature, soil_humidity, air_humidity, light, O2 FROM Plants WHERE id = %s",
+				"SELECT temperature, soil_humidity, air_humidity, light FROM Plants WHERE id = %s",
 				(id_plant,))
-			for temperature, soil_humidity, air_humidity, light, O2 in cursor:
-				temperature_avg += temperature/10 * count/sum(dic_id_plants_count.values())
-				soil_humidity_avg += soil_humidity/10 * count/sum(dic_id_plants_count.values())
-				air_humidity_avg += air_humidity/10 * count/sum(dic_id_plants_count.values())
-				light_avg += light * count/sum(dic_id_plants_count.values())
-				O2_avg += 0 * count/sum(dic_id_plants_count.values())
+			for temperature, soil_humidity, air_humidity, light in cursor:
+				temperature_avg += temperature * count/sum_plants
+				soil_humidity_avg += soil_humidity * count/sum_plants
+				air_humidity_avg += air_humidity * count/sum_plants
+				light_avg += light * count/sum_plants
 
 		cursor.execute(
-			"UPDATE GreenHouses SET temperature = %s, soil_humidity = %s, air_humidity = %s, light = %s, O2 = %s, "
+			"UPDATE GreenHouses SET temperature = %s, soil_humidity = %s, air_humidity = %s, light = %s, "
 			"plant_init_date = UTC_TIMESTAMP() "
 			" WHERE serial = %s",
-			(temperature_avg, soil_humidity_avg, air_humidity_avg, light_avg, O2_avg, greenhouse_serial))
+			(temperature_avg, soil_humidity_avg, air_humidity_avg, light_avg, greenhouse_serial))
 		db.commit()
 
 	except Exception as e:
-		print(f"Error when updating plants: {e}")
+		print(f"Error when updating greenhouse: {e}")
 		return False
 
 
+
+actualiaze_greenhouse_targets('GrowBox-1')

@@ -70,11 +70,12 @@ def get_greenhouse_targets(greenhouse_serial):
 
     try:
         cursor.execute(
-            "SELECT temperature, soil_humidity, air_humidity, light, O2 "
+            "SELECT temperature, soil_humidity, air_humidity, light "
             "FROM GreenHouses "
             "WHERE serial = %s",
             (greenhouse_serial,)
         )
+        print(cursor.fetchone())
         return cursor.fetchone()
 
     except Exception as e:
@@ -106,7 +107,7 @@ def get_dic_users_role_greenhouse(greenhouse_serial):
         return None
 
 
-def switch_greenhouse_custom_config(greenhouse_seria):
+def switch_greenhouse_custom_config(greenhouse_serial):
     db = get_db()
     cursor = db.cursor()
 
@@ -115,11 +116,12 @@ def switch_greenhouse_custom_config(greenhouse_seria):
             "UPDATE GreenHouses "
             "SET is_custom_config = 1 "
             "WHERE serial = %s",
-            (greenhouse_seria,)
+            (greenhouse_serial,)
         )
         db.commit()
 
     except Exception as e:
         print(f"Error when switching greenhouse custom config: {e}")
+
 
 
