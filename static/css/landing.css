@@ -1,38 +1,46 @@
+main {
+    padding: 0;
+}
 main > section.title {
     margin: 0;
     padding: 40px;
+
+    color: white;
+    background: linear-gradient(-45deg, hsl(129, 100%, 99%), hsl(132, 46%, 22%));
+}
+section.title > div {
+    margin: 0 auto;
+    max-width: 1100px;
 
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
     align-items: center;
     gap: 20px;
-
-    color: white;
-    background: linear-gradient(-45deg, hsl(129, 100%, 99%), hsl(132, 46%, 22%));
 }
-
-section.title > .left {
+section.title > div > .left {
     margin-left: 20px;
 }
-section.title > .left > * {
+section.title > div > .left > * {
     margin: 0;
     font-weight: 600;
     display: block;
     color: #f0ffe9;
+    text-align: left;
 }
-section.title > .left h1 {
+section.title > div > .left h1 {
     font-size: 5em;
 }
-section.title > .left h2 {
+section.title > div > .left h2 {
     font-size: 3em;
 }
 
-section.title > .right {
+section.title > div > .right {
 
 }
-section.title > .right > img {
+section.title > div > .right > img {
     width: 40vw;
+    max-width: 500px;
 }
 
 @media (max-width: 800px) {
@@ -40,14 +48,14 @@ section.title > .right > img {
         padding: 30px 0;
         gap: 40px;
     }
-    section.title .left {
+    section.title > div > .left {
         margin-left: 0;
         font-size: .8em;
     }
-    section.title > .left > * {
+    section.title > div > .left > * {
         text-align: center;
     }
-    section.title > .right > img {
+    section.title > div > .right > img {
         width: 80vw;
     }
 }
@@ -56,7 +64,7 @@ section.title > .right > img {
 
 section.description {
     color: hsl(124, 100%, 6%);
-    padding: 40px 20vh;
+    padding: 50px 20px;
     font-weight: 600;
 }
 section.description > div {
@@ -76,19 +84,60 @@ section.description > div > p {
 section.about {
     color: hsl(124, 100%, 6%);
     background-color: hsl(126, 100%, 96%);
+    font-weight: 600;
 }
 section.about > div {
-
+    padding: 50px 40px;
+    margin: 0 auto;
+    max-width: 1100px;
 }
 section.about > div > h2 {
-
+    font-size: 2em;
+    display: block;
+    text-align: center;
+    margin-bottom: 30px;
 }
 section.about > div > div.content {
-
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 20px;
 }
-section.about > div > div.content > .left {
+section.about > div > div.content > div {
+    max-width: 400px;
 
+    text-align: center;
+    font-size: 1.2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-section.about > div > div.content > .right {
 
+/* Preview */
+
+section.preview {
+    color: hsl(124, 100%, 6%);
+    padding: 50px 20px;
+    font-weight: 600;
+
+    text-align: center;
+}
+section.preview > div {
+    margin: 0 auto;
+    max-width: 1100px;
+}
+section.preview > div > div {
+    margin: 0 auto 20px;
+    max-width: 800px;
+}
+section.preview > div h2 {
+    font-size: 2em;
+    margin-bottom: 15px;
+}
+section.preview > div p {
+    font-size: 1.2em;
+}
+section.preview > div img {
+    max-width: 100%;
 }

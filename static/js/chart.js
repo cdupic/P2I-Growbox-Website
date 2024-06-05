@@ -195,7 +195,7 @@ window.configureChart = (el_id, dates, measures, targets, gh_serial, is_sensor, 
 
 const newUTCDate = (text, shift_minutes = 0) => {
     const date = new Date(text);
-    date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+    // date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
     if(shift_minutes !== 0) date.setMinutes(date.getMinutes() + shift_minutes);
     return date;
 }

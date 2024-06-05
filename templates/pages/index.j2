@@ -4,12 +4,14 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
 
     <section class="title">
-        <div class="left">
-            <h1>GrowBox</h1>
-            <h2>La serre modulaire<br>qu'il vous faut</h2>
-        </div>
-        <div class="right">
-            <img src="{{ url_for('static', filename='img/greenhouse.png') }}" alt="Photo d'une serre GrowBox">
+        <div>
+            <div class="left">
+                <h1>GrowBox</h1>
+                <h2>La serre modulaire<br>qu'il vous faut</h2>
+            </div>
+            <div class="right">
+                <img src="{{ url_for('static', filename='img/greenhouse.png') }}" alt="Photo d'une serre GrowBox">
+            </div>
         </div>
     </section>
     <section class="description">
@@ -27,32 +29,35 @@
             </h2>
             <div class="content">
                 <div class="left">
-                    <p>GrowBox est un projet de serre modulaire connectée, développé par des étudiants de l’Université
-                        de Technologie de Compiègne. L’objectif de ce projet est de permettre à tout le monde de cultiver
-                        des plantes, même sans connaissance en jardinage. Grâce à des capteurs de température, d’humidité,
-                        de lumière et de niveau d’eau, GrowBox surveille et optimise les conditions de croissance de vos
-                        plantes en temps réel. GrowBox vous avertit si vos plantes ont besoin de soins particuliers pour
-                        prospérer.</p>
+                    <p>GrowBox est un projet de serre modulaire connectée, développé par des étudiants de l’Institut
+                        National des Sciences Appliquées de Lyon dans le cadre du Projet d'Initiation a l'Ingénierie de
+                        deuxième année du premier cycle. Nous avons développé un prototype de serre ainsi qu'un ensemble
+                        de programmes permettant de communiquer avec la serre, de traiter les données, et de les
+                        présenter à l'utilisateur final.</p>
                 </div>
                 <div class="right">
-                    <p>GrowBox est un projet de serre modulaire connectée, développé par des étudiants de l’Université
-                        de Technologie de Compiègne. L’objectif de ce projet est de permettre à tout le monde de cultiver
-                        des plantes, même sans connaissance en jardinage. Grâce à des capteurs de température, d’humidité,
-                        de lumière et de niveau d’eau, GrowBox surveille et optimise les conditions de croissance de vos
-                        plantes en temps réel. GrowBox vous avertit si vos plantes ont besoin de soins particuliers pour
-                        prospérer.</p>
+                    <p>Si le projet garde une petite envergure, il a été pensé pour être modulaire&nbsp;: l'utilisation
+                        de code Arduino orienté objet ainsi qu'un protocole de couche liaison flexible, associé à un
+                        schéma de base de donnée évolutif et souple nous a permis de développer un écosystème solide où
+                        l'association d'un nouveau capteur à une serre se fait en une unique ligne de code (si le driver
+                        a déjà été développé).</p>
                 </div>
             </div>
         </div>
     </section>
-
-    {#    TODO: Setup 3D model viewing. It can be coded in this page and on landing.js #}
-
-
-    {% if session['user_name'] %}
-        <p>Bonjour {{ session['user_name'] }}.</p>
-    {% else %}
-        <p>Bonjour invité, authentifie-toi saligot!</p>
-    {% endif %}
+    <section class="preview">
+        <div>
+            <div>
+                <h2>Comment fonctionne une GrowBox ?</h2>
+                <p>Une serre GrowBox se connecte auprès de notre programme «&nbsp;Bridge&nbsp;». Une fois son
+                    enregistrement effectué, la serre peut remonter des données. Les utilisateurs renseignant le numéro
+                    de série de la serre pourront accéder aux mesures, et configurer les asservissements en définissant
+                    un ensemble de plantes. Il est possible de connecter une infinité de serres différentes à la
+                    plateforme, de les configurer indépendamment, et de les partager entre différents collaborateurs en
+                    gérant les droits d'accès.</p>
+            </div>
+            <img src="{{ url_for('static', filename='img/preview.png') }}" alt="Photo d'une serre GrowBox">
+        </div>
+    </section>
     <script src="{{ url_for('static', filename='js/landing.js') }}"></script>
 {% endblock %}
