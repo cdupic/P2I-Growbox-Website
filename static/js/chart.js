@@ -38,14 +38,16 @@ const getFrenchName = (is_sensor, type) => {
 }
 
 const getYMin = (min_val, type) => {
-    if(type === 'temperature'){
-        return Math.min(min_val - 5, 0);
+    min_val = Math.floor(min_val)
+    if(type === 'O2'){
+        return Math.min(min_val, 15);
     }
     return Math.min(min_val, 0);
 }
 
 const getYMax = (max_val, type) => {
-    if(type === 'soil_humidity' || type === 'air_humidity' || type === 'O2'){
+    max_val = Math.ceil(max_val)
+    if(type === 'soil_humidity' || type === 'air_humidity'){
         return 100;
     }
     if(type === 'light'){
@@ -56,6 +58,9 @@ const getYMax = (max_val, type) => {
     }
     if(type === 'water_level'){
         return Math.max(max_val, 35);
+    }
+    if(type === 'O2'){
+        return Math.max(max_val, 25);
     }
     return max_val;
 }
@@ -149,8 +154,7 @@ window.configureChart = (el_id, dates, measures, targets, gh_serial, is_sensor, 
                         }
                     },
                     title: {
-                        display: true,
-                        text: "Date"
+                        display: false,
                     }
                 }
             },
@@ -189,7 +193,8 @@ window.configureChart = (el_id, dates, measures, targets, gh_serial, is_sensor, 
 }
 
 const newUTCDate = (text, shift_minutes = 0) => {
-    const date = new Date(text + ' UTC');
-    date.setMinutes(date.getMinutes() + shift_minutes);
+    const date = new Date(text);
+    date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+    if(shift_minutes !== 0) date.setMinutes(date.getMinutes() + shift_minutes);
     return date;
 }
