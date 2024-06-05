@@ -73,52 +73,54 @@ def get_data_plant():
 def add_association_plant(greenhouse_serial, list_plants):
 	db = get_db()
 	cursor = db.cursor()
-	list_plants_id = list_plants[0]
-	list_plants_units = list_plants[1]
+	if list_plants:
+		list_plants_id = list_plants[0].split(',')
+		list_plants_units = list_plants[1].split(',')
 
-	try:
-		for i in range(len(list_plants_id)):
-			cursor.execute(
-				"INSERT INTO GreenHousePlants (plant_id, count, greenhouse_serial) VALUES (%s , %s, %s)",
-				(list_plants_id[i], list_plants_units[i], greenhouse_serial))
-			db.commit()
+		try:
+			for i in range(len(list_plants_id)):
+				cursor.execute(
+					"INSERT INTO GreenHousePlants (plant_id, count, greenhouse_serial) VALUES (%s , %s, %s)",
+					(int(list_plants_id[i]), int(list_plants_units[i]), greenhouse_serial))
+				db.commit()
 
-		return True
-	except Exception as e:
-		print(f"Error when adding plants: {e}")
-		return False
+			return True
+		except Exception as e:
+			print(f"Error when adding plants: {e}")
+			return False
 
 
 def terminate_association(list_association_id, list_new_count_association):
 	db = get_db()
 	cursor = db.cursor()
+	list_association_id_int = list_association_id.split(',')
+	list_new_count_association_int = list_new_count_association.split(',')
+	if list_association_id_int:
+		try:
+			for i in range(len(list_association_id_int)):
+				if int(list_new_count_association_int[i]) == 0:
+					cursor.execute(
+						"UPDATE GreenHousePlants SET date_end = UTC_TIMESTAMP() WHERE id = %s",
+						(int(list_association_id_int[i]),))
+					db.commit()
+				else:
+					cursor.execute(
+						"UPDATE GreenHousePlants SET date_end = UTC_TIMESTAMP(), count = count - %s WHERE id = %s",
+						(int(list_new_count_association_int[i]), int(list_association_id_int[i])))
+					db.commit()
 
-	try:
-		for i in range(len(list_association_id)):
-			if list_new_count_association[i] == 0:
-				cursor.execute(
-					"UPDATE GreenHousePlants SET date_end = UTC_TIMESTAMP() WHERE id = %s",
-					(list_association_id[i],))
-				db.commit()
-			else:
+					cursor.execute(
+						"SELECT plant_id, greenhouse_serial FROM GreenHousePlants WHERE id = %s",
+						(int(list_association_id_int[i]),))
 
-				cursor.execute(
-					"UPDATE GreenHousePlants SET date_end = UTC_TIMESTAMP(), count = count - %s WHERE id = %s",
-					(list_new_count_association[i], list_association_id[i]))
-				db.commit()
+					plant_id, greenhouse_serial = cursor.fetchone()
+					add_association_plant(greenhouse_serial, [[plant_id], [list_new_count_association_int[i]]])
 
-				cursor.execute(
-					"SELECT plant_id, greenhouse_serial FROM GreenHousePlants WHERE id = %s",
-					(list_association_id[i],))
+			return True
 
-				plant_id, greenhouse_serial = cursor.fetchone()
-				add_association_plant(greenhouse_serial, [[plant_id], [list_new_count_association[i]]])
-
-		return True
-
-	except Exception as e:
-		print(f"Error when terminating association: {e}")
-		return False
+		except Exception as e:
+			print(f"Error when terminating association: {e}")
+			return False
 
 
 def actualiaze_greenhouse_targets(greenhouse_serial):
@@ -157,7 +159,3 @@ def actualiaze_greenhouse_targets(greenhouse_serial):
 	except Exception as e:
 		print(f"Error when updating greenhouse: {e}")
 		return False
-
-
-
-actualiaze_greenhouse_targets('GrowBox-1')
