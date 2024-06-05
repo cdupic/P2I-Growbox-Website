@@ -1,6 +1,5 @@
 from src.database.database import get_db
 from src.database.measure import get_sensor_id
-from src.database.greenhouse import get_greenhouse_targets
 from datetime import datetime, time, timedelta
 
 
