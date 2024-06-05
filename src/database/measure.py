@@ -6,6 +6,7 @@ from src.database.database import get_db
 from src.utils.sensor_names import convert_actuator_type_to_french
 from src.utils.sensor_names import convert_sensor_type_to_french
 
+import pytz
 
 def get_sensors_greenhouse(greenhouse_serial):
     db = get_db()
@@ -283,8 +284,14 @@ def get_date_end_start():
     else:
         if not session.get('graph_delta_time') and session.get('graph_delta_time') != 0:
             session['graph_delta_time'] = 7
-        return (datetime.combine(datetime.utcnow(), time(0, 0, 0)) -
-                timedelta(days=session['graph_delta_time'])), datetime.utcnow()
+
+        # Cheat code, but the server don't know the timezone of the client
+        tz = pytz.timezone('Europe/Paris')
+        now_local = datetime.now().astimezone(tz)
+        now_local = now_local.replace(hour=0, minute=0, second=0, microsecond=0)
+
+        start_date = now_local - timedelta(days=session['graph_delta_time'])
+        return start_date.astimezone(pytz.utc), datetime.utcnow()
 
 
 def get_data_all_sensors(greenhouse_serial, date_start, date_end):

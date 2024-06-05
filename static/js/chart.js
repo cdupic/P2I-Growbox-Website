@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', function(){
     console.log("Fields:", document.getElementById('from_date').getAttribute('data-value'), document.getElementById('to_date').getAttribute('data-value'))
     console.log("New dates:",
         DateTime.fromSQL(document.getElementById('from_date').getAttribute('data-value'),
-        {zone: 'utc'}).setZone('utc').toSQL(), DateTime.fromSQL(document.getElementById('to_date').getAttribute('data-value'), {zone: 'utc'}).setZone('local').toSQL())
-    correctTimezoneForField(document.getElementById('from_date'), 'utc')
+        {zone: 'utc'}).setZone('local').toSQL(), DateTime.fromSQL(document.getElementById('to_date').getAttribute('data-value'), {zone: 'utc'}).setZone('local').toSQL())
+    correctTimezoneForField(document.getElementById('from_date'), 'local')
     correctTimezoneForField(document.getElementById('to_date'), 'local')
 })
 
@@ -89,15 +89,17 @@ window.configureChart = (el_id, dates, measures, targets, gh_serial, is_sensor, 
     if(from_date === undefined){
         from_date = dates[0]
     }else{
-        from_date = DateTime.fromSQL(from_date, {zone: 'utc'}).minus({minutes: tz_offset}).toHTTP()
+        // from_date = DateTime.fromSQL(from_date, {zone: 'utc'}).minus({minutes: tz_offset}).toHTTP()
+        to_date = DateTime.fromSQL(to_date, {zone: 'utc'}).toHTTP();
     }
     if(to_date === undefined){
         to_date = dates[dates.length - 1];
     }else{
         if(to_date.endsWith('23:59:59+00:00')){
-            to_date = DateTime.fromSQL(to_date, {zone: 'utc'}).minus({minutes: tz_offset}).toHTTP();
+            // to_date = DateTime.fromSQL(to_date, {zone: 'utc'}).minus({minutes: tz_offset}).toHTTP();
+            to_date = DateTime.fromSQL(to_date, {zone: 'utc'}).toHTTP();
         }else{
-            console.log("Correcting date", to_date, "to", DateTime.fromSQL(to_date, {zone: 'utc'}).toHTTP())
+            // console.log("Correcting date", to_date, "to", DateTime.fromSQL(to_date, {zone: 'utc'}).toHTTP())
             to_date = DateTime.fromSQL(to_date, {zone: 'utc'}).toHTTP();
         }
     }

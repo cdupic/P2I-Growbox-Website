@@ -59,6 +59,4 @@ def greenhouse_sensor_page(greenhouse_serial, sensor_id):
                            date_latest=date_latest,
                            targets=targets,
                            from_datetime_utc=str(date_start),
-                           to_datetime_utc=str(date_end),
-                           from_date=str(date_start),
-                           to_date=str(date_end))
+                           to_datetime_utc=str(date_end))

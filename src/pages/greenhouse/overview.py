@@ -1,5 +1,4 @@
 from flask import render_template, redirect, url_for, session
-import pytz
 
 from src.database.greenhouse import check_greenhouse_owner, get_greenhouse_name, get_dic_users_role_greenhouse, \
     get_greenhouse_targets
@@ -48,6 +47,4 @@ def greenhouse_overview_page(greenhouse_serial):
                            date_latest=date_latest,
                            greenhouse_name=get_greenhouse_name(greenhouse_serial, session['user_name']),
                            from_datetime_utc=str(date_start),
-                           to_datetime_utc=str(date_end),
-                           from_date=date_start.astimezone(pytz.timezone('Europe/Paris')).strftime("%Y-%m-%d"),
-                           to_date=date_end.astimezone(pytz.timezone('Europe/Paris')).strftime("%Y-%m-%d"))
+                           to_datetime_utc=str(date_end))

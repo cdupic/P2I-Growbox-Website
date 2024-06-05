@@ -51,6 +51,4 @@ def greenhouse_actuator_page(greenhouse_serial, actuator_id):
                            actuator_unit=get_actuator_unit(actuator_id),
                            current_sidebar_item=('actuator', int(actuator_id)),
                            from_datetime_utc=str(date_start),
-                           to_datetime_utc=str(date_end),
-                           from_date=date_start.astimezone(pytz.timezone('Europe/Paris')).strftime("%Y-%m-%d"),
-                           to_date=date_end.astimezone(pytz.timezone('Europe/Paris')).strftime("%Y-%m-%d"))
+                           to_datetime_utc=str(date_end))

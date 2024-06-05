@@ -12,9 +12,9 @@
         <div>
             <form action="{{ url_for('timestamp_manager') }}" method="POST" class="auto-submit">
                 <label for="start_date">Du</label>
-                <input type="date" id="from_date" name="start_date" value="{{ from_date }}">
+                <input type="date" id="from_date" name="start_date" data-value="{{ from_datetime_utc }}">
                 <label for="end_date">au</label>
-                <input type="date" id="to_date" name="end_date" value="{{ to_date }}">
+                <input type="date" id="to_date" name="end_date" data-value="{{ to_datetime_utc }}">
                 <input type="hidden" name="r" value="{{ url_for('greenhouse_actuator_page', greenhouse_serial=greenhouse_serial, actuator_id= actuator_id) }}">
             </form>
         </div>

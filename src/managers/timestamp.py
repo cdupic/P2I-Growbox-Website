@@ -10,6 +10,7 @@ def timestamp_manager():
         session['error'] = "La date sélectionnée est invalide."
         return redirect(request.form.get('r'))
 
+    # Cheat code, but the server don't know the timezone of the client
     tz = pytz.timezone('Europe/Paris')
     now = datetime.now().astimezone(tz)
     now_time = time(now.hour, now.minute, now.second)
@@ -30,11 +31,11 @@ def timestamp_manager():
     if start_datetime_local != end_datetime_local and abs(now-end_datetime_local) < timedelta(minutes=1):
         # Gliding window mode
         session['graph_delta_time'] = (end_datetime_local - start_datetime_local).days
+        print("Diff between ", end_datetime_local, start_datetime_local, (end_datetime_local - start_datetime_local).days)
 
         session['graph_start_date'] = None
         session['graph_end_date'] = None
         session['success'] = f"Vue actualisée sur {(end_datetime_local - start_datetime_local).days + 1} jours."
-
 
     elif (datetime.combine(start_datetime_utc, time(0, 0, 0)) ==
           datetime.combine(end_datetime_utc, time(0, 0, 0))):
@@ -46,11 +47,13 @@ def timestamp_manager():
         session['success'] = f"Vue actualisée sur les mesures d'ajourd'hui."
     else:
         # Start and end date mode
-        session['graph_start_date'] = datetime.combine(start_datetime_utc, time(0, 0, 0))
-        session['graph_end_date'] = datetime.combine(end_datetime_utc, time(23, 59, 59))
+        session['graph_start_date'] = datetime.combine(start_datetime_local, time(0, 0, 0)).astimezone(tz)
+        session['graph_end_date'] = datetime.combine(end_datetime_local, time(23, 59, 59)).astimezone(tz)
         session['graphs_delta_time'] = None
 
         session['success'] = f"Vue actualisée sur {(end_datetime_local - start_datetime_local).days + 1} jours."
+        print("Diff between ", end_datetime_local, start_datetime_local, (end_datetime_local - start_datetime_local).days)
+
     return redirect(request.form.get('r'))
 
 
