@@ -76,7 +76,6 @@ def add_association_plant(greenhouse_serial, list_plants):
 	list_plants_id = list_plants[0]
 	list_plants_units = list_plants[1]
 
-
 	try:
 		for i in range(len(list_plants_id)):
 			cursor.execute(
