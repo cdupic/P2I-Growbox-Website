@@ -66,10 +66,3 @@ def get_min_max_avg_o2(sensor_id, date_start, date_end):
 	except Exception as e:
 		print(f"Error when getting O2 values: {e}")
 
-
-data_o2 = analysis_02(5)
-print(data_o2[0])
-print(
-)
-print(data_o2[1])
-

@@ -16,6 +16,7 @@ def plant_manager():
         switch_greenhouse_custom_config(request.form.get('ghs'))
 
     else:
+
         add_association_plant(session['serial'], [request.form.get('add-plant'), request.form.get('add-plant-count')])
         terminate_association(request.form.get('remove-associations'), request.form.get('remove-associations-count'))
         actualiaze_greenhouse_targets(session['serial'])
