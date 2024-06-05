@@ -1,11 +1,49 @@
 {% extends "base.j2" %}
 
 {% block main %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+
     <section class="title">
-        <h1>Bienvenu sur GrowBox, LA plateforme qu'il vous faut pour une culture d'appartement sereine !</h1>
-        <p>GrowBox est une plateforme qui vous permet de gérer votre culture d'appartement de A à Z. Vous pouvez y
-            retrouver des informations sur les plantes, les pots, les lampes, les engrais, les insecticides, les
-            maladies, etc. Vous pouvez également y retrouver des conseils pour bien cultiver vos plantes.</p>
+        <div class="left">
+            <h1>GrowBox</h1>
+            <h2>La serre modulaire<br>qu'il vous faut</h2>
+        </div>
+        <div class="right">
+            <img src="{{ url_for('static', filename='img/greenhouse.png') }}" alt="Photo d'une serre GrowBox">
+        </div>
+    </section>
+    <section class="description">
+        <div>
+            <p>GrowBox permet à tout le monde, même aux novices du jardinage, de cultiver des plantes avec facilité.
+                Idéale pour les appartements, GrowBox surveille et optimise les conditions de croissance de vos plantes
+                en temps réel. Grâce à des capteurs de température, d’humidité, de lumière et de niveau d’eau, GrowBox
+                vous avertit afin que vos plantes reçoivent les soins nécessaires pour prospérer.</p>
+        </div>
+    </section>
+    <section class="about">
+        <div>
+            <h2>
+                À propos du projet GrowBox
+            </h2>
+            <div class="content">
+                <div class="left">
+                    <p>GrowBox est un projet de serre modulaire connectée, développé par des étudiants de l’Université
+                        de Technologie de Compiègne. L’objectif de ce projet est de permettre à tout le monde de cultiver
+                        des plantes, même sans connaissance en jardinage. Grâce à des capteurs de température, d’humidité,
+                        de lumière et de niveau d’eau, GrowBox surveille et optimise les conditions de croissance de vos
+                        plantes en temps réel. GrowBox vous avertit si vos plantes ont besoin de soins particuliers pour
+                        prospérer.</p>
+                </div>
+                <div class="right">
+                    <p>GrowBox est un projet de serre modulaire connectée, développé par des étudiants de l’Université
+                        de Technologie de Compiègne. L’objectif de ce projet est de permettre à tout le monde de cultiver
+                        des plantes, même sans connaissance en jardinage. Grâce à des capteurs de température, d’humidité,
+                        de lumière et de niveau d’eau, GrowBox surveille et optimise les conditions de croissance de vos
+                        plantes en temps réel. GrowBox vous avertit si vos plantes ont besoin de soins particuliers pour
+                        prospérer.</p>
+                </div>
+            </div>
+        </div>
     </section>
 
     {#    TODO: Setup 3D model viewing. It can be coded in this page and on landing.js #}
