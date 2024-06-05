@@ -27,7 +27,6 @@ def greenhouse_sensor_page(greenhouse_serial, sensor_id):
     measures = {}
 
     date_start, date_end = get_date_end_start()
-
     date_latest = datetime.utcnow() - timedelta(days=365)
 
     for data in get_data_sensors_since(greenhouse_serial, [sensor_id], date_start, date_end).values():
@@ -61,5 +60,5 @@ def greenhouse_sensor_page(greenhouse_serial, sensor_id):
                            targets=targets,
                            from_datetime_utc=str(date_start),
                            to_datetime_utc=str(date_end),
-                           from_date=date_start.astimezone(pytz.timezone('Europe/Paris')).strftime("%Y-%m-%d"),
-                           to_date=date_end.astimezone(pytz.timezone('Europe/Paris')).strftime("%Y-%m-%d"))
+                           from_date=str(date_start),
+                           to_date=str(date_end))

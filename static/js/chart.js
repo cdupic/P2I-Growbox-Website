@@ -1,3 +1,20 @@
+const DateTime = luxon.DateTime;
+const tz_offset = DateTime.local().offset;
+
+function correctTimezoneForField(field, zone){
+    let date = field.getAttribute('data-value')
+    field.value = DateTime.fromSQL(date, {zone: 'utc'}).setZone(zone).toISODate();
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+    console.log("Fields:", document.getElementById('from_date').getAttribute('data-value'), document.getElementById('to_date').getAttribute('data-value'))
+    console.log("New dates:",
+        DateTime.fromSQL(document.getElementById('from_date').getAttribute('data-value'),
+        {zone: 'utc'}).setZone('utc').toSQL(), DateTime.fromSQL(document.getElementById('to_date').getAttribute('data-value'), {zone: 'utc'}).setZone('local').toSQL())
+    correctTimezoneForField(document.getElementById('from_date'), 'utc')
+    correctTimezoneForField(document.getElementById('to_date'), 'local')
+})
+
 const getFrenchName = (is_sensor, type) => {
     if(is_sensor){
         switch(type){
@@ -66,16 +83,24 @@ const getYMax = (max_val, type) => {
 }
 
 window.configureChart = (el_id, dates, measures, targets, gh_serial, is_sensor, type, id, from_date, to_date) => {
+    console.log("Configuring chart from", from_date, "to", to_date, "with", dates.length, "points")
+
+
     if(from_date === undefined){
-        from_date = dates[0];
+        from_date = dates[0]
+    }else{
+        from_date = DateTime.fromSQL(from_date, {zone: 'utc'}).minus({minutes: tz_offset}).toHTTP()
     }
     if(to_date === undefined){
         to_date = dates[dates.length - 1];
+    }else{
+        if(to_date.endsWith('23:59:59+00:00')){
+            to_date = DateTime.fromSQL(to_date, {zone: 'utc'}).minus({minutes: tz_offset}).toHTTP();
+        }else{
+            console.log("Correcting date", to_date, "to", DateTime.fromSQL(to_date, {zone: 'utc'}).toHTTP())
+            to_date = DateTime.fromSQL(to_date, {zone: 'utc'}).toHTTP();
+        }
     }
-
-    dates = dates.map((date) => newUTCDate(date));
-
-    console.log(targets)
 
     const hour_Scope = Math.ceil((new Date(to_date) - new Date(from_date)) / (1000 * 60 * 60));
     let unit = 'minute'
@@ -134,24 +159,26 @@ window.configureChart = (el_id, dates, measures, targets, gh_serial, is_sensor, 
                 },
                 x: {
                     type: 'time',
-                    min: newUTCDate(from_date),
-                    max: newUTCDate(to_date, 0),
+                    min: from_date,
+                    max: to_date,
                     time: {
                         tooltipFormat: 'YYYY-MM-DD HH:mm:ss',
                         unit: unit,
                         displayFormats: {
                             minute: 'HH:mm',
-                            hour: "dd '-' H'h'",
+                            hour: "dd/MM '-' H'h'",
                             day: 'dd LLL',
                             month: 'LLL yyyy',
                             quarter: 'LLL yyyy',
                             year: 'yyyy'
                         },
+                        parser: function(datetext){
+                            return DateTime.fromHTTP(datetext, {zone: 'utc'});
+                        }
                     },
                     adapters: {
                         date: {
-                            locale: 'fr',
-                            zone: 'UTC+1'
+                            locale: 'fr'
                         }
                     },
                     title: {
@@ -191,11 +218,4 @@ window.configureChart = (el_id, dates, measures, targets, gh_serial, is_sensor, 
 
     const canvas = document.getElementById(el_id);
     new Chart(canvas, config);
-}
-
-const newUTCDate = (text, shift_minutes = 0) => {
-    const date = new Date(text);
-    // date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
-    if(shift_minutes !== 0) date.setMinutes(date.getMinutes() + shift_minutes);
-    return date;
 }
