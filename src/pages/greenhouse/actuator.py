@@ -1,12 +1,11 @@
-from flask import redirect, url_for, render_template
 from datetime import datetime, timedelta
+
 import pytz
+from flask import redirect, url_for, render_template
 
-
+from src.database.greenhouse import get_dic_users_role_greenhouse
 from src.database.measure import get_sensors_greenhouse, get_actuators_greenhouse, get_data_actuators_since, \
     get_actuator_type, get_actuator_unit, get_number_of_actions, get_date_end_start, get_format_latest_measure
-from src.database.greenhouse import get_dic_users_role_greenhouse
-
 from src.utils.sensor_names import convert_actuator_type_to_full_name
 from src.utils.user import is_user_authenticated
 
@@ -36,7 +35,6 @@ def greenhouse_actuator_page(greenhouse_serial, actuator_id):
         date_latest = get_format_latest_measure(date_latest)
     else:
         date_latest = None
-
 
     return render_template('pages/greenhouse_actuator.j2',
                            greenhouse_serial=greenhouse_serial,

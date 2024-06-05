@@ -75,8 +75,7 @@ def get_greenhouse_targets(greenhouse_serial):
             "WHERE serial = %s",
             (greenhouse_serial,)
         )
-        print(cursor.fetchone())
-        return cursor.fetchone()
+        return {k: v/10.0 for k, v in cursor.fetchone().items()}
 
     except Exception as e:
         print(f"Error when getting greenhouse targets: {e}")

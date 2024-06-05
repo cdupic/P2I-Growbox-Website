@@ -43,7 +43,6 @@ def verify_greenhouse_exists_and_not_linked(serial_number, session_user_name):
 
 
 def link_greenhouse_to_user(greenhouse_serial, user_name, greenhouse_name):
-    print(greenhouse_serial, user_name, greenhouse_name)
     db = get_db()
     cursor = db.cursor()
 
@@ -76,7 +75,6 @@ def greenhouse_already_linked(greenhouse_serial):
             (greenhouse_serial,),
         )
         serial = cursor.fetchone()
-        print(serial, 'liaison')
         if serial is None:
             return False
         return True

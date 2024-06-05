@@ -79,7 +79,6 @@ def add_association_plant(greenhouse_serial, list_plants):
 
 	try:
 		for i in range(len(list_plants_id)):
-			print(i)
 			cursor.execute(
 				"INSERT INTO GreenHousePlants (plant_id, count, greenhouse_serial) VALUES (%s , %s, %s)",
 				(list_plants_id[i], list_plants_units[i], greenhouse_serial))
@@ -129,7 +128,7 @@ def actualiaze_greenhouse_targets(greenhouse_serial):
 	dic_id_plants_count = {}
 	for id_association, (id_plant, id_count, _, _) in get_plants_greenhouse(greenhouse_serial).items():
 		dic_id_plants_count[id_association] = (id_plant, id_count)
-		
+
 	temperature_avg = 0
 	soil_humidity_avg = 0
 	air_humidity_avg = 0

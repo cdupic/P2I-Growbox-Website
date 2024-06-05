@@ -100,7 +100,7 @@ def get_data_actuators_since(greenhouse_serial, actuators_list, day_start, day_e
         for (actuator_id, date, value) in cursor:
             if actuator_id not in data:
                 data[actuator_id] = {}
-            data[actuator_id][date] = value
+            data[actuator_id][date] = value/10.0
 
         return data
 
@@ -153,25 +153,6 @@ def get_actuator_type(actuator_id):
 def get_actuator_unit(actuator_type):
     if actuator_type == "water_level":
         return "mm"
-
-
-def get_greenhouse_actions(greenhouse_serial, actuator_id, date_start, date_end):
-    cursor = g.db.connect().cursor()
-
-    try:
-        cursor.execute(
-            "SELECT Actions.actuator_id, Actions.date, Actions.value, Actuators.type "
-            "FROM Actions, Actuators "
-            "WHERE Actions.actuator_id = Actuators.id and Actuators.id= %s and Actuators.greenhouse_serial = %s and "
-            "Actions.date BETWEEN %s and %s "
-            "ORDER BY Actions.date",
-            (actuator_id, greenhouse_serial, date_start, date_end))
-
-        for (actuator_id, date, value, sensor_type) in cursor:
-            print(f"Action in {greenhouse_serial} the {date}, done by actuator {actuator_id}, {sensor_type} : {value}")
-
-    except Exception as e:
-        print(f"Error when getting actions of greenhouse : {greenhouse_serial}: {e}")
 
 
 def get_greenhouse_measures(greenhouse_serial, sensor_id, date_start, date_end):

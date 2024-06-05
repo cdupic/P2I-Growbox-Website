@@ -75,6 +75,7 @@ window.configureChart = (el_id, dates, measures, targets, gh_serial, is_sensor, 
 
     dates = dates.map((date) => newUTCDate(date));
 
+    console.log(targets)
 
     const hour_Scope = Math.ceil((new Date(to_date) - new Date(from_date)) / (1000 * 60 * 60));
     let unit = 'minute'
