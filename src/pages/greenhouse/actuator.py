@@ -34,7 +34,6 @@ def greenhouse_actuator_page(greenhouse_serial, actuator_id):
 
     if actions != {}:
         date_latest = get_format_latest_measure(date_latest)
-
     else:
         date_latest = None
 

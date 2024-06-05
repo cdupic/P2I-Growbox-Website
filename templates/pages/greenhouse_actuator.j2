@@ -6,7 +6,7 @@
     {% if date_latest %}
         <div class="heading">
         <div class="title">
-            <h1>{{ current_sensor_full_name }}</h1>
+            <h1>{{ current_actuator_full_name }}</h1>
             <p>{{ ratio_measures }} actions, dernière action {{ date_latest }}</p>
         </div>
         <div>
@@ -39,9 +39,9 @@
             'chart1',
             {{ actions.keys()|list|tojson }},
             {{ actions.values()|list|tojson }},
-            {{ targets }},
+            [],
             {{ greenhouse_serial|tojson }},
-            true,
+            false,
             {{ actuator_type|tojson }},
             {{ actuator_id|tojson }},
             {{ from_datetime_utc|tojson }},

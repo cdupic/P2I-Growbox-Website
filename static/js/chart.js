@@ -2,17 +2,17 @@ const getFrenchName = (is_sensor, type) => {
     if(is_sensor){
         switch(type){
             case "temperature":
-                return "Température";
+                return "Température (°C)";
             case "soil_humidity":
-                return "Humidité du sol";
+                return "Humidité du sol (%HR)";
             case "light":
-                return "Luminosité";
+                return "Luminosité (lx)";
             case "air_humidity":
-                return "Humidité de l'air";
+                return "Humidité de l'air (%HR)";
             case "water_level":
-                return "Niveau d'eau";
+                return "Niveau d'eau (mm)";
             case "O2":
-                return "O2";
+                return "O2 (%)";
             default:
                 return "Inconnu";
         }
@@ -21,7 +21,7 @@ const getFrenchName = (is_sensor, type) => {
             case "temperature":
                 return "Chauffage/Climatisation";
             case "soil_humidity":
-                return "Arroseur";
+                return "Arrosage (s)";
             case "light":
                 return "Vélux";
             case "air_humidity":

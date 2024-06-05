@@ -355,13 +355,11 @@ def get_date_latest_measure(greenhouse_serial):
 def get_format_latest_measure(date_latest):
     diff = datetime.utcnow() - date_latest
     if diff < timedelta(minutes=1):
-        return f"il y a {diff.seconds} secondes"
+        return f"il y a {diff.seconds} seconde{'' if diff.seconds == 1 else 's'}"
     elif diff < timedelta(hours=1):
-        return f"il y a {diff.seconds // 60} minutes"
+        return f"il y a {diff.seconds // 60} minute{'' if diff.seconds // 60 == 1 else 's'}"
     elif diff < timedelta(days=1):
-        return f"il y a {diff.seconds // 3600} heures"
-    elif diff < timedelta(days=30):
-        return f"il y a {diff.days} jours"
+        return f"il y a {diff.seconds // 3600} heure{'' if diff.seconds // 3600 == 1 else 's'}"
     else:
-        return f"en {date_latest.strftime('%B')}"
+        return f"le {date_latest.strftime('%d/%m/%Y à %H:%M')}"
 

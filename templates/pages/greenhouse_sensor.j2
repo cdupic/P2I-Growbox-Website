@@ -39,7 +39,7 @@
             'chart1',
             {{ measures.keys()|list|tojson }},
             {{ measures.values()|list|tojson }},
-            {{ targets }},
+            {{ targets|list }},
             {{ greenhouse_serial|tojson }},
             true,
             {{ sensor_type|tojson }},

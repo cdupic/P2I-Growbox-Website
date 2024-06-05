@@ -39,13 +39,8 @@ def greenhouse_sensor_page(greenhouse_serial, sensor_id):
 
     if measures != {}:
         date_latest = get_format_latest_measure(date_latest)
-
     else:
         date_latest = None
-
-    print(measures.keys())
-    print()
-    print(measures.values())
 
     return render_template("pages/greenhouse_sensor.j2",
                            greenhouse_serial=greenhouse_serial,

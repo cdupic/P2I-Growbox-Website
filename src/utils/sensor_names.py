@@ -50,7 +50,7 @@ def convert_actuator_type_to_full_name(sensor_type):
     if sensor_type == "temperature":
         return "Pompe à chaleur"
     elif sensor_type == "soil_humidity":
-        return "Pompe à eau"
+        return "Arrosage (s)"
     elif sensor_type == "light":
         return "Vélux"
     elif sensor_type == "air_humidity":
