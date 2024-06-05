@@ -146,8 +146,7 @@ const addNewPlant = (plant_id) => {
                         Temp&#x202F;: ${temperature}°C,
                         Sol HR&#x202F;: ${soil_humidity}%,
                         Air HR&#x202F;: ${air_humidity}%,
-                        Lux&#x202F;: ${light},
-                        O2&#x202F;: ${o2}%
+                        Lux&#x202F;: ${light}
                     </p>
                 </div>
             </li>`
@@ -176,8 +175,7 @@ const updateSearchPlants = (searchValue) => {
                         Temp&#x202F;: ${temperature}°C,
                         Sol HR&#x202F;: ${soil_humidity}%,
                         Air HR&#x202F;: ${air_humidity}%,
-                        Lux&#x202F;: ${light},
-                        O2&#x202F;: ${o2}%
+                        Lux&#x202F;: ${light}
                     </p>
                 </div>
             </li>`)
@@ -222,8 +220,7 @@ document.addEventListener("DOMContentLoaded", function(){
                         Temp&#x202F;: ${temperature}°C,
                         Sol HR&#x202F;: ${soil_humidity}%,
                         Air HR&#x202F;: ${air_humidity}%,
-                        Lux&#x202F;: ${light},
-                        O2&#x202F;: ${o2}%
+                        Lux&#x202F;: ${light}
                     </p>
                 </div>
             </li>`
