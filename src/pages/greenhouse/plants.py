@@ -1,6 +1,7 @@
 from flask import render_template, redirect, url_for, session
 
-from src.database.greenhouse import check_greenhouse_owner, get_dic_users_role_greenhouse, get_greenhouse_name
+from src.database.greenhouse import (check_greenhouse_owner, get_dic_users_role_greenhouse, get_greenhouse_name,
+                                     get_greenhouse_targets, get_config_greenhouse)
 from src.database.measure import get_sensors_greenhouse, get_actuators_greenhouse
 from src.database.plant import get_plants_greenhouse, get_data_plant, get_history_greenhouse
 from src.utils.user import is_user_authenticated
@@ -27,6 +28,17 @@ def greenhouse_plants_page(greenhouse_serial):
 
     # List of plants ids that were in the greenhouse with start and end date
     # old_plants = {association_id: (plant_id, plant_name, count, start_date, end_date)}
+    targets = get_greenhouse_targets(greenhouse_serial)
+    targets_greenhouse_str = (f"Température : {targets['temperature']}°C, Humidité du sol : "
+                              f"{targets['soil_humidity']}%,"
+                              f"Humidité de l'air : {targets['air_humidity']}%, Lumière : {targets['light']}%")
+
+    is_config, = get_config_greenhouse(greenhouse_serial)
+    if is_config:
+        is_config = "manuelle"
+    else:
+        is_config = "automatique"
+
     return render_template('pages/greenhouse_plants.j2',
                            current_sidebar_item=('plants', None),
                            greenhouse_serial=greenhouse_serial,
@@ -34,7 +46,8 @@ def greenhouse_plants_page(greenhouse_serial):
                            sidebar_sensors=get_sensors_greenhouse(greenhouse_serial).items(),
                            sidebar_actuators=get_actuators_greenhouse(greenhouse_serial).items(),
                            sidebar_users=get_dic_users_role_greenhouse(greenhouse_serial).items(),
-
+                           targets_greenhouse_str=targets_greenhouse_str,
+                           is_config=is_config,
                            available_plants=get_data_plant(),
                            old_plants=get_history_greenhouse(greenhouse_serial),
                            current_plants=get_plants_greenhouse(greenhouse_serial),

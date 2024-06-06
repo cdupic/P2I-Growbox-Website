@@ -123,4 +123,20 @@ def switch_greenhouse_custom_config(greenhouse_serial):
         print(f"Error when switching greenhouse custom config: {e}")
 
 
+def get_config_greenhouse(greenhouse_serial):
+    db = get_db()
+    cursor = db.cursor()
 
+    try:
+        cursor.execute(
+            "SELECT is_custom_config "
+            "FROM GreenHouses "
+            "WHERE serial = %s",
+            (greenhouse_serial,)
+        )
+        return cursor.fetchone()
+
+    except Exception as e:
+        print(f"Error when getting greenhouse config: {e}")
+
+    return {}

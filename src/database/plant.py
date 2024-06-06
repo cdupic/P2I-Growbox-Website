@@ -149,7 +149,8 @@ def actualiaze_greenhouse_targets(greenhouse_serial):
 				light_avg += light * count/sum_plants
 
 		cursor.execute(
-			"UPDATE GreenHouses SET temperature = %s, soil_humidity = %s, air_humidity = %s, light = %s, "
+			"UPDATE GreenHouses SET temperature = %s, soil_humidity = %s, air_humidity = %s, light = %s,"
+			"is_custom_config = 0, "
 			"plant_init_date = UTC_TIMESTAMP() "
 			" WHERE serial = %s",
 			(temperature_avg, soil_humidity_avg, air_humidity_avg, light_avg, greenhouse_serial))
