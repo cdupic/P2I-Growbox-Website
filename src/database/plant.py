@@ -70,7 +70,7 @@ def get_data_plant():
 		return None
 
 
-def add_association_plant(greenhouse_serial, list_plants):
+def add_association_plant(greenhouse_serial, list_plants, day_start=None):
 	db = get_db()
 	cursor = db.cursor()
 	if list_plants[0] != '':
@@ -78,11 +78,18 @@ def add_association_plant(greenhouse_serial, list_plants):
 		list_plants_units = list_plants[1]
 
 		try:
-			for i in range(len(list_plants_id)):
-				cursor.execute(
-					"INSERT INTO GreenHousePlants (plant_id, count, greenhouse_serial) VALUES (%s , %s, %s)",
-					(int(list_plants_id[i]), int(list_plants_units[i]), greenhouse_serial))
-				db.commit()
+			if day_start is None:
+				for i in range(len(list_plants_id)):
+					cursor.execute(
+						"INSERT INTO GreenHousePlants (plant_id, count, greenhouse_serial) VALUES (%s , %s, %s)",
+						(int(list_plants_id[i]), int(list_plants_units[i]), greenhouse_serial))
+					db.commit()
+			else:
+				for i in range(len(list_plants_id)):
+					cursor.execute(
+						"INSERT INTO GreenHousePlants (plant_id, count, greenhouse_serial, date_start) VALUES (%s , %s, %s, %s)",
+						(int(list_plants_id[i]), int(list_plants_units[i]), greenhouse_serial, day_start))
+					db.commit()
 
 			return True
 		except Exception as e:
@@ -99,21 +106,21 @@ def terminate_association(list_association_id, list_new_count_association):
 			for i in range(len(list_association_id)):
 				if int(list_new_count_association[i]) == 0:
 					cursor.execute(
-						"UPDATE GreenHousePlants SET date_end = UTC_TIMESTAMP() WHERE id = %s",
+						"UPDATE GreenHousePlants SET date_end = CURRENT_TIMESTAMP() WHERE id = %s",
 						(int(list_association_id[i]),))
 					db.commit()
 				else:
 					cursor.execute(
-						"UPDATE GreenHousePlants SET date_end = UTC_TIMESTAMP(), count = count - %s WHERE id = %s",
+						"UPDATE GreenHousePlants SET date_end = CURRENT_TIMESTAMP(), count = count - %s WHERE id = %s",
 						(int(list_new_count_association[i]), int(list_association_id[i])))
 					db.commit()
 
 					cursor.execute(
-						"SELECT plant_id, greenhouse_serial FROM GreenHousePlants WHERE id = %s",
+						"SELECT plant_id, greenhouse_serial, date_start FROM GreenHousePlants WHERE id = %s",
 						(int(list_association_id[i]),))
 
-					plant_id, greenhouse_serial = cursor.fetchone()
-					add_association_plant(greenhouse_serial, [[plant_id], [list_new_count_association[i]]])
+					plant_id, greenhouse_serial, date_start = cursor.fetchone()
+					add_association_plant(greenhouse_serial, [[plant_id], [list_new_count_association[i]]], date_start)
 
 			return True
 
