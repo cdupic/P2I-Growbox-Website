@@ -73,9 +73,9 @@ def get_data_plant():
 def add_association_plant(greenhouse_serial, list_plants):
 	db = get_db()
 	cursor = db.cursor()
-	if list_plants:
-		list_plants_id = list_plants[0].split(',')
-		list_plants_units = list_plants[1].split(',')
+	if list_plants[0] != '':
+		list_plants_id = list_plants[0]
+		list_plants_units = list_plants[1]
 
 		try:
 			for i in range(len(list_plants_id)):
@@ -88,33 +88,32 @@ def add_association_plant(greenhouse_serial, list_plants):
 		except Exception as e:
 			print(f"Error when adding plants: {e}")
 			return False
+	print('passé')
 
 
 def terminate_association(list_association_id, list_new_count_association):
 	db = get_db()
 	cursor = db.cursor()
-	list_association_id_int = list_association_id.split(',')
-	list_new_count_association_int = list_new_count_association.split(',')
-	if list_association_id_int:
+	if list_association_id != ['']:
 		try:
-			for i in range(len(list_association_id_int)):
-				if int(list_new_count_association_int[i]) == 0:
+			for i in range(len(list_association_id)):
+				if int(list_new_count_association[i]) == 0:
 					cursor.execute(
 						"UPDATE GreenHousePlants SET date_end = UTC_TIMESTAMP() WHERE id = %s",
-						(int(list_association_id_int[i]),))
+						(int(list_association_id[i]),))
 					db.commit()
 				else:
 					cursor.execute(
 						"UPDATE GreenHousePlants SET date_end = UTC_TIMESTAMP(), count = count - %s WHERE id = %s",
-						(int(list_new_count_association_int[i]), int(list_association_id_int[i])))
+						(int(list_new_count_association[i]), int(list_association_id[i])))
 					db.commit()
 
 					cursor.execute(
 						"SELECT plant_id, greenhouse_serial FROM GreenHousePlants WHERE id = %s",
-						(int(list_association_id_int[i]),))
+						(int(list_association_id[i]),))
 
 					plant_id, greenhouse_serial = cursor.fetchone()
-					add_association_plant(greenhouse_serial, [[plant_id], [list_new_count_association_int[i]]])
+					add_association_plant(greenhouse_serial, [[plant_id], [list_new_count_association[i]]])
 
 			return True
 

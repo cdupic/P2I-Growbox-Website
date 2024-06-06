@@ -17,8 +17,13 @@ def plant_manager():
 
     else:
 
-        add_association_plant(session['serial'], [request.form.get('add-plant'), request.form.get('add-plant-count')])
-        terminate_association(request.form.get('remove-associations'), request.form.get('remove-associations-count'))
+        add_plant_list = request.form.get('add-plant').split(',')
+        add_count_list = request.form.get('add-plant-count').split(',')
+        remove_associations_list = request.form.get('remove-associations').split(',')
+        remove_associations_count_list = request.form.get('remove-associations-count').split(',')
+
+        add_association_plant(session['serial'], [add_plant_list, add_count_list])
+        terminate_association(remove_associations_list, remove_associations_count_list)
         actualiaze_greenhouse_targets(session['serial'])
 
         return redirect(url_for('greenhouse_plants_page', greenhouse_serial=request.form.get('ghs')))
