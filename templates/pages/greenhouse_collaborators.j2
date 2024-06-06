@@ -1,0 +1,7 @@
+{% extends "greenhouse_template.j2" %}
+
+{% block content %}
+    {%  for name, role in collaborators_role.items() %}
+        <p>{{ name }} : {{ role }}</p>
+    {% endfor %}
+{% endblock %}

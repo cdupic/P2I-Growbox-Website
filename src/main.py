@@ -9,12 +9,14 @@ from src.managers.login import login_manager
 from src.managers.logout import logout_manager
 from src.managers.signup import signup_manager
 from src.managers.plant import plant_manager
+from src.managers.permission import permission_manager
 from src.managers.timestamp import timestamp_manager
 from src.pages.greenhouse.actuator import greenhouse_actuator_page
 from src.pages.greenhouse.overview import greenhouse_overview_page
 from src.pages.greenhouse.plants import greenhouse_plants_page
 from src.pages.greenhouse.sensor import greenhouse_sensor_page
 from src.pages.greenhouses import greenhouses_page
+from src.pages.greenhouse.collaborator import greenhouse_collaborator_page
 from src.pages.landing import landing_page
 from src.pages.login import login_page
 from src.pages.signup import signup_page
@@ -41,6 +43,8 @@ class GrowBoxApp(Flask):
                              view_func=greenhouse_sensor_page)
         super().add_url_rule("/greenhouse/<greenhouse_serial>/actuator/<actuator_id>", methods=["GET"],
                              view_func=greenhouse_actuator_page)
+        super().add_url_rule("/greenhouse/<greenhouse_serial>/collaborators", methods=["GET"],
+                             view_func=greenhouse_collaborator_page)
 
         super().add_url_rule("/manager/logout", methods=["POST", "GET"], view_func=logout_manager)
         super().add_url_rule("/manager/login", methods=["POST"], view_func=login_manager)
@@ -48,6 +52,9 @@ class GrowBoxApp(Flask):
         super().add_url_rule("/manager/associate", methods=["GET"], view_func=associate_manager)
         super().add_url_rule("/manager/plant", methods=["POST"], view_func=plant_manager)
         super().add_url_rule("/manager/timestamp", methods=["POST"], view_func=timestamp_manager)
+        super().add_url_rule("/manager/permission", methods=["POST"], view_func=permission_manager)
+
+
 
     def before_request(self, *args, **kwargs):
         init_db()

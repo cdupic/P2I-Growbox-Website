@@ -24,6 +24,6 @@ def plant_manager():
 
         add_association_plant(session['serial'], [add_plant_list, add_count_list])
         terminate_association(remove_associations_list, remove_associations_count_list)
-        actualiaze_greenhouse_targets(session['serial'])
+        actualiaze_greenhouse_targets(request.form.get('ghs'))
 
         return redirect(url_for('greenhouse_plants_page', greenhouse_serial=request.form.get('ghs')))

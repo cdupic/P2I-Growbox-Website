@@ -140,3 +140,25 @@ def get_config_greenhouse(greenhouse_serial):
         print(f"Error when getting greenhouse config: {e}")
 
     return {}
+
+def get_role_user(greenhouse_serial, user_name):
+    db = get_db()
+    cursor = db.cursor()
+
+    try:
+        cursor.execute(
+            "SELECT role "
+            "FROM UserGreenHouses "
+            "WHERE user_name = %s AND greenhouse_serial = %s",
+            (user_name, greenhouse_serial)
+        )
+        role = cursor.fetchone()
+        if role is None:
+            return None
+        return role[0]
+
+    except Exception as e:
+        print(f"Error when getting role user: {e}")
+        return None
+
+

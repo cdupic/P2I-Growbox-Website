@@ -1,6 +1,4 @@
 from datetime import datetime, timedelta
-
-import pytz
 from flask import redirect, url_for, render_template
 
 from src.database.greenhouse import get_dic_users_role_greenhouse
@@ -40,7 +38,6 @@ def greenhouse_actuator_page(greenhouse_serial, actuator_id):
                            greenhouse_serial=greenhouse_serial,
                            sidebar_sensors=sensors.items(),
                            sidebar_actuators=actuators.items(),
-                           sidebar_users=users_roles.items(),
                            ratio_measures=str(len(actions)) + ' sur ' + str(
                                get_number_of_actions(greenhouse_serial, actuator_id)),
                            date_latest=date_latest,

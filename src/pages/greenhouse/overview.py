@@ -38,7 +38,6 @@ def greenhouse_overview_page(greenhouse_serial):
                            greenhouse_serial=greenhouse_serial,
                            sidebar_sensors=sensors.items(),
                            sidebar_actuators=actuators.items(),
-                           sidebar_users=users_roles.items(),
                            ratio_measures=str(get_number_measures(greenhouse_serial, date_start, date_end)) + ' sur ' +
                                           str(get_number_measures(greenhouse_serial, [])),
                            current_sidebar_item=('overview', None),
