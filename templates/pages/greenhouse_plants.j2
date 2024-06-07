@@ -6,6 +6,7 @@
         window.available_plants = {{ available_plants|tojson }};
         window.current_plants = {{ current_plants|tojson }};
         window.old_plants = {{ old_plants|tojson }};
+        window.is_custom_config = {{ is_custom_config|tojson }};
     </script>
     <script src="{{ url_for('static', filename="js/plants.js") }}"></script>
 
@@ -17,11 +18,63 @@
         </div>
     </div>
 
-    <div>
+    <div class="content">
+
+        <div>
+            {% if is_custom_config %}
+                <h2>Configuration manuelle</h2>
+            {% else %}
+                <h2>Configuration automatique</h2>
+            {% endif %}
+            <p class="tag green">Température&nbsp;<span>{{ targets['temperature'] }}°C</span></p>
+            <p class="tag dirt">Humidité sol&nbsp;<span>{{ targets['soil_humidity'] }}%</span></p>
+            <p class="tag blue">Humidité air&nbsp;<span>{{ targets['air_humidity'] }}%</span></p>
+            <p class="tag yellow">Luminosité&nbsp;<span>{{ targets['light'] }} lux</span></p>
+
+
+            <form id="customConfig" method="POST" action="{{ url_for('plant_manager') }}">
+                <input type="hidden" name="ghs" value="{{ greenhouse_serial }}">
+                <input type="hidden" name="action" value="custom">
+
+                <div id="auto-config-inputs">
+                    <input type="submit" class="main-button red" id="manual-config-button" value="Passer en configuration manuelle"/>
+                </div>
+                <div id="manual-config-inputs">
+                    <div>
+                        <label>
+                            <div>
+                                <span>Température</span>
+                                <input type="number" min="-50" max="100" name="temperature" step=".1" value="{{ targets['temperature'] }}">
+                            </div>
+                        </label>
+                        <label>
+                            <div>
+                                <span>Humidité sol</span>
+                                <input type="number" min="0" max="100" name="soil_humidity" step=".1" value="{{ targets['soil_humidity'] }}">
+                            </div>
+                        </label>
+                        <label>
+                            <div>
+                                <span>Humidité air</span>
+                                <input type="number" min="0" max="100" name="air_humidity" step=".1" value="{{ targets['air_humidity'] }}">
+                            </div>
+                        </label>
+                        <label>
+                            <div>
+                                <span>Luminosité</span>
+                                <input type="number" min="0" max="10000" name="light" step="1" value="{{ targets['light'] }}">
+                            </div>
+                        </label>
+                    </div>
+                    <input type="submit" value="Enregistrer les modifications" class="main-button green">
+                </div>
+            </form>
+        </div>
+
         <form id="plantForm" method="POST" action="{{ url_for('plant_manager') }}">
 
             <input type="hidden" name="ghs" value="{{ greenhouse_serial }}">
-            <input type="hidden" name="action" value="update">
+            <input type="hidden" name="action" value="plant">
 
             <input type="hidden" id="removeAssociationsInput" name="remove-associations" value="">
             <input type="hidden" id="removeAssociationsCountInput" name="remove-associations-count" value="">
@@ -29,13 +82,11 @@
             <input type="hidden" id="addPlantsCountInput" name="add-plant-count" value="">
 
             <h2>Plantes actuellement dans la serre</h2>
-            <h3> Valeurs cibles de la serre : {{ targets_greenhouse_str }} , configuration {{ is_config }}</h3>
 
             <ul id="currentPlants">
-
             </ul>
 
-            <input type="submit" value="Enregistrer les modifications">
+            <input type="submit" value="Enregistrer les modifications" class="main-button green" id="auto-config-button">
 
             <h2>Ajouter une plante</h2>
 
@@ -54,7 +105,7 @@
             </ul>
         </form>
 
-        <p> Plantes présentes auparavant </p>
+        <h2>Historique des plantes</h2>
         <ul>
             {% for id, data in old_plants.items() %}
                 <p>  {{ data[1] }} du : {{ data[3]}} au {{ data[4] }}, {{ data[2] }} plants cultivés</p>
@@ -62,10 +113,7 @@
         </ul>
     </div>
 
-    <div>
-        <h2>Configurer les asservissements manuellement</h2>
-        <p> Plantes actuellement présentes</p>
-    </div>
+
 
 
 {% endblock %}

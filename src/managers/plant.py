@@ -6,24 +6,26 @@ from src.database.plant import (actualiaze_greenhouse_targets,
 
 
 def plant_manager():
-    # TODO:
-    #       If the parameter 'is-custom' is True,
-    #           the config is specified as post parameters, e.g. 'temperature' = 25
-    #           the code should update the greenhouse in the GreenHouses table and switch is_custom_config to true.
-
-    if session.get('is-custom'):
-        # Update the GreenHouses table
+    if request.form.get('action') == 'custom':
+        # TODO: update the greenhouse in the GreenHouses table and switch is_custom_config to true.
+        #   The config is specified as post parameters, e.g. 'temperature' = 25
         switch_greenhouse_custom_config(request.form.get('ghs'))
+        session['success'] = "Les modifications ont bien été prises en compte."
 
-    else:
+    elif request.form.get('action') == 'plant':
 
         add_plant_list = request.form.get('add-plant').split(',')
         add_count_list = request.form.get('add-plant-count').split(',')
         remove_associations_list = request.form.get('remove-associations').split(',')
         remove_associations_count_list = request.form.get('remove-associations-count').split(',')
 
-        add_association_plant(session['serial'], [add_plant_list, add_count_list])
+        add_association_plant(request.form.get('ghs'), [add_plant_list, add_count_list])
         terminate_association(remove_associations_list, remove_associations_count_list)
         actualiaze_greenhouse_targets(request.form.get('ghs'))
 
-        return redirect(url_for('greenhouse_plants_page', greenhouse_serial=request.form.get('ghs')))
+        session['success'] = "Les modifications ont bien été prises en compte."
+
+    else:
+        session['error'] = "Une erreur s'est produite lors de la modification de la configuration de la serre."
+
+    return redirect(url_for('greenhouse_plants_page', greenhouse_serial=request.form.get('ghs')))

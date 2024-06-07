@@ -191,6 +191,20 @@ const updateSearchPlants = (searchValue) => {
 
 document.addEventListener("DOMContentLoaded", function(){
 
+    const customConfigInputs = document.getElementById('manual-config-inputs');
+    const autoConfigInputs = document.getElementById('auto-config-inputs');
+    const autoConfigButton = document.getElementById('auto-config-button');
+
+    if(window.is_custom_config){
+        customConfigInputs.style.display = 'block';
+        autoConfigButton.value = 'Passer en configuration automatique'
+        autoConfigButton.classList = 'main-button red'
+    }else{
+        autoConfigInputs.style.display = 'block';
+
+    }
+
+
     const currentPlants = document.getElementById('currentPlants');
 
     Object.keys(window.current_plants).forEach((association_id) => {

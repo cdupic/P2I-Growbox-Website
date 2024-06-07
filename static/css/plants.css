@@ -1,16 +1,55 @@
-#plantForm {
+.content {
     margin: 0 auto;
     padding: 5px;
     max-width: 600px;
 }
-#plantForm h2 {
+.content h2 {
     margin: 15px 0 5px 0;
-    font-size: 1.2em;
 }
 
 #plantForm ul {
     list-style-type: none;
     padding: 0;
+}
+
+/* CONFIG */
+
+.content #customConfig > div {
+    display: none;
+}
+.content #customConfig #manual-config-inputs > div {
+    margin-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+@media (max-width: 500px) {
+    .content #customConfig #manual-config-inputs label {
+        flex-basis: 35%;
+    }
+}
+.content #customConfig #manual-config-inputs label div {
+    width: fit-content;
+    margin: 0 auto;
+}
+
+.content #customConfig #manual-config-inputs label span {
+    display: block;
+}
+.content #customConfig #manual-config-inputs label input {
+    width: 100px;
+}
+
+.content #customConfig #manual-config-inputs > input {
+    margin-top: 20px;
+}
+
+.content #auto-config-inputs {
+    padding: 15px 0;
+}
+.content #manual-config-inputs {
+    padding: 0 0 15px 0;
 }
 
 /* LIST OF PLANTS */
@@ -22,7 +61,9 @@
     margin-left: 15px;
 }
 
-
+#plantForm{
+    padding-bottom: 15px;
+}
 #plantForm .association {
     background-color: white;
     border-radius: 10px;
@@ -59,15 +100,6 @@
 }
 
 /* ADD PLANT */
-
-#plantForm > input {
-    display: block;
-    margin: 20px auto;
-    padding: 0 12px;
-    height: 38px;
-    background-color: hsl(73, 76%, 90%);
-    border: 2px solid hsl(73, 76%, 60%);
-}
 
 #plantForm .add-plant-inputs {
     display: flex;
@@ -108,4 +140,8 @@
 
 #plantForm ul#plant-results .config p {
     font-size: .75em;
+}
+
+#plantForm .main-button {
+    margin: 20px auto 35px;
 }

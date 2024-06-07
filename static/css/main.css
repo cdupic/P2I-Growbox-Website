@@ -133,9 +133,6 @@ section.greenhouses-tiles a:hover {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 
-section.greenhouses-tiles h2 {
-    font-size: 1.3em;
-}
 section.greenhouses-tiles p {
     font-size: .9em;
     font-weight: 300;
@@ -157,4 +154,77 @@ section.greenhouses-tiles p {
 }
 #overlay:not(.active) {
     display: none;
+}
+
+/* TAG */
+
+p.tag {
+    display: inline-block;
+    margin: 0 5px 5px 0;
+    padding: 5px 10px;
+
+    border-radius: 10px;
+    font-size: 1.1em;
+    font-weight: 600;
+}
+p.tag.red {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+p.tag.blue {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+p.tag.green {
+    background-color: #d4edda;
+    color: #155724;
+}
+p.tag.yellow {
+    background-color: #fff3cd;
+    color: #856404;
+}
+p.tag.gray {
+    background-color: #f8f9fa;
+    color: #343a40;
+}
+p.tag.dirt {
+    background-color: #ead4ac;
+    color: #5a3f1f;
+}
+p.tag span {
+    margin-left: 5px;
+    font-weight: 800;
+}
+
+/* Main buttons */
+
+.main-button {
+    display: block;
+    margin: 5px auto;
+    padding: 0 10px;
+    height: 36px;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.main-button.green {
+    background-color: hsl(73, 76%, 90%);
+    border: 2px solid hsl(73, 76%, 60%);
+}
+.main-button.green:hover, .main-button.green:active {
+    background-color: hsl(73, 76%, 80%);
+}
+.main-button.orange {
+    background-color: hsl(35, 76%, 90%);
+    border: 2px solid hsl(35, 76%, 60%);
+}
+.main-button.orange:hover, .main-button.orange:active {
+    background-color: hsl(35, 76%, 80%);
+}
+.main-button.red {
+    background-color: hsl(0, 76%, 90%);
+    border: 2px solid hsl(0, 76%, 60%);
+}
+.main-button.red:hover, .main-button.red:active {
+    background-color: hsl(0, 76%, 80%);
 }

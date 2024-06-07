@@ -131,7 +131,7 @@ def switch_greenhouse_custom_config(greenhouse_serial):
         print(f"Error when switching greenhouse custom config: {e}")
 
 
-def get_config_greenhouse(greenhouse_serial):
+def get_greenhouse_is_custom_config(greenhouse_serial):
     db = get_db()
     cursor = db.cursor()
 
@@ -142,12 +142,12 @@ def get_config_greenhouse(greenhouse_serial):
             "WHERE serial = %s",
             (greenhouse_serial,)
         )
-        return cursor.fetchone()
+        return cursor.fetchone()[0]
 
     except Exception as e:
         print(f"Error when getting greenhouse config: {e}")
 
-    return {}
+    return False
 
 def get_role_user(greenhouse_serial, user_name):
     db = get_db()
