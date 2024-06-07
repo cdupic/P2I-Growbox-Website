@@ -7,6 +7,9 @@
         <li class="{{ 'current' if current_sidebar_item[0] == 'plants' else ''}}">
             <a href="{{ url_for('greenhouse_plants_page', greenhouse_serial=greenhouse_serial) }}">Plantes</a>
         </li>
+        <li class="{{ 'current' if current_sidebar_item[0] == 'collaborator' else ''}}">
+            <a href="{{ url_for('greenhouse_collaborator_page', greenhouse_serial=greenhouse_serial) }}">Collaborateurs</a>
+        </li>
         <li class="title">
             <p>Capteurs</p>
         </li>
@@ -23,9 +26,6 @@
                 <a href="{{ url_for('greenhouse_actuator_page', greenhouse_serial=greenhouse_serial, actuator_id=actuator_id) }}">{{ actuator_name }}</a>
             </li>
         {% endfor %}
-        <li class="{{ 'current' if current_sidebar_item[0] == 'collaborator' else ''}}">
-            <a href="{{ url_for('greenhouse_collaborator_page', greenhouse_serial=greenhouse_serial) }}">Collaborateurs</a>
-        </li>
 
 
     </ul>

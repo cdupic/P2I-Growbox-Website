@@ -83,10 +83,12 @@ def get_greenhouse_targets(greenhouse_serial):
     return {}
 
 
-def get_dic_users_role_greenhouse(greenhouse_serial):
+def get_greenhouse_actuator(greenhouse_serial):
     db = get_db()
     cursor = db.cursor()
-    users = {}
+    owner = None
+    collaborators = []
+    guests = []
 
     try:
         cursor.execute(
@@ -95,15 +97,17 @@ def get_dic_users_role_greenhouse(greenhouse_serial):
             (greenhouse_serial,)
         )
         for (user_name, role) in cursor:
-            if role == "guest":
-                users[user_name] = "invité"
-            elif role == "owner":
-                users[user_name] = "propriétaire"
-        return users
+            if role == "owner":
+                owner = user_name
+            elif role == "collaborator":
+                collaborators.append(user_name)
+            else:
+                guests.append(user_name)
 
     except Exception as e:
         print(f"Error when getting list users greenhouse: {e}")
-        return None
+
+    return owner, collaborators, guests
 
 
 def switch_greenhouse_custom_config(greenhouse_serial):

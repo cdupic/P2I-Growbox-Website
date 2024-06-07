@@ -2,10 +2,9 @@ from datetime import datetime, timedelta
 
 from flask import render_template, redirect, url_for
 
-from src.database.greenhouse import get_greenhouse_targets, get_dic_users_role_greenhouse
+from src.database.greenhouse import get_greenhouse_targets, get_greenhouse_actuator
 from src.database.measure import get_sensors_greenhouse, get_actuators_greenhouse, get_data_sensors_since, \
     get_sensor_type, get_sensor_unit, get_number_of_measures, get_date_end_start, get_format_latest_measure
-
 from src.utils.sensor_names import convert_sensor_type_to_french, convert_sensor_type_to_full_name
 from src.utils.user import is_user_authenticated
 
@@ -21,7 +20,7 @@ def greenhouse_sensor_page(greenhouse_serial, sensor_id):
     sensors = get_sensors_greenhouse(greenhouse_serial)
     actuators = get_actuators_greenhouse(greenhouse_serial)
 
-    users_roles = get_dic_users_role_greenhouse(greenhouse_serial)
+    users_roles = get_greenhouse_actuator(greenhouse_serial)
 
     measures = {}
 

@@ -30,3 +30,22 @@ main #content {
     flex-direction: column;
 }
 
+/* PERMISSIONS PAGE */
+
+#content .permissions-form {
+    margin: 10px;
+}
+#content .permissions-form ul {
+    list-style-type: none;
+    padding: 0;
+}
+#content .permissions-form ul {
+    list-style-type: none;
+    padding: 0;
+}
+#content .permissions-form ul li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+

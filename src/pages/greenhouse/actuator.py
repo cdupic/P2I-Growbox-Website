@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from flask import redirect, url_for, render_template
 
-from src.database.greenhouse import get_dic_users_role_greenhouse
+from src.database.greenhouse import get_greenhouse_actuator
 from src.database.measure import get_sensors_greenhouse, get_actuators_greenhouse, get_data_actuators_since, \
     get_actuator_type, get_actuator_unit, get_number_of_actions, get_date_end_start, get_format_latest_measure
 from src.utils.sensor_names import convert_actuator_type_to_full_name
@@ -15,7 +15,7 @@ def greenhouse_actuator_page(greenhouse_serial, actuator_id):
     sensors = get_sensors_greenhouse(greenhouse_serial)
     actuators = get_actuators_greenhouse(greenhouse_serial)
 
-    users_roles = get_dic_users_role_greenhouse(greenhouse_serial)
+    users_roles = get_greenhouse_actuator(greenhouse_serial)
     actuator_type = get_actuator_type(actuator_id)
     actions = {}
 

@@ -88,7 +88,7 @@
     list-style-type: none;
     padding: 0 5px;
     margin: 2px;
-    max-height: 150px;
+    max-height: 320px;
     overflow-y: auto;
     border-radius: 5px;
     outline: 2px solid #ccc;

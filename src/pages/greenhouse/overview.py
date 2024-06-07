@@ -1,6 +1,6 @@
 from flask import render_template, redirect, url_for, session
 
-from src.database.greenhouse import check_greenhouse_owner, get_greenhouse_name, get_dic_users_role_greenhouse, \
+from src.database.greenhouse import check_greenhouse_owner, get_greenhouse_name, get_greenhouse_actuator, \
     get_greenhouse_targets
 from src.database.measure import get_sensors_greenhouse, get_actuators_greenhouse, get_data_all_sensors, \
     get_number_measures, get_date_end_start, get_date_latest_measure, get_format_latest_measure
@@ -17,7 +17,7 @@ def greenhouse_overview_page(greenhouse_serial):
     sensors = get_sensors_greenhouse(greenhouse_serial)
     actuators = get_actuators_greenhouse(greenhouse_serial)
 
-    users_roles = get_dic_users_role_greenhouse(greenhouse_serial)
+    users_roles = get_greenhouse_actuator(greenhouse_serial)
 
     session['serial'] = greenhouse_serial
 
