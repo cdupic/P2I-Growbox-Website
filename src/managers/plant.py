@@ -1,6 +1,6 @@
 from flask import session, request, redirect, url_for
 
-from src.database.greenhouse import switch_greenhouse_custom_config, get_role_user
+from src.database.greenhouse import get_role_user, set_custom_config_greenhouse
 from src.database.plant import (actualiaze_greenhouse_targets,
                                 add_association_plant, terminate_association)
 
@@ -8,8 +8,10 @@ from src.database.plant import (actualiaze_greenhouse_targets,
 def plant_manager():
     if get_role_user(request.form.get('ghs'), session['user_name']) != 'guest':
         if request.form.get('action') == 'custom':
+            set_custom_config_greenhouse(request.form.get('ghs'), request.form.get('temperature'),
+                                         request.form.get('soil_humidity'), request.form.get('air_humidity'),
+                                         request.form.get('light'))
 
-            switch_greenhouse_custom_config(request.form.get('ghs'))
             session['success'] = "Les modifications ont bien été prises en compte."
 
         elif request.form.get('action') == 'plant':

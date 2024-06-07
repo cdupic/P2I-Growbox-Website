@@ -114,23 +114,6 @@ def get_greenhouse_actuator(greenhouse_serial):
     return owner, collaborators, guests
 
 
-def switch_greenhouse_custom_config(greenhouse_serial):
-    db = get_db()
-    cursor = db.cursor()
-
-    try:
-        cursor.execute(
-            "UPDATE GreenHouses "
-            "SET is_custom_config = 1 "
-            "WHERE serial = %s",
-            (greenhouse_serial,)
-        )
-        db.commit()
-
-    except Exception as e:
-        print(f"Error when switching greenhouse custom config: {e}")
-
-
 def get_greenhouse_is_custom_config(greenhouse_serial):
     db = get_db()
     cursor = db.cursor()
@@ -186,6 +169,26 @@ def set_role_user(greenhouse_serial, username, role):
 
     except Exception as e:
         print(f"Error when setting user role: {e}")
+        return False
+
+    return True
+
+
+def set_custom_config_greenhouse(greenhouse_serial, temperature, soil_humidity, air_humidity, light):
+    db = get_db()
+    cursor = db.cursor()
+
+    try:
+        cursor.execute(
+            "UPDATE GreenHouses "
+            "SET temperature = %s, soil_humidity = %s, air_humidity = %s, light = %s, is_custom_config = 1 "
+            "WHERE serial = %s",
+            (float(temperature)*10, float(soil_humidity)*10, float(air_humidity)*10, int(light), greenhouse_serial)
+        )
+        db.commit()
+
+    except Exception as e:
+        print(f"Error when setting custom config: {e}")
         return False
 
     return True
