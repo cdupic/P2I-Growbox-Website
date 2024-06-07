@@ -75,7 +75,11 @@ def get_greenhouse_targets(greenhouse_serial):
             "WHERE serial = %s",
             (greenhouse_serial,)
         )
-        return {k: v/10.0 for k, v in cursor.fetchone().items()}
+        data_targets = cursor.fetchone()
+        for key in data_targets:
+            if key != "light":
+                data_targets[key] = data_targets[key] / 10
+        return data_targets
 
     except Exception as e:
         print(f"Error when getting greenhouse targets: {e}")
