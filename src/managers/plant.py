@@ -1,6 +1,7 @@
 from flask import session, request, redirect, url_for
 
-from src.database.greenhouse import get_role_user, set_custom_config_greenhouse, create_notification_plant
+from src.database.greenhouse import (get_role_user, set_custom_config_greenhouse, create_notification_plant,
+                                     create_notification_custom_config)
 from src.database.plant import (actualiaze_greenhouse_targets,
                                 add_association_plant, terminate_association)
 
@@ -11,7 +12,7 @@ def plant_manager():
             set_custom_config_greenhouse(request.form.get('ghs'), request.form.get('temperature'),
                                          request.form.get('soil_humidity'), request.form.get('air_humidity'),
                                          request.form.get('light'))
-
+            create_notification_custom_config(request.form.get('ghs'), session['user_name'])
             session['success'] = "Les modifications ont bien été prises en compte."
 
         elif request.form.get('action') == 'plant':

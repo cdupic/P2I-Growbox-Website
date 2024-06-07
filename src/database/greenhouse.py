@@ -268,7 +268,7 @@ def create_notification_measures(greenhouse_serial):
                         cursor.execute(
                             "INSERT INTO Notifications (greenhouse_serial, message, notification_type) "
                             "VALUES (%s, %s, %s) ",
-                            (greenhouse_serial, "La lumière est trop basse", sensor_type)
+                            (greenhouse_serial, "La luminosité est trop basse", sensor_type)
                         )
                         db.commit()
 
@@ -442,3 +442,19 @@ def create_notification_plant(greenhouse_serial, plant_id, count, type_action):
 
     except Exception as e:
         print(f"Error when creating notification for new plant: {e}")
+
+
+def create_notification_custom_config(greenhouse_serial, username):
+    db = get_db()
+    cursor = db.cursor()
+
+    try:
+        cursor.execute(
+            "INSERT INTO Notifications (greenhouse_serial, message, notification_type) "
+            "VALUES (%s, %s, %s) ",
+            (greenhouse_serial, f"{username} a modifié personnalisé les valeurs cibles", "custom_config")
+        )
+        db.commit()
+
+    except Exception as e:
+        print(f"Error when creating custom notification: {e}")
