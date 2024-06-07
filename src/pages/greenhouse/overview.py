@@ -16,15 +16,8 @@ def greenhouse_overview_page(greenhouse_serial):
 
     sensors = get_sensors_greenhouse(greenhouse_serial)
     actuators = get_actuators_greenhouse(greenhouse_serial)
-
-    users_roles = get_greenhouse_actuator(greenhouse_serial)
-
-    session['serial'] = greenhouse_serial
-
     date_start, date_end = get_date_end_start()
-
     data_measures = get_data_all_sensors(greenhouse_serial, date_start, date_end)
-
     targets = get_greenhouse_targets(greenhouse_serial)
 
     if data_measures != {}:
