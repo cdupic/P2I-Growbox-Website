@@ -149,6 +149,7 @@ def get_greenhouse_is_custom_config(greenhouse_serial):
 
     return False
 
+
 def get_role_user(greenhouse_serial, user_name):
     db = get_db()
     cursor = db.cursor()
@@ -170,3 +171,21 @@ def get_role_user(greenhouse_serial, user_name):
         return None
 
 
+def set_role_user(greenhouse_serial, username, role):
+    db = get_db()
+    cursor = db.cursor()
+
+    try:
+        cursor.execute(
+            "UPDATE UserGreenHouses "
+            "SET role = %s "
+            "WHERE user_name = %s AND greenhouse_serial = %s",
+            (role, username, greenhouse_serial)
+        )
+        db.commit()
+
+    except Exception as e:
+        print(f"Error when setting user role: {e}")
+        return False
+
+    return True

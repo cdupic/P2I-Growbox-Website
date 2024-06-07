@@ -7,8 +7,7 @@ from src.database.plant import (actualiaze_greenhouse_targets,
 
 def plant_manager():
     if request.form.get('action') == 'custom':
-        # TODO: update the greenhouse in the GreenHouses table and switch is_custom_config to true.
-        #   The config is specified as post parameters, e.g. 'temperature' = 25
+
         switch_greenhouse_custom_config(request.form.get('ghs'))
         session['success'] = "Les modifications ont bien été prises en compte."
 
