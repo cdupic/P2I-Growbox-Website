@@ -1,14 +1,14 @@
-from flask import session, redirect, url_for, request, render_template
+from flask import session, redirect, url_for, request
 
 from src.database.database import get_db
-from src.database.measure import get_sensors_greenhouse, get_actuators_greenhouse, get_data_sensors_since
-
+from src.database.greenhouse import create_notification_new_user
 
 
 def associate_manager():
     if verify_greenhouse_exists_and_not_linked(request.args.get('ghs'), session['user_name']):
         link_greenhouse_to_user(request.args.get('ghs'), session['user_name'], request.args.get('ghn'))
         session['success'] = 'Serre liée à votre profil !'
+        create_notification_new_user(request.args.get('ghs'), session['user_name'])
         # return render_template('pages/greenhouse_overview.j2',
         #                        greenhouse_serial=request.args.get('ghs'),
         #                        sensors=get_sensors_greenhouse(request.args.get('ghs')).items(),

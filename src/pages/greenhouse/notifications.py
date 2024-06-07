@@ -3,6 +3,7 @@ from flask import render_template
 from src.database.measure import get_sensors_greenhouse, get_actuators_greenhouse
 from src.database.greenhouse import get_greenhouse_notification_date
 
+
 def greenhouse_notification_page(greenhouse_serial):
 	sensors = get_sensors_greenhouse(greenhouse_serial)
 	actuators = get_actuators_greenhouse(greenhouse_serial)

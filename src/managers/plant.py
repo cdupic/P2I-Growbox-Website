@@ -1,6 +1,6 @@
 from flask import session, request, redirect, url_for
 
-from src.database.greenhouse import get_role_user, set_custom_config_greenhouse
+from src.database.greenhouse import get_role_user, set_custom_config_greenhouse, create_notification_plant
 from src.database.plant import (actualiaze_greenhouse_targets,
                                 add_association_plant, terminate_association)
 
@@ -24,6 +24,15 @@ def plant_manager():
             add_association_plant(request.form.get('ghs'), [add_plant_list, add_count_list])
             terminate_association(remove_associations_list, remove_associations_count_list)
             actualiaze_greenhouse_targets(request.form.get('ghs'))
+
+            for i in range(len(add_plant_list)):
+                if add_plant_list[i] != '':
+                    create_notification_plant(request.form.get('ghs'), add_plant_list[i], add_count_list[i], 'add')
+
+            for i in range(len(remove_associations_list)):
+                if remove_associations_list[i] != '':
+                    create_notification_plant(request.form.get('ghs'), remove_associations_list[i],
+                                              remove_associations_count_list[i], 'remove')
 
             session['success'] = "Les modifications ont bien été prises en compte."
 

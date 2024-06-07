@@ -1,4 +1,5 @@
 from src.database.database import get_db
+from src.database.plant import get_name_plant
 from datetime import datetime, timedelta
 
 
@@ -195,14 +196,14 @@ def set_custom_config_greenhouse(greenhouse_serial, temperature, soil_humidity, 
     return True
 
 
-def create_notification(greenhouse_serial):
+def create_notification_measures(greenhouse_serial):
     db = get_db()
     cursor = db.cursor()
     targets = get_greenhouse_targets(greenhouse_serial)
     max_delta = max_delta_values()
     sensors = get_sensors_greenhouse(greenhouse_serial)
     latest_measures = get_latest_mesures(sensors)
-
+    print(latest_measures)
     try:
         for sensor_id, sensor_type in sensors.items():
             if sensor_type != "water_level" and sensor_type != "O2":
@@ -379,3 +380,65 @@ def get_date_latest_notification(greenhouse_serial, type_notification):
         print(f"Error when getting date latest notification: {e}")
 
     return None
+
+
+def create_notification_new_user(greenhouse_serial, user_name):
+    db = get_db()
+    cursor = db.cursor()
+
+    try:
+        cursor.execute(
+            "INSERT INTO Notifications (greenhouse_serial, message, notification_type) "
+            "VALUES (%s, %s, %s) ",
+            (greenhouse_serial, f"Nouvel utilisateur: {user_name}", "new_member")
+        )
+        db.commit()
+
+    except Exception as e:
+        print(f"Error when creating notification for new user: {e}")
+
+
+def get_plant_via_association(association_id):
+    db = get_db()
+    cursor = db.cursor()
+
+    try:
+        cursor.execute(
+            "SELECT plant_id "
+            "FROM GreenHousePlants "
+            "WHERE id = %s ",
+            (association_id,)
+        )
+        plant, = cursor.fetchone()
+        if plant is None:
+            return None
+        return plant
+
+    except Exception as e:
+        print(f"Error when getting plant via association: {e}")
+        return None
+
+
+def create_notification_plant(greenhouse_serial, plant_id, count, type_action):
+    db = get_db()
+    cursor = db.cursor()
+
+    try:
+        if type_action == "add":
+            cursor.execute(
+                "INSERT INTO Notifications (greenhouse_serial, message, notification_type) "
+                "VALUES (%s, %s, %s) ",
+                (greenhouse_serial, f"Ajout de {count} {get_name_plant(plant_id)}(s)", "new_plant")
+            )
+            db.commit()
+        else:
+            cursor.execute(
+                "INSERT INTO Notifications (greenhouse_serial, message, notification_type) "
+                "VALUES (%s, %s, %s) ",
+                (greenhouse_serial, f"Suppression de {get_name_plant(get_plant_via_association(plant_id))}",
+                 "drop_plant")
+            )
+            db.commit()
+
+    except Exception as e:
+        print(f"Error when creating notification for new plant: {e}")

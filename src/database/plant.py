@@ -166,3 +166,19 @@ def actualiaze_greenhouse_targets(greenhouse_serial):
 	except Exception as e:
 		print(f"Error when updating greenhouse: {e}")
 		return False
+
+
+def get_name_plant(plant_id):
+	db = get_db()
+	cursor = db.cursor()
+
+	try:
+		cursor.execute(
+			"SELECT name FROM Plants WHERE id = %s",
+			(plant_id,))
+		name = cursor.fetchone()
+		return name[0]
+
+	except Exception as e:
+		print(f"Error when getting name plant: {e}")
+		return None
