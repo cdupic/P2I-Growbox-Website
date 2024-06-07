@@ -56,6 +56,14 @@ CREATE TABLE GreenHousePlants
     FOREIGN KEY (greenhouse_serial) REFERENCES GreenHouses (serial)
 );
 
+CREATE TABLE Notifications (
+                               id INT PRIMARY KEY AUTO_INCREMENT,
+                               message VARCHAR(255),
+                               date DATETIME DEFAULT CURRENT_TIMESTAMP(),
+                               greenhouse_serial VARCHAR(32),
+                               type ENUM ('temperature', 'air_humidity', 'soil_humidity', 'light', '02', 'water_level'),
+                               FOREIGN KEY (greenhouse_serial) REFERENCES GreenHouses (serial)
+);
 
 CREATE TABLE Sensors
 (

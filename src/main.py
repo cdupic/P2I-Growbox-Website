@@ -16,6 +16,7 @@ from src.pages.greenhouse.overview import greenhouse_overview_page
 from src.pages.greenhouse.plants import greenhouse_plants_page
 from src.pages.greenhouse.sensor import greenhouse_sensor_page
 from src.pages.greenhouses import greenhouses_page
+from src.pages.greenhouse.notifications import greenhouse_notification_page
 from src.pages.greenhouse.collaborator import greenhouse_collaborator_page
 from src.pages.landing import landing_page
 from src.pages.login import login_page
@@ -47,6 +48,8 @@ class GrowBoxApp(Flask):
                              view_func=greenhouse_actuator_page)
         super().add_url_rule("/greenhouse/<greenhouse_serial>/collaborators", methods=["GET"],
                              view_func=greenhouse_collaborator_page)
+        super().add_url_rule("/greenhouse/<greenhouse_serial>/notifications", methods=["GET"],
+                             view_func=greenhouse_notification_page)
 
         super().add_url_rule("/manager/logout", methods=["POST", "GET"], view_func=logout_manager)
         super().add_url_rule("/manager/login", methods=["POST"], view_func=login_manager)

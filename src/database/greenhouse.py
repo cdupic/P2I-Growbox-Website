@@ -1,4 +1,5 @@
 from src.database.database import get_db
+from datetime import datetime, timedelta
 
 
 def check_greenhouse_owner(user_name, greenhouse_serial):
@@ -192,3 +193,189 @@ def set_custom_config_greenhouse(greenhouse_serial, temperature, soil_humidity, 
         return False
 
     return True
+
+
+def create_notification(greenhouse_serial):
+    db = get_db()
+    cursor = db.cursor()
+    targets = get_greenhouse_targets(greenhouse_serial)
+    max_delta = max_delta_values()
+    sensors = get_sensors_greenhouse(greenhouse_serial)
+    latest_measures = get_latest_mesures(sensors)
+
+    try:
+        for sensor_id, sensor_type in sensors.items():
+            if sensor_type != "water_level" and sensor_type != "O2":
+                date_latest_notification = get_date_latest_notification(greenhouse_serial, sensor_type)
+                if (latest_measures[sensor_id]['value'] > targets[sensor_type] + max_delta[sensor_type] and
+                        (date_latest_notification is None or date_latest_notification < datetime.now() -
+                         timedelta(hours=2))):
+                    if sensor_type == "temperature":
+                        cursor.execute(
+                            "INSERT INTO Notifications (greenhouse_serial, message, notification_type) "
+                            "VALUES (%s, %s, %s) ",
+                            (greenhouse_serial, "La température est trop élevée", sensor_type)
+                        )
+                        db.commit()
+                    elif sensor_type == "soil_humidity":
+                        cursor.execute(
+                            "INSERT INTO Notifications (greenhouse_serial, message, notification_type) "
+                            "VALUES (%s, %s, %s) ",
+                            (greenhouse_serial, "L'humidité du sol est trop élevée", sensor_type)
+                        )
+                        db.commit()
+                    elif sensor_type == "air_humidity":
+                        cursor.execute(
+                            "INSERT INTO Notifications (greenhouse_serial, message, notification_type) "
+                            "VALUES (%s, %s, %s) ",
+                            (greenhouse_serial, "L'humidité de l'air est trop élevée", sensor_type)
+                        )
+                        db.commit()
+                    elif sensor_type == "light":
+                        cursor.execute(
+                            "INSERT INTO Notifications (greenhouse_serial, message, notification_type) "
+                            "VALUES (%s, %s, %s) ",
+                            (greenhouse_serial, "La lumière est trop élevée", sensor_type)
+                        )
+                        db.commit()
+
+                elif (latest_measures[sensor_id]['value'] < targets[sensor_type] + max_delta[sensor_type] and
+                      (date_latest_notification is None or date_latest_notification < datetime.now() -
+                       timedelta(hours=2))):
+                    if sensor_type == "temperature":
+                        cursor.execute(
+                            "INSERT INTO Notifications (greenhouse_serial, message, notification_type) "
+                            "VALUES (%s, %s, %s) ",
+                            (greenhouse_serial, "La température est trop basse", sensor_type)
+                        )
+                        db.commit()
+                    elif sensor_type == "soil_humidity":
+                        cursor.execute(
+                            "INSERT INTO Notifications (greenhouse_serial, message, notification_type) "
+                            "VALUES (%s, %s, %s) ",
+                            (greenhouse_serial, "L'humidité du sol est trop basse", sensor_type)
+                        )
+                        db.commit()
+                    elif sensor_type == "air_humidity":
+                        cursor.execute(
+                            "INSERT INTO Notifications (greenhouse_serial, message, notification_type) "
+                            "VALUES (%s, %s, %s) ",
+                            (greenhouse_serial, "L'humidité de l'air est trop basse", sensor_type)
+                        )
+                        db.commit()
+                    elif sensor_type == "light":
+                        cursor.execute(
+                            "INSERT INTO Notifications (greenhouse_serial, message, notification_type) "
+                            "VALUES (%s, %s, %s) ",
+                            (greenhouse_serial, "La lumière est trop basse", sensor_type)
+                        )
+                        db.commit()
+
+    except Exception as e:
+        print(f"Error when creating notification for greenhouse {greenhouse_serial}: {e}")
+
+
+def get_greenhouse_notification_date(greenhouse_serial):
+    db = get_db()
+    cursor = db.cursor()
+    messages = {}
+
+    try:
+        cursor.execute(
+            "SELECT id, message, date "
+            "FROM Notifications "
+            "WHERE greenhouse_serial = %s "
+            "ORDER BY date DESC ",
+            (greenhouse_serial,)
+        )
+        for (id_message, message, date) in cursor:
+            messages[id_message] = (message, date)
+        return messages
+
+    except Exception as e:
+        print(f"Error when getting greenhouse notification: {e}")
+
+    return False
+
+
+def get_latest_mesures(sensors):
+    db = get_db()
+    cursor = db.cursor()
+    measures = {}
+
+    try:
+        for sensor_id, sensor_type in sensors.items():
+            cursor.execute(
+                "SELECT value, date "
+                "FROM Measures "
+                "WHERE sensor_id = %s "
+                "ORDER BY date DESC "
+                "LIMIT 1",
+                (sensor_id,)
+            )
+            result = cursor.fetchone()
+            if result is not None:
+                if sensor_type != "light":
+                    measures[sensor_id] = {'value': result[0], 'date': result[1], 'type': sensor_type}
+                else:
+                    measures[sensor_id] = {'value': result[0]/10, 'date': result[1], 'type': sensor_type}
+
+    except Exception as e:
+        print(f"Error when getting latest measures: {e}")
+
+    return measures
+
+
+def max_delta_values():
+    temperature = 5
+    soil_humidity = 10
+    air_humidity = 10
+    light = 1000
+    return {'temperature': temperature, 'soil_humidity': soil_humidity, 'air_humidity': air_humidity, 'light': light}
+
+
+def get_sensors_greenhouse(greenhouse_serial):
+    db = get_db()
+    cursor = db.cursor()
+    sensors = {}
+
+    try:
+        cursor.execute(
+            "SELECT id, type "
+            "FROM Sensors "
+            "WHERE greenhouse_serial = %s",
+            (greenhouse_serial,)
+        )
+        for (sensor_id, sensor_type) in cursor:
+            sensors[sensor_id] = sensor_type
+
+        return sensors
+
+    except Exception as e:
+        print(f"Error when getting sensors: {e}")
+
+    return False
+
+
+def get_date_latest_notification(greenhouse_serial, type_notification):
+    db = get_db()
+    cursor = db.cursor()
+
+    try:
+        cursor.execute(
+            "SELECT date "
+            "FROM Notifications "
+            "WHERE greenhouse_serial = %s and notification_type = %s "
+            "ORDER BY date DESC "
+            "LIMIT 1",
+            (greenhouse_serial, type_notification)
+        )
+        date = cursor.fetchone()
+        if date is None:
+            return None
+        return date[0]
+
+    except Exception as e:
+        print(f"Error when getting date latest notification: {e}")
+
+    return None

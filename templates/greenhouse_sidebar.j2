@@ -26,6 +26,9 @@
                 <a href="{{ url_for('greenhouse_actuator_page', greenhouse_serial=greenhouse_serial, actuator_id=actuator_id) }}">{{ actuator_name }}</a>
             </li>
         {% endfor %}
+        <li class="{{ 'current' if current_sidebar_item[0] == 'notification' else ''}}">
+            <a href="{{ url_for('greenhouse_notification_page', greenhouse_serial=greenhouse_serial) }}">Notifications</a>
+        </li>
 
 
     </ul>

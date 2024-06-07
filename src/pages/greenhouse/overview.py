@@ -1,7 +1,7 @@
 from flask import render_template, redirect, url_for, session
 
-from src.database.greenhouse import check_greenhouse_owner, get_greenhouse_name, get_greenhouse_actuator, \
-    get_greenhouse_targets
+from src.database.greenhouse import check_greenhouse_owner, get_greenhouse_name, \
+    get_greenhouse_targets, create_notification
 from src.database.measure import get_sensors_greenhouse, get_actuators_greenhouse, get_data_all_sensors, \
     get_number_measures, get_date_end_start, get_date_latest_measure, get_format_latest_measure
 from src.utils.user import is_user_authenticated
@@ -14,6 +14,7 @@ def greenhouse_overview_page(greenhouse_serial):
         session['error'] = f"La serre {greenhouse_serial} n'existe pas ou n'est pas accessible avec votre compte."
         return redirect(url_for('greenhouses_page'))
 
+    create_notification(greenhouse_serial)
     sensors = get_sensors_greenhouse(greenhouse_serial)
     actuators = get_actuators_greenhouse(greenhouse_serial)
     date_start, date_end = get_date_end_start()
@@ -32,7 +33,7 @@ def greenhouse_overview_page(greenhouse_serial):
                            sidebar_sensors=sensors.items(),
                            sidebar_actuators=actuators.items(),
                            ratio_measures=str(get_number_measures(greenhouse_serial, date_start, date_end)) + ' sur ' +
-                                          str(get_number_measures(greenhouse_serial, [])),
+                           str(get_number_measures(greenhouse_serial, [])),
                            current_sidebar_item=('overview', None),
                            data_sensors=data_measures,
                            targets=targets,

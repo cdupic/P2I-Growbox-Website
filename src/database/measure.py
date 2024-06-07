@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, time
+from datetime import datetime, timedelta
 
 from flask import g, session
 
@@ -7,6 +7,7 @@ from src.utils.sensor_names import convert_actuator_type_to_french
 from src.utils.sensor_names import convert_sensor_type_to_french
 
 import pytz
+
 
 def get_sensors_greenhouse(greenhouse_serial):
     db = get_db()
@@ -271,7 +272,6 @@ def get_number_measures(greenhouse_serial, date_start=None, date_end=None):
             )
             return cursor.fetchone()[0]
 
-
     except Exception as e:
         print(f"Error when getting number of measures in greenhouse {greenhouse_serial}: {e}")
         return None
@@ -366,5 +366,3 @@ def get_sensor_id(sensor_type):
     except Exception as e:
         print(f"Error when getting sensor id of type {sensor_type}: {e}")
         return None
-
-
