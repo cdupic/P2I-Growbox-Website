@@ -76,6 +76,15 @@ CREATE TABLE Measures
     PRIMARY KEY (sensor_id, date)
 );
 
+CREATE TABLE ProcessedMeasures
+(
+    sensor_id TINYINT UNSIGNED,
+    date      DATETIME,
+    value     SMALLINT,
+    FOREIGN KEY (sensor_id) REFERENCES Sensors (id),
+    PRIMARY KEY (sensor_id, date)
+);
+
 
 CREATE TABLE Actuators
 (

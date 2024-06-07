@@ -6,12 +6,12 @@
             <div>
                 <p><a href="https://github.com/ClementGre" target="_blank">Clément Grennerat</a></p>
                 <p><a href="https://github.com/cdupic" target="_blank">Clément Dupic</a></p>
-                <p><a href="" target="_blank">Nathan Daval</a></p>
+                <p><a href="https://www.instagram.com/linkipit/" target="_blank">Nathan Daval</a></p>
             </div>
             <div>
-                <p><a href="" target="_blank">Victoria Nomezine</a></p>
+                <p><a href="https://www.instagram.com/victoria.nmz/" target="_blank">Victoria Nomezine</a></p>
                 <p><a href="https://img.20mn.fr/-hvcINCVRtOYTmgHym9-VCk/1444x920_un-paresseux-dans-la-foret-tropicale-du-costa-rica" target="_blank">Hicham Boudjeroua</a></p>
-                <p><a href="" target="_blank">Sophie Anthoine</a></p>
+                <p><a href="https://www.instagram.com/sophie_athn/" target="_blank">Sophie Anthoine</a></p>
             </div>
         </div>
     </div>
@@ -23,9 +23,9 @@
     </div>
 </div>
 <div class="links">
-    <p><a href="">CGU</a></p>
+    <p><a href="{{ url_for('cgu_page') }}">CGU</a></p>
     <p><a href="">Conditions de ventes</a></p>
-    <p><a href="">Politique de confidentialité</a></p>
+    <p><a href="{{ url_for('landing_page') }}">Politique de confidentialité</a></p>
     {% if 'user_name' not in session %}
         <p><a href="{{ url_for('signup_page') }}">Créer un compte</a></p>
         <p><a href="{{ url_for('login_page') }}">Connexion</a></p>

@@ -61,11 +61,11 @@ def get_data_sensors_since(serial_number, sensors_list, day_start, day_end):
     sensors_list_str = ', '.join(map(str, sensors_list))
     try:
         cursor.execute(
-            "SELECT Sensors.type,  Measures.date, Measures.value "
-            "FROM Sensors, GreenHouses, Measures "
+            "SELECT Sensors.type, m.date, m.value "
+            "FROM Sensors, GreenHouses, ProcessedMeasures m "
             "WHERE greenhouse_serial = %s and GreenHouses.serial = Sensors.greenhouse_serial "
-            "and Sensors.id = Measures.sensor_id and Sensors.id in (%s) "
-            "and (Measures.date) BETWEEN (%s) and (%s)",
+            "and Sensors.id = m.sensor_id and Sensors.id in (%s) "
+            "and (m.date) BETWEEN (%s) and (%s)",
             (serial_number, sensors_list_str, day_start, day_end)
         )
         for (sensor_type, date, value) in cursor:

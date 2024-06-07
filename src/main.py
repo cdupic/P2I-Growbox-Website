@@ -20,6 +20,7 @@ from src.pages.greenhouse.collaborator import greenhouse_collaborator_page
 from src.pages.landing import landing_page
 from src.pages.login import login_page
 from src.pages.signup import signup_page
+from src.pages.legal import cgu_page
 
 
 class GrowBoxApp(Flask):
@@ -32,6 +33,7 @@ class GrowBoxApp(Flask):
         self.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=365)  # Session data will be stored for 1 year
 
         super().add_url_rule("/", methods=["GET"], view_func=landing_page)
+        super().add_url_rule("/cgu", methods=["GET"], view_func=cgu_page)
         super().add_url_rule("/login", methods=["GET"], view_func=login_page)
         super().add_url_rule("/signup", methods=["GET"], view_func=signup_page)
         super().add_url_rule("/greenhouse", methods=["GET"], view_func=greenhouses_page)

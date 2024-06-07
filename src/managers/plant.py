@@ -6,6 +6,7 @@ from src.database.plant import (actualiaze_greenhouse_targets,
 
 
 def plant_manager():
+    print(request.form)
     if request.form.get('action') == 'custom':
 
         switch_greenhouse_custom_config(request.form.get('ghs'))
