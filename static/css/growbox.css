@@ -37,15 +37,15 @@ main #content {
 }
 #content .permissions-form ul {
     list-style-type: none;
-    padding: 0;
-}
-#content .permissions-form ul {
-    list-style-type: none;
-    padding: 0;
+    margin: 5px;
+    padding: 0 0 10px 10px;
 }
 #content .permissions-form ul li {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    font-weight: 500;
+    padding: 2px 0;
 }
 

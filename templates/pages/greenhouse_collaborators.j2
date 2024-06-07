@@ -1,14 +1,18 @@
 {% extends "greenhouse_template.j2" %}
 
 {% block content %}
+    {% set is_owner = session['user_name'] == owner %}
+    {% set is_collaborator = session['user_name'] in collaborators %}
     <div class="heading">
         <div class="title">
             <h1>Contributeurs </h1>
-            <p>{{ collaborators|length }} collaborateurs, {{ guests|length }} invités.</p>
+            <p>
+                {{ collaborators|length }} collaborateurs, {{ guests|length }} invités.
+                Vous êtes {{ 'propriétaire' if is_owner else ('collaborateur' if is_collaborator else 'invité' )}}.
+            </p>
         </div>
     </div>
 
-    {% set is_owner = session['user_name'] == owner %}
     <div class="permissions-form">
         <h2>Propriétaire</h2>
         <ul>
@@ -24,51 +28,54 @@
         </ul>
         <h2>Collaborateurs</h2>
         <ul>
-            {% for collaborator in collaborators %}
+            {% if collaborators|length == 0 %}
                 <li>
-                    <p>{{ collaborator }}</p>
-                    {% if is_owner %}
-                        <form action="{{ url_for('permission_manager') }}" class="auto-submit" method="POST">
-                            <input type="hidden" name="ghs" value="{{ greenhouse_serial }}">
-                            <input type="hidden" name="user" value="{{ collaborator }}">
-                            <label>
-                                Role:
-                                <select name="role">
-                                    <option value="owner" {% if is_owner %} disabled {% endif %}>Propriétaire</option>
-                                    <option value="collaborator" {% if is_owner %} disabled {% endif %} selected>
-                                        Collaborateur
-                                    </option>
-                                    <option value="guest" {% if is_owner %} disabled {% endif %}>Invité</option>
-                                </select>
-                            </label>
-                        </form>
-                    {% endif %}
+                    <p>Aucun collaborateur</p>
                 </li>
-            {% endfor %}
+            {% else %}
+                {% for collaborator in collaborators %}
+                    <li>
+                        <p>{{ collaborator }}</p>
+                        {% if is_owner %}
+                            <form action="{{ url_for('permission_manager') }}" class="auto-submit" method="POST">
+                                <input type="hidden" name="ghs" value="{{ greenhouse_serial }}">
+                                <input type="hidden" name="user" value="{{ collaborator }}">
+                                <select name="role" aria-label="Rôle de {{ collaborator }}">
+                                    <option value="owner">Propriétaire</option>
+                                    <option value="collaborator" selected>Collaborateur</option>
+                                    <option value="guest">Invité</option>
+                                </select>
+                            </form>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            {% endif %}
         </ul>
         <h2>Invités</h2>
         <ul>
-            {% for guest in guests %}
+            {% if guests|length == 0 %}
                 <li>
-                    <p>{{ guest }}</p>
-                    {% if is_owner %}
-                        <form action="{{ url_for('permission_manager') }}" class="auto-submit" method="POST">
-                            <input type="hidden" name="ghs" value="{{ greenhouse_serial }}">
-                            <input type="hidden" name="user" value="{{ guest }}">
-                            <label>
-                                Role:
-                                <select name="role">
-                                    <option value="owner" {% if is_owner %} disabled {% endif %}>Propriétaire</option>
-                                    <option value="collaborator" {% if is_owner %} disabled {% endif %}>Collaborateur
-                                    </option>
-                                    <option value="guest" {% if is_owner %} disabled {% endif %} selected>Invité
-                                    </option>
-                                </select>
-                            </label>
-                        </form>
-                    {% endif %}
+                    <p>Aucun invité</p>
                 </li>
-            {% endfor %}
+            {% else %}
+                {% for guest in guests %}
+                    <li>
+                        <p>{{ guest }}</p>
+                        {% if is_owner %}
+                            <form action="{{ url_for('permission_manager') }}" class="auto-submit" method="POST">
+                                <input type="hidden" name="ghs" value="{{ greenhouse_serial }}">
+                                <input type="hidden" name="user" value="{{ guest }}">
+
+                                <select name="role" aria-label="Rôle de {{ guest }}">
+                                    <option value="owner">Propriétaire</option>
+                                    <option value="collaborator">Collaborateur</option>
+                                    <option value="guest" selected>Invité</option>
+                                </select>
+                            </form>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            {% endif %}
         </ul>
     </div>
 

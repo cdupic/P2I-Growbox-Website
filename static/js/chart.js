@@ -2,15 +2,13 @@ const DateTime = luxon.DateTime;
 const tz_offset = DateTime.local().offset;
 
 function correctTimezoneForField(field, zone){
+    if(field === null) return;
+
     let date = field.getAttribute('data-value')
     field.value = DateTime.fromSQL(date, {zone: 'utc'}).setZone(zone).toISODate();
 }
 
 document.addEventListener('DOMContentLoaded', function(){
-    console.log("Fields:", document.getElementById('from_date').getAttribute('data-value'), document.getElementById('to_date').getAttribute('data-value'))
-    console.log("New dates:",
-        DateTime.fromSQL(document.getElementById('from_date').getAttribute('data-value'),
-        {zone: 'utc'}).setZone('local').toSQL(), DateTime.fromSQL(document.getElementById('to_date').getAttribute('data-value'), {zone: 'utc'}).setZone('local').toSQL())
     correctTimezoneForField(document.getElementById('from_date'), 'local')
     correctTimezoneForField(document.getElementById('to_date'), 'local')
 })
