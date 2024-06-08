@@ -15,25 +15,31 @@ def greenhouse_overview_page(greenhouse_serial):
         return redirect(url_for('greenhouses_page'))
 
     create_measures_notification(greenhouse_serial)
+    print(session['processed_measures_choosed'])
     sensors = get_sensors_greenhouse(greenhouse_serial)
     actuators = get_actuators_greenhouse(greenhouse_serial)
     date_start, date_end = get_date_end_start()
-    data_measures = get_data_all_sensors(greenhouse_serial, date_start, date_end)
+    data_measures = get_data_all_sensors(greenhouse_serial, date_start, date_end, session['processed_measures_choosed'])
+    total_measures = get_number_measures(greenhouse_serial, [], [], session['processed_measures_choosed'])
     targets = get_greenhouse_targets(greenhouse_serial)
 
-    if data_measures != {}:
-        date_latest = get_date_latest_measure(greenhouse_serial)
+    if data_measures != {} or total_measures:
+        date_latest = get_date_latest_measure(greenhouse_serial, session['processed_measures_choosed'])
         date_latest = get_format_latest_measure(date_latest)
 
     else:
         date_latest = None
 
+    print(total_measures, (get_number_measures(greenhouse_serial, date_start, date_end,
+                                               session['processed_measures_choosed'])) )
+
     return render_template('pages/greenhouse_overview.j2',
                            greenhouse_serial=greenhouse_serial,
                            sidebar_sensors=sensors.items(),
                            sidebar_actuators=actuators.items(),
-                           ratio_measures=str(get_number_measures(greenhouse_serial, date_start, date_end)) + ' sur ' +
-                           str(get_number_measures(greenhouse_serial, [])),
+                           date_selected_measures=get_number_measures(greenhouse_serial, date_start, date_end,
+                                                                      session['processed_measures_choosed']),
+                           total_measures=total_measures,
                            current_sidebar_item=('overview', None),
                            data_sensors=data_measures,
                            targets=targets,

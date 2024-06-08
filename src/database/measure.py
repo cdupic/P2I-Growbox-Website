@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from flask import g, session
+from flask import session
 
 from src.database.database import get_db
 from src.utils.sensor_names import convert_actuator_type_to_french
@@ -53,20 +53,23 @@ def get_actuators_greenhouse(greenhouse_serial):
     return actuators
 
 
-def get_data_sensors_since(serial_number, sensors_list, day_start, day_end):
+def get_data_sensors_since(serial_number, sensors_list, day_start, day_end, processed_measures=False):
     db = get_db()
     cursor = db.cursor()
     data = {}
     if not sensors_list:
         sensors_list = tuple(get_sensors_greenhouse(serial_number).keys())
     sensors_list_str = ', '.join(map(str, sensors_list))
+
+    table_used = 'ProcessedMeasures' if processed_measures else 'Measures'
+
     try:
         cursor.execute(
-            "SELECT Sensors.type, m.date, m.value "
-            "FROM Sensors, GreenHouses, ProcessedMeasures m "
-            "WHERE greenhouse_serial = %s and GreenHouses.serial = Sensors.greenhouse_serial "
-            "and Sensors.id = m.sensor_id and Sensors.id in (%s) "
-            "and (m.date) BETWEEN (%s) and (%s)",
+            f"SELECT Sensors.type, m.date, m.value "
+            f"FROM Sensors, GreenHouses, {table_used} m "
+            f"WHERE greenhouse_serial = %s and GreenHouses.serial = Sensors.greenhouse_serial "
+            f"and Sensors.id = m.sensor_id and Sensors.id in (%s) "
+            f"and (m.date) BETWEEN (%s) and (%s)",
             (serial_number, sensors_list_str, day_start, day_end)
         )
         for (sensor_type, date, value) in cursor:
@@ -108,6 +111,7 @@ def get_data_actuators_since(greenhouse_serial, actuators_list, day_start, day_e
 
     except Exception as e:
         print(f"Error when getting data: {e}")
+
 
 
 def get_sensor_type(sensor_id):
@@ -157,16 +161,19 @@ def get_actuator_unit(actuator_type):
         return "mm"
 
 
-def get_greenhouse_measures(greenhouse_serial, sensor_id, date_start, date_end):
-    cursor = g.db.cursor
+def get_greenhouse_measures(greenhouse_serial, sensor_id, date_start, date_end, processed_measures=False):
+    db = get_db()
+    cursor = db.cursor()
     measures = []
+
+    table_used = 'ProcessedMeasures' if processed_measures else 'Measures'
 
     try:
         cursor.execute(
-            "SELECT Measures.sensor_id, Measures.date, Measures.value, Sensors.type "
-            "FROM Measures, Sensors "
-            "WHERE Measures.sensor_id = Sensors.id  and Sensors.id = %s and Sensors.greenhouse_serial= %s and "
-            "Measures.date BETWEEN %s and %s ",
+            f"SELECT {table_used}.sensor_id, {table_used}.date, {table_used}.value, Sensors.type "
+            f"FROM {table_used}, Sensors "
+            f"WHERE {table_used}.sensor_id = Sensors.id  and Sensors.id = %s and Sensors.greenhouse_serial= %s and "
+            f"{table_used}.date BETWEEN %s and %s ",
             (sensor_id, greenhouse_serial, date_start, date_end))
 
         for sensor in cursor:
@@ -176,7 +183,6 @@ def get_greenhouse_measures(greenhouse_serial, sensor_id, date_start, date_end):
         print(f"Error when getting measures of greenhouse {greenhouse_serial}: {e}")
 
     return measures
-
 
 def get_sensor_unit(sensor_type):
     if sensor_type == "temperature":
@@ -191,7 +197,7 @@ def get_sensor_unit(sensor_type):
         return "cm"
 
 
-def get_number_of_measures(greenhouse_serial, list_sensors):
+def get_number_of_measures(greenhouse_serial, list_sensors, processed_measures=False):
     db = get_db()
     cursor = db.cursor()
     try:
@@ -201,13 +207,14 @@ def get_number_of_measures(greenhouse_serial, list_sensors):
 
         number_measures = 0
 
+        if processed_measures:
+            table_used = 'ProcessedMeasures'
+        else:
+            table_used = 'Measures'
         for sensor_id in sensors_list_str:
-            cursor.execute(
-                "SELECT count(*) "
-                "FROM Sensors, Measures "
-                "WHERE Sensors.greenhouse_serial = %s and Sensors.id = Measures.sensor_id and Sensors.id=%s ",
-                (greenhouse_serial, sensor_id)
-            )
+            query = (f"SELECT count(*) FROM Sensors, {table_used} m WHERE Sensors.greenhouse_serial = %s "
+                     f"and Sensors.id = m.sensor_id and Sensors.id=%s")
+            cursor.execute(query, (greenhouse_serial, sensor_id))
             number_measures += cursor.fetchone()[0]
         return number_measures
 
@@ -233,14 +240,17 @@ def get_number_of_actions(greenhouse_serial, actuator_id):
         return None
 
 
-def get_date_last_measure(greenhouse_serial, sensor_id):
+def get_date_last_measure(greenhouse_serial, sensor_id, processed_measures=False):
     db = get_db()
     cursor = db.cursor()
+
+    table_used = 'ProcessedMeasures' if processed_measures else 'Measures'
+
     try:
         cursor.execute(
-            "SELECT MAX(Measures.date) "
-            "FROM Measures, Sensors "
-            "WHERE Measures.sensor_id = Sensors.id and Sensors.id = %s and Sensors.greenhouse_serial= %s ",
+            f"SELECT MAX({table_used}.date) "
+            f"FROM {table_used}, Sensors "
+            f"WHERE {table_used}.sensor_id = Sensors.id and Sensors.id = %s and Sensors.greenhouse_serial= %s ",
             (sensor_id, greenhouse_serial))
 
         return cursor.fetchone()[0]
@@ -250,24 +260,27 @@ def get_date_last_measure(greenhouse_serial, sensor_id):
         return None
 
 
-def get_number_measures(greenhouse_serial, date_start=None, date_end=None):
+def get_number_measures(greenhouse_serial, date_start=None, date_end=None, processed_measures=False):
     db = get_db()
     cursor = db.cursor()
+
+    table_used = 'ProcessedMeasures' if processed_measures else 'Measures'
+
     try:
         if not date_start:
             cursor.execute(
-                "SELECT count(*) "
-                "FROM Sensors, Measures "
-                "WHERE Sensors.greenhouse_serial = %s and Sensors.id = Measures.sensor_id",
+                f"SELECT count(*) "
+                f"FROM Sensors, {table_used} "
+                f"WHERE Sensors.greenhouse_serial = %s and Sensors.id = {table_used}.sensor_id",
                 (greenhouse_serial,)
             )
             return cursor.fetchone()[0]
         else:
             cursor.execute(
-                "SELECT count(*) "
-                "FROM Sensors, Measures "
-                "WHERE Sensors.greenhouse_serial = %s and Sensors.id = Measures.sensor_id"
-                " and (Measures.date) BETWEEN %s and %s",
+                f"SELECT count(*) "
+                f"FROM Sensors, {table_used} "
+                f"WHERE Sensors.greenhouse_serial = %s and Sensors.id = {table_used}.sensor_id"
+                f" and ({table_used}.date) BETWEEN %s and %s",
                 (greenhouse_serial, date_start, date_end)
             )
             return cursor.fetchone()[0]
@@ -294,16 +307,20 @@ def get_date_end_start():
         return start_date.astimezone(pytz.utc), datetime.utcnow()
 
 
-def get_data_all_sensors(greenhouse_serial, date_start, date_end):
+def get_data_all_sensors(greenhouse_serial, date_start, date_end, processed_measures=False):
     db = get_db()
     cursor = db.cursor()
     data = {}
+
+    table_used = 'ProcessedMeasures' if processed_measures else 'Measures'
+
+
     try:
         cursor.execute(
-            "SELECT Sensors.id, Sensors.type, Measures.date, Measures.value "
-            "FROM Sensors, Measures "
-            "WHERE Sensors.greenhouse_serial = %s "
-            "and Sensors.id = Measures.sensor_id and (Measures.date) BETWEEN %s and %s",
+            f"SELECT Sensors.id, Sensors.type, {table_used}.date, {table_used}.value "
+            f"FROM Sensors, {table_used} "
+            f"WHERE Sensors.greenhouse_serial = %s "
+            f"and Sensors.id = {table_used}.sensor_id and ({table_used}.date) BETWEEN %s and %s",
             (greenhouse_serial, date_start, date_end)
         )
         for (sensor_id, sensor_type, date, value) in cursor:
@@ -322,14 +339,17 @@ def get_data_all_sensors(greenhouse_serial, date_start, date_end):
         return None
 
 
-def get_date_latest_measure(greenhouse_serial):
+def get_date_latest_measure(greenhouse_serial, processed_measures=False):
     db = get_db()
     cursor = db.cursor()
+
+    table_used = 'ProcessedMeasures' if processed_measures else 'Measures'
+
     try:
         cursor.execute(
-            "SELECT MAX(Measures.date) "
-            "FROM Sensors, Measures "
-            "WHERE Sensors.greenhouse_serial = %s and Sensors.id = Measures.sensor_id ",
+            f"SELECT MAX({table_used}.date) "
+            f"FROM Sensors, {table_used} "
+            f"WHERE Sensors.greenhouse_serial = %s and Sensors.id = {table_used}.sensor_id ",
             (greenhouse_serial,)
         )
         return cursor.fetchone()[0]
@@ -366,3 +386,4 @@ def get_sensor_id(sensor_type):
     except Exception as e:
         print(f"Error when getting sensor id of type {sensor_type}: {e}")
         return None
+
