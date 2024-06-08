@@ -25,10 +25,9 @@ def greenhouse_overview_page(greenhouse_serial):
     if data_measures != {} or total_measures:
         date_latest = get_date_latest_measure(greenhouse_serial)
         date_latest = get_format_latest_measure(date_latest)
+
     else:
         date_latest = None
-
-    print(total_measures, get_number_measures(greenhouse_serial, date_start, date_end))
 
     return render_template('pages/greenhouse_overview.j2',
                            greenhouse_serial=greenhouse_serial,

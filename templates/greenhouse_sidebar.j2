@@ -7,7 +7,7 @@
                 <input type="checkbox" name="processed_measures" {{ 'checked' if session['processed_measures'] else '' }}>
                 <span class="slider round"></span>
             </label>
-            <label for="processed_measures">Mesures traités</label>
+            <label for="processed_measures">Mesures traitées</label>
         </form>
         <li class="{{ 'current' if current_sidebar_item[0] == 'overview' else ''}}">
             <a href="{{ url_for('greenhouse_overview_page', greenhouse_serial=greenhouse_serial) }}">Tableau de bord</a>
