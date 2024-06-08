@@ -135,7 +135,7 @@ def get_greenhouse_is_custom_config(greenhouse_serial):
     return False
 
 
-def get_role_user(greenhouse_serial, user_name):
+def get_user_role(greenhouse_serial, user_name):
     db = get_db()
     cursor = db.cursor()
 
@@ -156,7 +156,7 @@ def get_role_user(greenhouse_serial, user_name):
         return None
 
 
-def set_role_user(greenhouse_serial, username, role):
+def set_user_role(greenhouse_serial, username, role):
     db = get_db()
     cursor = db.cursor()
 
@@ -196,12 +196,12 @@ def set_custom_config_greenhouse(greenhouse_serial, temperature, soil_humidity, 
     return True
 
 
-def create_notification_measures(greenhouse_serial):
+def create_measures_notification(greenhouse_serial):
     db = get_db()
     cursor = db.cursor()
     targets = get_greenhouse_targets(greenhouse_serial)
     max_delta = max_delta_values()
-    sensors = get_sensors_greenhouse(greenhouse_serial)
+    sensors = get_greenhouse_sensors(greenhouse_serial)
     latest_measures = get_latest_mesures(sensors)
     print(latest_measures)
     try:
@@ -335,7 +335,7 @@ def max_delta_values():
     return {'temperature': temperature, 'soil_humidity': soil_humidity, 'air_humidity': air_humidity, 'light': light}
 
 
-def get_sensors_greenhouse(greenhouse_serial):
+def get_greenhouse_sensors(greenhouse_serial):
     db = get_db()
     cursor = db.cursor()
     sensors = {}
@@ -382,7 +382,7 @@ def get_date_latest_notification(greenhouse_serial, type_notification):
     return None
 
 
-def create_notification_new_user(greenhouse_serial, user_name):
+def create_new_user_notification(greenhouse_serial, user_name):
     db = get_db()
     cursor = db.cursor()
 
@@ -419,7 +419,7 @@ def get_plant_via_association(association_id):
         return None
 
 
-def create_notification_plant(greenhouse_serial, plant_id, count, type_action):
+def create_plant_notification(greenhouse_serial, plant_id, count, type_action):
     db = get_db()
     cursor = db.cursor()
 
@@ -444,7 +444,7 @@ def create_notification_plant(greenhouse_serial, plant_id, count, type_action):
         print(f"Error when creating notification for new plant: {e}")
 
 
-def create_notification_custom_config(greenhouse_serial, username):
+def create_custom_config_notification(greenhouse_serial, username):
     db = get_db()
     cursor = db.cursor()
 
@@ -452,9 +452,25 @@ def create_notification_custom_config(greenhouse_serial, username):
         cursor.execute(
             "INSERT INTO Notifications (greenhouse_serial, message, notification_type) "
             "VALUES (%s, %s, %s) ",
-            (greenhouse_serial, f"{username} a modifié personnalisé les valeurs cibles", "custom_config")
+            (greenhouse_serial, f"{username} a personnalisé les valeurs cibles", "custom_config")
         )
         db.commit()
 
     except Exception as e:
         print(f"Error when creating custom notification: {e}")
+
+
+def create_new_role_notification(greenhouse_serial, username, role):
+    db = get_db()
+    cursor = db.cursor()
+
+    try:
+        cursor.execute(
+            "INSERT INTO Notifications (greenhouse_serial, message, notification_type) "
+            "VALUES (%s, %s, %s) ",
+            (greenhouse_serial, f"{username} est maintenant {role}", "new_role")
+        )
+        db.commit()
+
+    except Exception as e:
+        print(f"Error when creating new role notification: {e}")

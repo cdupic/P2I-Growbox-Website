@@ -61,7 +61,7 @@ CREATE TABLE Notifications (
                                message VARCHAR(255),
                                date DATETIME DEFAULT CURRENT_TIMESTAMP(),
                                greenhouse_serial VARCHAR(32),
-                               notification_type ENUM ('temperature', 'air_humidity', 'soil_humidity', 'light', '02', 'water_level', 'new_member', 'drop_plant', 'new_plant', 'custom_config'),
+                               notification_type ENUM ('temperature', 'air_humidity', 'soil_humidity', 'light', '02', 'water_level', 'new_member', 'new_role', 'drop_plant', 'new_plant', 'custom_config'),
                                FOREIGN KEY (greenhouse_serial) REFERENCES GreenHouses (serial)
 );
 

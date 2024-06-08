@@ -1,18 +1,18 @@
 from flask import session, request, redirect, url_for
 
-from src.database.greenhouse import (get_role_user, set_custom_config_greenhouse, create_notification_plant,
-                                     create_notification_custom_config)
+from src.database.greenhouse import (get_user_role, set_custom_config_greenhouse, create_plant_notification,
+                                     create_custom_config_notification)
 from src.database.plant import (actualiaze_greenhouse_targets,
                                 add_association_plant, terminate_association)
 
 
 def plant_manager():
-    if get_role_user(request.form.get('ghs'), session['user_name']) != 'guest':
+    if get_user_role(request.form.get('ghs'), session['user_name']) != 'guest':
         if request.form.get('action') == 'custom':
             set_custom_config_greenhouse(request.form.get('ghs'), request.form.get('temperature'),
                                          request.form.get('soil_humidity'), request.form.get('air_humidity'),
                                          request.form.get('light'))
-            create_notification_custom_config(request.form.get('ghs'), session['user_name'])
+            create_custom_config_notification(request.form.get('ghs'), session['user_name'])
             session['success'] = "Les modifications ont bien été prises en compte."
 
         elif request.form.get('action') == 'plant':
@@ -28,11 +28,11 @@ def plant_manager():
 
             for i in range(len(add_plant_list)):
                 if add_plant_list[i] != '':
-                    create_notification_plant(request.form.get('ghs'), add_plant_list[i], add_count_list[i], 'add')
+                    create_plant_notification(request.form.get('ghs'), add_plant_list[i], add_count_list[i], 'add')
 
             for i in range(len(remove_associations_list)):
                 if remove_associations_list[i] != '':
-                    create_notification_plant(request.form.get('ghs'), remove_associations_list[i],
+                    create_plant_notification(request.form.get('ghs'), remove_associations_list[i],
                                               remove_associations_count_list[i], 'remove')
 
             session['success'] = "Les modifications ont bien été prises en compte."
