@@ -1,8 +1,39 @@
 {% extends "greenhouse_template.j2" %}
 
 {% block content %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/charts.css') }}">
-    {%  for id, (message, date) in notifications.items() %}
-        <p>{{ message }} depuis le {{ date }}</p>
-    {% endfor %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/notifications.css') }}">
+
+    <div class="heading">
+        <div class="title">
+            <h1>Notifications</h1>
+            <p>
+                {{ notifications|length }} notifications ces 24 dernières heures.
+            </p>
+        </div>
+        <div class="filters">
+            <form action="">
+                <label for="typeFilter">Filtre</label>
+                <select id="typeFilter" onchange="filterNotifications()">
+                    <option value="all">Toutes</option>
+                    {% for type, translated_type in notifications_translations.items() %}
+                        <option value="{{ type }}">{{ translated_type }}</option>
+                    {% endfor %}
+                </select>
+            </form>
+        </div>
+    </div>
+
+    <ul class="notifications">
+        {% for id, (message, date, type) in notifications.items() %}
+            <li class="notification {{ notifications_kinds[type] }}" data-type="{{ type }}">
+                <div class="notification-date" data-date="{{ date }}"></div>
+                <div class="notification-type">{{ notifications_translations[type] }}</div>
+                <div class="notification-message">{{ message }}</div>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
+
+
 {% endblock %}

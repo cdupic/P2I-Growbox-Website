@@ -18,4 +18,4 @@ def permission_manager():
 
 		pass
 
-	return redirect(url_for('greenhouse_collaborator_page', greenhouse_serial=green_house_serial))
+	return redirect(url_for('greenhouse_collaborator_page', greenhouse_serial=greenhouse_serial))

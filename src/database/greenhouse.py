@@ -1,6 +1,7 @@
+from datetime import datetime, timedelta
+
 from src.database.database import get_db
 from src.database.plant import get_name_plant
-from datetime import datetime, timedelta
 
 
 def check_greenhouse_owner(user_name, greenhouse_serial):
@@ -185,7 +186,8 @@ def set_custom_config_greenhouse(greenhouse_serial, temperature, soil_humidity, 
             "UPDATE GreenHouses "
             "SET temperature = %s, soil_humidity = %s, air_humidity = %s, light = %s, is_custom_config = 1 "
             "WHERE serial = %s",
-            (float(temperature)*10, float(soil_humidity)*10, float(air_humidity)*10, int(light), greenhouse_serial)
+            (
+            float(temperature) * 10, float(soil_humidity) * 10, float(air_humidity) * 10, int(light), greenhouse_serial)
         )
         db.commit()
 
@@ -276,21 +278,21 @@ def create_measures_notification(greenhouse_serial):
         print(f"Error when creating notification for greenhouse {greenhouse_serial}: {e}")
 
 
-def get_greenhouse_notification_date(greenhouse_serial):
+def get_greenhouse_notifications(greenhouse_serial):
     db = get_db()
     cursor = db.cursor()
     messages = {}
 
     try:
         cursor.execute(
-            "SELECT id, message, date "
+            "SELECT id, message, date, notification_type "
             "FROM Notifications "
             "WHERE greenhouse_serial = %s "
             "ORDER BY date DESC ",
             (greenhouse_serial,)
         )
-        for (id_message, message, date) in cursor:
-            messages[id_message] = (message, date)
+        for (id_message, message, date, n_type) in cursor:
+            messages[id_message] = (message, date, n_type)
         return messages
 
     except Exception as e:
@@ -319,7 +321,7 @@ def get_latest_mesures(sensors):
                 if sensor_type != "light":
                     measures[sensor_id] = {'value': result[0], 'date': result[1], 'type': sensor_type}
                 else:
-                    measures[sensor_id] = {'value': result[0]/10, 'date': result[1], 'type': sensor_type}
+                    measures[sensor_id] = {'value': result[0] / 10, 'date': result[1], 'type': sensor_type}
 
     except Exception as e:
         print(f"Error when getting latest measures: {e}")

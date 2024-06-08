@@ -17,3 +17,6 @@ main h2 {
     margin: 20px 0 5px 0;
     color: #123d01;
 }
+main p {
+    text-align: justify;
+}

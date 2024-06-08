@@ -1,0 +1,70 @@
+.notifications {
+    display: block;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 0 20px;
+    list-style: none;
+}
+
+.notification {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    background-color: hsl(0, 0%, 98%);
+    padding: 10px;
+    gap: 6px;
+    border: 1px solid;
+    border-radius: 2px;
+    margin: 10px auto;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+}
+
+.notification-date, .notification-type {
+    white-space: nowrap;
+    flex: 1 0 auto;
+}
+
+.notification-date {
+    flex: 0 0 150px;
+    color: hsl(0, 0%, 40%);
+}
+
+.notification-type {
+    flex: 0 0 160px;
+    text-align: left;
+    font-weight: bold;
+}
+
+.notification-message {
+    flex: 1 1 auto;
+    color: var(--text-color);
+}
+
+
+.notification.error {
+    border-color: hsl(0, 100%, 35%); /* Dark Red */
+    background-color: hsl(0, 100%, 97%); /* Lighter Red */
+}
+
+.notification.target {
+    border-color: hsl(30, 100%, 40%); /* Dark Orange */
+    background-color: hsl(30, 100%, 97%); /* Lighter Orange */
+}
+
+.notification.info {
+    border-color: hsl(210, 100%, 40%); /* Dark Blue */
+    background-color: hsl(210, 100%, 97%); /* Lighter Blue */
+}
+
+.notification.success {
+    border-color: hsl(120, 50%, 40%); /* Dark Green */
+    background-color: hsl(120, 50%, 97%); /* Lighter Green */
+}
+
+@media (max-width: 600px) {
+    .notifications {
+        margin: 10px auto;
+        padding: 0 10px;
+    }
+}

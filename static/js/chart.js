@@ -85,36 +85,39 @@ window.configureChart = (el_id, dates, measures, targets, gh_serial, is_sensor, 
 
 
     if(from_date === undefined){
-        from_date = dates[0]
+        from_date = DateTime.fromHTTP(dates[0], {zone: 'utc'})
     }else{
         // from_date = DateTime.fromSQL(from_date, {zone: 'utc'}).minus({minutes: tz_offset}).toHTTP()
-        to_date = DateTime.fromSQL(to_date, {zone: 'utc'}).toHTTP();
+        from_date = DateTime.fromSQL(from_date, {zone: 'utc'});
     }
     if(to_date === undefined){
-        to_date = dates[dates.length - 1];
+        to_date = DateTime.fromHTTP(dates[dates.length - 1], {zone: 'utc'});
     }else{
         if(to_date.endsWith('23:59:59+00:00')){
             // to_date = DateTime.fromSQL(to_date, {zone: 'utc'}).minus({minutes: tz_offset}).toHTTP();
-            to_date = DateTime.fromSQL(to_date, {zone: 'utc'}).toHTTP();
+            to_date = DateTime.fromSQL(to_date, {zone: 'utc'});
         }else{
-            // console.log("Correcting date", to_date, "to", DateTime.fromSQL(to_date, {zone: 'utc'}).toHTTP())
-            to_date = DateTime.fromSQL(to_date, {zone: 'utc'}).toHTTP();
+            console.log("Correcting date", to_date, "to", DateTime.fromSQL(to_date, {zone: 'utc'}))
+            to_date = DateTime.fromSQL(to_date, {zone: 'utc'});
         }
     }
+    console.log("Corrected dates. New dates are from", from_date, "to", to_date)
 
-    const hour_Scope = Math.ceil((new Date(to_date) - new Date(from_date)) / (1000 * 60 * 60));
-    let unit = 'minute'
-    if(hour_Scope > 24 * 365 * 4){ // > 4 years
+    const hour_scope = Math.ceil(Math.abs(from_date.ts - to_date.ts) / 1000 / 60 / 60);
+    let unit = 'minute';
+    if(hour_scope > 24 * 365 * 4){ // > 4 years
         unit = 'year'
-    }else if(hour_Scope > 24 * 265 * 2){ // > 2 years
+    }else if(hour_scope > 24 * 265 * 2){ // > 2 years
         unit = 'quarter'
-    }else if(hour_Scope > 24 * 30 * 4){ // > 4 month
+    }else if(hour_scope > 24 * 30 * 4){ // > 4 month
         unit = 'month'
-    }else if(hour_Scope > 24 * 4){ // > 4 day
+    }else if(hour_scope > 24 * 4){ // > 4 day
         unit = 'day'
-    }else if(hour_Scope > 12){ // > 12 hours
+    }else if(hour_scope > 12){ // > 12 hours
         unit = 'hour'
     }
+
+    console.log("Unit is", unit, "hour scope is", from_date.x, "=", hour_scope, "hours")
 
     let yMin = Math.min(...measures);
     let yMax = Math.max(...measures);
@@ -142,7 +145,7 @@ window.configureChart = (el_id, dates, measures, targets, gh_serial, is_sensor, 
                 borderWidth: 2,
                 tension: 0,
                 pointStyle: false,
-                stepped: true,
+                stepped: false,
                 fill: true,
             }]
         },
@@ -159,14 +162,14 @@ window.configureChart = (el_id, dates, measures, targets, gh_serial, is_sensor, 
                 },
                 x: {
                     type: 'time',
-                    min: from_date,
-                    max: to_date,
+                    min: from_date.toHTTP(),
+                    max: to_date.toHTTP(),
                     time: {
                         tooltipFormat: 'YYYY-MM-DD HH:mm:ss',
                         unit: unit,
                         displayFormats: {
                             minute: 'HH:mm',
-                            hour: "dd/MM '-' H'h'",
+                            hour: "dd/MM HH'h'",
                             day: 'dd LLL',
                             month: 'LLL yyyy',
                             quarter: 'LLL yyyy',
