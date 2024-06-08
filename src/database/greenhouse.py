@@ -308,7 +308,7 @@ def get_latest_mesures(sensors):
         for sensor_id, sensor_type in sensors.items():
             cursor.execute(
                 "SELECT value, date "
-                "FROM Measures "
+                "FROM ProcessedMeasures "
                 "WHERE sensor_id = %s "
                 "ORDER BY date DESC "
                 "LIMIT 1",
