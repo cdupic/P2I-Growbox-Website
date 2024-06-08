@@ -9,10 +9,10 @@ document.addEventListener("DOMContentLoaded", () => {
             let timeout;
             let previousValue = input.value;
 
-            if (input.type === 'date') {
+            if (input.type === 'date'){
                 // Handle date inputs separately
                 input.addEventListener('change', () => {
-                    if (input.value !== previousValue) {
+                    if(input.value !== previousValue){
                         form.submit();
                     }
                 });
@@ -20,10 +20,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 input.addEventListener('input', () => {
                     clearTimeout(timeout);
                     timeout = setTimeout(() => {
-                        if (input.value !== previousValue) {
+                        if(input.value !== previousValue){
                             form.submit();
                         }
                     }, AUTO_SUBMIT_DELAY);
+                });
+            }else if(input.type === 'checkbox'){
+                input.addEventListener('change', () => {
+                    timeout = setTimeout(() => {
+                        form.submit();
+                    }, 200);
                 });
             } else {
                 input.addEventListener('input', () => {

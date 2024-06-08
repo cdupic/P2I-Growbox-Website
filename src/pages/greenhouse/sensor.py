@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from flask import render_template, redirect, url_for, session
+from flask import render_template, redirect, url_for
 
 from src.database.greenhouse import get_greenhouse_targets
 from src.database.measure import get_sensors_greenhouse, get_actuators_greenhouse, get_data_sensors_since, \
@@ -21,12 +21,11 @@ def greenhouse_sensor_page(greenhouse_serial, sensor_id):
     actuators = get_actuators_greenhouse(greenhouse_serial)
 
     measures = {}
-    total_measures_sensor = get_number_of_measures(greenhouse_serial, sensor_id, session['processed_measures_choosed'])
+    total_measures_sensor = get_number_of_measures(greenhouse_serial, sensor_id)
     date_start, date_end = get_date_end_start()
     date_latest = datetime.utcnow() - timedelta(days=365)
 
-    for data in get_data_sensors_since(greenhouse_serial, [sensor_id], date_start, date_end,
-                                       session['processed_measures_choosed']).values():
+    for data in get_data_sensors_since(greenhouse_serial, [sensor_id], date_start, date_end).values():
         for date, value in data.items():
             if date > date_latest:
                 date_latest = date

@@ -1,6 +1,6 @@
-from flask import render_template, redirect, url_for, request
+from flask import render_template, redirect, url_for
 
-from src.utils.user import is_user_authenticated, authenticate_user
+from src.utils.user import is_user_authenticated
 
 
 def login_page():

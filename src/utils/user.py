@@ -80,5 +80,3 @@ def create_user(user_name, password):
     except Exception as e:
         print(f"Error when creating user: {e}")
         return None
-
-

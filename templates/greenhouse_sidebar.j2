@@ -1,6 +1,14 @@
 <nav id="sidebar" class="to-init">
     <img src="{{ url_for('static', filename='img/title.svg') }}" alt="GrowBox's icon" />
     <ul>
+        <form method="POST" action="{{ url_for('processed_measures_manager') }}" class="auto-submit">
+            <label class="switch">
+                <input type="hidden" name="r" value="{{ request.url }}">
+                <input type="checkbox" name="processed_measures" {{ 'checked' if session['processed_measures'] else '' }}>
+                <span class="slider round"></span>
+            </label>
+            <label for="processed_measures">Mesures traités</label>
+        </form>
         <li class="{{ 'current' if current_sidebar_item[0] == 'overview' else ''}}">
             <a href="{{ url_for('greenhouse_overview_page', greenhouse_serial=greenhouse_serial) }}">Tableau de bord</a>
         </li>

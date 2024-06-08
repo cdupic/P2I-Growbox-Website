@@ -187,7 +187,8 @@ def set_custom_config_greenhouse(greenhouse_serial, temperature, soil_humidity, 
             "SET temperature = %s, soil_humidity = %s, air_humidity = %s, light = %s, is_custom_config = 1 "
             "WHERE serial = %s",
             (
-            float(temperature) * 10, float(soil_humidity) * 10, float(air_humidity) * 10, int(light), greenhouse_serial)
+                float(temperature) * 10, float(soil_humidity) * 10, float(air_humidity) * 10, int(light),
+                greenhouse_serial)
         )
         db.commit()
 

@@ -2,7 +2,7 @@ from flask import session, request, redirect, url_for
 
 from src.database.greenhouse import (get_user_role, set_custom_config_greenhouse, create_plant_notification,
                                      create_custom_config_notification)
-from src.database.plant import (actualiaze_greenhouse_targets,
+from src.database.plant import (actualise_greenhouse_targets,
                                 add_association_plant, terminate_association)
 
 
@@ -24,7 +24,7 @@ def plant_manager():
 
             add_association_plant(request.form.get('ghs'), [add_plant_list, add_count_list])
             terminate_association(remove_associations_list, remove_associations_count_list)
-            actualiaze_greenhouse_targets(request.form.get('ghs'))
+            actualise_greenhouse_targets(request.form.get('ghs'))
 
             for i in range(len(add_plant_list)):
                 if add_plant_list[i] != '':

@@ -10,7 +10,7 @@ def timestamp_manager():
         session['error'] = "La date sélectionnée est invalide."
         return redirect(request.form.get('r'))
 
-    # Cheat code, but the server don't know the timezone of the client
+    # Cheat code, but the server doesn't know the timezone of the client
     tz = pytz.timezone('Europe/Paris')
     now = datetime.now().astimezone(tz)
     now_time = time(now.hour, now.minute, now.second)
@@ -28,10 +28,11 @@ def timestamp_manager():
         session['error'] = "La date de fin doit être postérieure à la date de début."
         return redirect(request.form.get('r'))
 
-    if start_datetime_local != end_datetime_local and abs(now-end_datetime_local) < timedelta(minutes=1):
+    if start_datetime_local != end_datetime_local and abs(now - end_datetime_local) < timedelta(minutes=1):
         # Gliding window mode
         session['graph_delta_time'] = (end_datetime_local - start_datetime_local).days
-        print("Diff between ", end_datetime_local, start_datetime_local, (end_datetime_local - start_datetime_local).days)
+        print("Diff between ", end_datetime_local, start_datetime_local,
+              (end_datetime_local - start_datetime_local).days)
 
         session['graph_start_date'] = None
         session['graph_end_date'] = None
@@ -52,9 +53,7 @@ def timestamp_manager():
         session['graphs_delta_time'] = None
 
         session['success'] = f"Vue actualisée sur {(end_datetime_local - start_datetime_local).days + 1} jours."
-        print("Diff between ", end_datetime_local, start_datetime_local, (end_datetime_local - start_datetime_local).days)
+        print("Diff between ", end_datetime_local, start_datetime_local,
+              (end_datetime_local - start_datetime_local).days)
 
     return redirect(request.form.get('r'))
-
-
-
