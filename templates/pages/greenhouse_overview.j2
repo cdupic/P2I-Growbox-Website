@@ -1,14 +1,19 @@
 {% extends "greenhouse_template.j2" %}
 
 {% block content %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/charts.css') }}">
-
     <div class="heading">
         {% if date_latest %}
-            <div class="title">
-                <h1>Tableau de bord de {{ greenhouse_serial }} </h1>
-                <p>{{ ratio_measures }} mesures, dernière mesure {{ date_latest }}</p>
-            </div>
+            {% if not date_selected_measures  %}
+                <div class="title">
+                    <h1>Tableau de bord de {{ greenhouse_serial }} </h1>
+                    <p>Aucune mesure pour la serre {{ greenhouse_serial }} sur cette plage de temps</p>
+                </div>
+            {% else %}
+                <div class="title">
+                    <h1>Tableau de bord de {{ greenhouse_serial }} </h1>
+                    <p>{{ date_selected_measures }} sur {{ total_measures }}mesures, dernière mesure {{ date_latest }}</p>
+                </div>
+                {%  endif %}
             <div>
                 <form action="{{ url_for('timestamp_manager') }}" method="POST" class="auto-submit">
                     <label for="start_date">Du</label>
@@ -18,12 +23,17 @@
                     <input type="hidden" name="r" value="{{ url_for('greenhouse_overview_page', greenhouse_serial=greenhouse_serial) }}">
                 </form>
             </div>
+
         {% else %}
             <div class="title">
                 <p>Aucune mesure pour la serre {{ greenhouse_serial }}</p>
             </div>
+
+
         {% endif %}
     </div>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/charts.css') }}">
 
     <div class="graph-tiles">
         {% for sensor_id, data in data_sensors.items() %}

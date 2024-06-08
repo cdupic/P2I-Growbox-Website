@@ -3,31 +3,36 @@
 {% block content %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/charts.css') }}">
 
-    {% if date_latest %}
-        <div class="heading">
-        <div class="title">
-            <h1>{{ current_actuator_full_name }}</h1>
-            <p>{{ ratio_measures }} actions, dernière action {{ date_latest }}</p>
-        </div>
-        <div>
-            <form action="{{ url_for('timestamp_manager') }}" method="POST" class="auto-submit">
-                <label for="start_date">Du</label>
-                <input type="date" id="from_date" name="start_date" data-value="{{ from_datetime_utc }}">
-                <label for="end_date">au</label>
-                <input type="date" id="to_date" name="end_date" data-value="{{ to_datetime_utc }}">
-                <input type="hidden" name="r" value="{{ url_for('greenhouse_actuator_page', greenhouse_serial=greenhouse_serial, actuator_id= actuator_id) }}">
-            </form>
-        </div>
-    {% else %}
-        <div class="heading">
-        <div class="title">
-        <h1>{{ current_actuator_full_name }}</h1>
-        <p>Aucune mesure pour cet actionneur</p>
+    <div class="heading">
+        {% if date_latest %}
+            {% if not date_selected_actions  %}
+                <div class="title">
+                    <h1>{{ current_actuator_full_name }}</h1>
+                    <p>Aucune mesure pour cet actionneur sur cette plage de temps</p>
+                </div>
+            {% else %}
+                <div class="title">
+                    <h1>Tableau de bord de {{ greenhouse_serial }} </h1>
+                    <p>{{ date_selected_actions }} sur {{ total_actions_actuator }}mesures pour cet actionneur, dernière mesure {{ date_latest }}</p>
+                </div>
+            {%  endif %}
+            <div>
+                <form action="{{ url_for('timestamp_manager') }}" method="POST" class="auto-submit">
+                    <label for="start_date">Du</label>
+                    <input type="date" id="from_date" name="start_date" data-value="{{ from_datetime_utc }}">
+                    <label for="end_date">au</label>
+                    <input type="date" id="to_date" name="end_date" data-value="{{ to_datetime_utc }}">
+                    <input type="hidden" name="r" value="{{ url_for('greenhouse_actuator_page', greenhouse_serial=greenhouse_serial, actuator_id= actuator_id) }}">                </form>
+            </div>
 
-    {% endif %}
-</div>
-</div>
+        {% else %}
+            <div class="title">
+                <p>Aucune mesure pour le capteur {{ current_actuator_full_name }}</p>
+            </div>
 
+
+        {% endif %}
+    </div>
     <div class="graph-tiles">
         <div class="graph">
             <canvas id="chart1" class="chart" aria-label="Graphique des valeurs du capteur {{ sensor_type }}"

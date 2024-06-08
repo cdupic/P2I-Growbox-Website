@@ -21,7 +21,8 @@ def greenhouse_sensor_page(greenhouse_serial, sensor_id):
     actuators = get_actuators_greenhouse(greenhouse_serial)
 
     measures = {}
-
+    total_measures_sensor = get_number_of_measures(greenhouse_serial, sensor_id)
+    print(total_measures_sensor)
     date_start, date_end = get_date_end_start()
     date_latest = datetime.utcnow() - timedelta(days=365)
 
@@ -33,7 +34,7 @@ def greenhouse_sensor_page(greenhouse_serial, sensor_id):
 
     targets = get_greenhouse_targets(greenhouse_serial)
 
-    if measures != {}:
+    if measures != {} or total_measures_sensor:
         date_latest = get_format_latest_measure(date_latest)
     else:
         date_latest = None
@@ -49,8 +50,8 @@ def greenhouse_sensor_page(greenhouse_serial, sensor_id):
                            current_sidebar_item=('sensor', int(sensor_id)),
                            current_sensor_full_name=convert_sensor_type_to_full_name(sensor_type),
                            measures=measures,
-                           ratio_measures=str(len(measures)) + ' sur ' + str(
-                               get_number_of_measures(greenhouse_serial, sensor_id)),
+                           date_selected_measures=len(measures),
+                           total_measures_sensor=total_measures_sensor,
                            date_latest=date_latest,
                            targets=targets,
                            from_datetime_utc=str(date_start),
