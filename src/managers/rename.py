@@ -5,9 +5,6 @@ def rename_manager():
     pass
 
 
-# TODO: Create a manager to rename the greenhouse
-
-
 def rename_greenhouse(greenhouse_serial, greenhouse_name):
     db = get_db()
     cursor = db.cursor()

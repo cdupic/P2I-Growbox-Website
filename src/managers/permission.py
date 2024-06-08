@@ -12,7 +12,6 @@ def permission_manager():
         session['error'] = "Vous n'avez pas les permissions nécessaires pour effectuer cette action."
 
     else:
-        # TODO : set the role `role` to the user `user`.
         set_user_role(greenhouse_serial, user, role)
         create_new_role_notification(greenhouse_serial, user, role)
 
