@@ -85,9 +85,9 @@ def order_data(sensor_id):
         day_max = [data['max'] for data in data_day.values()]
         day_avg = [data['avg'] for data in data_day.values()]
 
-        data_night = {"date_values": days_night, "min_values": night_min, "max_values": night_max,
+        data_night = {"dates": days_night, "min_values": night_min, "max_values": night_max,
                       "avg_values": night_avg}
-        data_day = {"date_values": days_day, "min_values": day_min, "max_values": day_max, "avg_values": day_avg}
+        data_day = {"dates": days_day, "min_values": day_min, "max_values": day_max, "avg_values": day_avg}
 
         return data_night, data_day
 

@@ -13,6 +13,44 @@ document.addEventListener('DOMContentLoaded', function(){
     correctTimezoneForField(document.getElementById('to_date'), 'local')
 })
 
+const getUnit = (is_sensor, type) => {
+    if(is_sensor){
+        switch(type){
+            case "temperature":
+                return "°C";
+            case "soil_humidity":
+                return "%HR";
+            case "light":
+                return "lx";
+            case "air_humidity":
+                return "%HR";
+            case "water_level":
+                return "mm";
+            case "O2":
+                return "%";
+            default:
+                return "";
+        }
+    }else{
+        switch(type){
+            case "temperature":
+                return "°C";
+            case "soil_humidity":
+                return "s";
+            case "light":
+                return "lx";
+            case "air_humidity":
+                return "%HR";
+            case "water_level":
+                return "mm";
+            case "O2":
+                return "%";
+            default:
+                return "";
+        }
+    }
+}
+
 const getFrenchName = (is_sensor, type) => {
     if(is_sensor){
         switch(type){
@@ -80,7 +118,8 @@ const getYMax = (max_val, type) => {
     return max_val;
 }
 
-window.configureChart = (el_id, dates, measures, targets, gh_serial, is_sensor, type, id, from_date, to_date) => {
+window.configureChart = (el_id, dates, measures, targets, gh_serial, is_sensor, type, id, from_date, to_date,
+                         data_analysed_O2_night=null, data_analysed_O2_day=null) => {
     console.log("Configuring chart from", from_date, "to", to_date, "with", dates.length, "points")
 
 
@@ -134,20 +173,131 @@ window.configureChart = (el_id, dates, measures, targets, gh_serial, is_sensor, 
         }
     }
 
+    function getAnnotation(date, min, avg, max, label){
+        return {
+            type: 'box',
+            xMin: date,
+            xMax: date,
+            yMin: min,
+            yMax: max,
+            backgroundColor: 'rgba(255, 99, 132, 0.1)',
+            borderWidth: 1,
+            borderColor: 'rgb(255, 99, 132)',
+            label: {
+                enabled: true,
+                content: label,
+                position: 'top'
+            }
+        }
+    }
+    if(!data_analysed_O2_night){
+        data_analysed_O2_night = {
+            dates: []
+        }
+    }
+    if(!data_analysed_O2_day){
+        data_analysed_O2_day = {
+            dates: []
+        }
+    }
+
     const config = {
         type: "line",
         data: {
             labels: dates,
-            datasets: [{
-                "data": measures,
-                backgroundColor: "rgba(178, 218, 30, 0.08)",
-                borderColor: "rgba(178, 218, 30, 1)",
-                borderWidth: 2,
-                tension: 0,
-                pointStyle: false,
-                stepped: false,
-                fill: true,
-            }]
+            datasets: [
+                {
+                    label: 'Minimum de jour',
+                    data: data_analysed_O2_day.dates.map((date, index) =>
+                        ({x: date, y: data_analysed_O2_day.min_values[index]})),
+                    borderColor: '#00ade3',
+                    backgroundColor: '#00ade3',
+                    pointStyle: 'line',
+                    pointRadius: 10,
+                    borderWidth: 2,
+                    hoverRadius: 10,
+                    hoverBorderWidth: 3,
+                    showLine: false,
+                    type: 'scatter'
+                }, {
+                    label: 'Moyenne de jour',
+                    data: data_analysed_O2_day.dates.map((date, index) =>
+                        ({x: date, y: data_analysed_O2_day.avg_values[index]})),
+                    borderColor: '#e38100',
+                    backgroundColor: '#e38100',
+                    pointStyle: 'line',
+                    pointRadius: 10,
+                    borderWidth: 2,
+                    hoverRadius: 10,
+                    hoverBorderWidth: 3,
+                    showLine: false,
+                    type: 'scatter'
+                }, {
+                    label: 'Maximum de jour',
+                    data: data_analysed_O2_day.dates.map((date, index) =>
+                        ({x: date, y: data_analysed_O2_day.max_values[index]})),
+                    borderColor: '#e30000',
+                    backgroundColor: '#e30000',
+                    pointStyle: 'line',
+                    pointRadius: 10,
+                    borderWidth: 2,
+                    hoverRadius: 10,
+                    hoverBorderWidth: 3,
+                    showLine: false,
+                    type: 'scatter'
+                },
+                {
+                    label: 'Minimum de nuit',
+                    data: data_analysed_O2_night.dates.map((date, index) =>
+                        ({x: date, y: data_analysed_O2_night.min_values[index]})),
+                    borderColor: '#00ade3',
+                    backgroundColor: '#00ade3',
+                    pointStyle: 'line',
+                    pointRadius: 10,
+                    borderWidth: 2,
+                    hoverRadius: 10,
+                    hoverBorderWidth: 3,
+                    showLine: false,
+                    type: 'scatter'
+                }, {
+                    label: 'Moyenne de nuit',
+                    data: data_analysed_O2_night.dates.map((date, index) =>
+                        ({x: date, y: data_analysed_O2_night.avg_values[index]})),
+                    borderColor: '#e38100',
+                    backgroundColor: '#e38100',
+                    pointStyle: 'line',
+                    pointRadius: 10,
+                    borderWidth: 2,
+                    hoverRadius: 10,
+                    hoverBorderWidth: 3,
+                    showLine: false,
+                    type: 'scatter'
+                }, {
+                    label: 'Maximum de nuit',
+                    data: data_analysed_O2_night.dates.map((date, index) =>
+                        ({x: date, y: data_analysed_O2_night.max_values[index]})),
+                    borderColor: '#e30000',
+                    backgroundColor: '#e30000',
+                    pointStyle: 'line',
+                    pointRadius: 10,
+                    borderWidth: 2,
+                    hoverRadius: 10,
+                    hoverBorderWidth: 3,
+                    showLine: false,
+                    type: 'scatter'
+                },
+                {
+                    label: '',
+                    "data": measures,
+                    backgroundColor: "rgba(178, 218, 30, 0.08)",
+                    borderColor: "rgba(178, 218, 30, 1)",
+                    borderWidth: 2,
+                    tension: 0,
+                    pointStyle: false,
+                    stepped: false,
+                    fill: true,
+                }
+            ]
         },
         options: {
             locale: 'fr-FR',
@@ -209,6 +359,14 @@ window.configureChart = (el_id, dates, measures, targets, gh_serial, is_sensor, 
                                 second: '2-digit'
                             });
                             return formatter.format(date);
+                        },
+                        label: function(context){
+                            console.log(context)
+                            if(context.dataset.label){
+                                return context.dataset.label + ' : ' + context.raw.y + getUnit(is_sensor, type);
+                            }else{
+                                return context.formattedValue + getUnit(is_sensor, type);
+                            }
                         }
                     }
                 },

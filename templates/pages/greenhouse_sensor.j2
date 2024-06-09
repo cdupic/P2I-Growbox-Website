@@ -52,7 +52,9 @@
             {{ sensor_type|tojson }},
             {{ sensor_id|tojson }},
             {{ from_datetime_utc|tojson }},
-            {{ to_datetime_utc|tojson }}
+            {{ to_datetime_utc|tojson }},
+            {{ data_analysed_O2_night|tojson }},
+            {{ data_analysed_O2_day|tojson }}
         );
     </script>
 {% endblock %}
