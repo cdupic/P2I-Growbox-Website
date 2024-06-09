@@ -30,7 +30,7 @@ Il est développé avec le framework Flask en Python, en utilisant le langage de
 
 ## Auteurs
 
-P2I2 Groupe 221-A Equipe GrowBox Sophie Anthoine, Hicham Boudjeroua, Clément Dupic, Nathan Daval, Clément Grennerat, Victoria Nomezine
+P2I2 Groupe 221-A Equipe GrowBox Clément Grennerat, Clément Dupic, Nathan Daval, Victoria Nomezine, Hicham Boudjeroua, Sophie Anthoine
 
 ## À contacter en cas de questions
 
