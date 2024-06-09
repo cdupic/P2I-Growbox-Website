@@ -2,7 +2,7 @@
 
 ## Description
 
-Ce code est responsable du site internet [mygrowbox.fe](https://mygrowbox.fr/).
+Ce code est responsable du site internet [mygrowbox.fr](https://mygrowbox.fr/).
 Il est développé avec le framework Flask en Python, en utilisant le langage de templating Jinja2.
 
 ## Fonctionnalités
