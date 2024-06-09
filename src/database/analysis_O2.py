@@ -1,4 +1,4 @@
-from datetime import datetime, time, timedelta
+from datetime import datetime, time, timedelta, timezone
 
 from src.database.database import get_db
 from src.database.measure import get_sensor_id
@@ -24,7 +24,7 @@ def analysis(sensor_id):
             data_day = {}
 
             for date in dates:
-                day_start = datetime.combine(date.date(), time(0, 0, 0))
+                day_start = datetime.combine(date.date(), time(0, 0, 0)).astimezone(timezone.utc)
 
                 if day_start not in data_night:
                     data_measures = get_min_max_avg_o2(sensor_id, day_start - timedelta(hours=6),
@@ -35,8 +35,7 @@ def analysis(sensor_id):
                     else:
                         data_night[day_start] = {'min': None, 'max': None, 'avg': None}
 
-                day_start = datetime.combine(date.date(), time(12, 0, 0))
-
+                day_start = datetime.combine(date.date(), time(12, 0, 0)).astimezone(timezone.utc)
                 if day_start not in data_day:
                     data_measures = get_min_max_avg_o2(sensor_id, day_start - timedelta(hours=6),
                                                        day_start + timedelta(hours=6))
