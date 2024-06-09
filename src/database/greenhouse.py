@@ -332,9 +332,9 @@ def get_latest_mesures(sensors):
 
 def max_delta_values():
     temperature = 5
-    soil_humidity = 10
-    air_humidity = 10
-    light = 1000
+    soil_humidity = 20
+    air_humidity = 20
+    light = 4000
     return {'temperature': temperature, 'soil_humidity': soil_humidity, 'air_humidity': air_humidity, 'light': light}
 
 
