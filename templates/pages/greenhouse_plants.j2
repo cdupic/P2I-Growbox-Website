@@ -107,9 +107,9 @@
         </form>
 
         <h2>Historique des plantes</h2>
-        <ul>
+        <ul class="history">
             {% for id, data in old_plants.items() %}
-                <p>  {{ data[1] }} du : {{ data[3]}} au {{ data[4] }}, {{ data[2] }} plants cultivés</p>
+                <li><p>{{ data[2] }} {{ data[1] }} (du {{ data[3]}} au {{ data[4] }})</p></li>
             {% endfor %}
         </ul>
     </div>

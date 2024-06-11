@@ -145,3 +145,17 @@
 #plantForm .main-button {
     margin: 20px auto 35px;
 }
+
+/* Historique */
+
+ul.history{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+ul.history li {
+    background-color: white;
+    border-radius: 10px;
+    margin: 5px 0;
+    padding: 10px;
+}
