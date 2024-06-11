@@ -37,7 +37,8 @@ def get_history_greenhouse(greenhouse_serial):
             " GreenHousePlants.date_end "
             "FROM Plants, GreenHousePlants "
             "WHERE GreenHousePlants.greenhouse_serial = %s and Plants.id = GreenHousePlants.plant_id "
-            "and date_end is NOT NULL",
+            "and date_end is NOT NULL "
+            "ORDER BY GreenHousePlants.date_end DESC",
             (greenhouse_serial,)
         )
 
