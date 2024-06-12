@@ -11,6 +11,11 @@
         <label for="password">Mot de passe</label>
         <input type="password" name="password" id="password" required>
         <br>
+        <div class="cgu">
+            <input type="checkbox" name="cgu">
+            <label for="cgu">J'accepte les <a href="{{ url_for('cgu_page') }}">conditions générales d'utilisations</a></label>
+        </div>
+        <br>
         <input type="submit" value="Créer un compte">
     </form>
 {% endblock %}

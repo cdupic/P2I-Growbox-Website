@@ -14,13 +14,13 @@ input, select, textarea, button {
 select, button {
     cursor: pointer;
 }
-input[type='submit']{
+input[type='submit'] {
     cursor: pointer;
 }
-input[type='checkbox']{
+input[type='checkbox'] {
     min-width: 0;
 }
-select{
+select {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -33,4 +33,17 @@ form > * {
 }
 form label {
     font-weight: 500;
+}
+
+form div.cgu {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+form div.cgu input {
+    height: 30px;
+    width: 35px;
+}
+form div.cgu label {
+    display: block;
 }

@@ -24,8 +24,6 @@
 </div>
 <div class="links">
     <p><a href="{{ url_for('cgu_page') }}">CGU</a></p>
-    <p><a href="">Conditions de ventes</a></p>
-    <p><a href="{{ url_for('landing_page') }}">Politique de confidentialité</a></p>
     {% if 'user_name' not in session %}
         <p><a href="{{ url_for('signup_page') }}">Créer un compte</a></p>
         <p><a href="{{ url_for('login_page') }}">Connexion</a></p>
